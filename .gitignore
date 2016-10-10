@@ -1,5 +1,4 @@
 /node_modules/
 build/
 dist/
-log/deploys/*
 log/octopush
