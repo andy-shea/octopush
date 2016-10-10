@@ -1,0 +1,13 @@
+{
+  "server": {
+    "address": "localhost"
+  },
+  "db": {
+    "host": "postgres",
+    "password": "password"
+  },
+  "defaultSlug": "my-application",
+  "session": {
+    "secret": "secretsquirrel"
+  }
+}

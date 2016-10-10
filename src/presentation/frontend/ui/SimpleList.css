@@ -1,0 +1,81 @@
+.root {
+  border-bottom: 1px solid color($dark-red lightness(-10%));
+  padding: 6px 15px;
+  display: block;
+  line-height: 40px;
+  font-size: 1.2em;
+  position: relative;
+}
+.root:hover .actions { display: block; }
+
+.root.multiline {
+  padding: 16px 100px 16px 15px;
+  line-height: 18px;
+  position: relative;
+}
+
+.label {
+  font-size: 0.6em;
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
+.actions {
+  display: none;
+  float: right;
+}
+
+.actions > li {
+  float: left;
+  margin-left: 5px;
+}
+
+.multiline .actions {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 15px;
+}
+
+.newline {
+  display: block;
+}
+
+.iconEdit {
+  width: 32px !important;
+  height: 32px !important;
+  transform: rotate(-145deg);
+  stroke: color($dark-red lightness(-25%)) !important;
+  cursor: pointer;
+}
+.iconEdit:hover { stroke: color($dark-red lightness(-35%)) !important; }
+
+.iconRemove {
+  width: 30px;
+  height: 30px;
+  margin-top: 4px;
+}
+
+.iconRemove::before,
+.iconRemove::after {
+  width: 30px !important;
+  top: 15px !important;
+  left: 0 !important;
+  background: color($dark-red lightness(-25%)) !important;
+}
+
+.iconRemove:hover::before,
+.iconRemove:hover::after {
+  background: color($dark-red lightness(-35%)) !important;
+}
+
+.loader {
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 15px;
+  fill: color($dark-red lightness(-25%));
+}

@@ -1,0 +1,18 @@
+{
+  "server": {
+    "address": "0.0.0.0",
+    "port": 3000
+  },
+  "db": {
+    "host": "127.0.0.1",
+    "name": "octopush",
+    "user": "_octopush"
+  },
+  "log": {
+    "path": "log",
+    "deploy_path": "log/deploys"
+  },
+  "capistrano": {
+    "path": "/var/deploy"
+  }
+}

@@ -1,0 +1,72 @@
+.error {
+  font-weight: 700;
+  color: $dark-red;
+}
+
+.root { margin: 30px 0 0; }
+
+.root::before {
+  content: 'Stack:';
+  top: -20px;
+}
+
+.root:global(.Select) :global(.Select-control) {
+  padding: 6px 15px !important;
+  border-radius: 0 !important;
+  line-height: 40px;
+  border: none !important;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+  color: #999 !important;
+}
+
+.root:global(.is-focused):not(:global(.is-open)) > :global(.Select-control) {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.root :global(.Select-menu-outer) {
+  border-radius: 0 !important;
+  border: none !important;
+  border-top: 1px solid #eee !important;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.root :global(.Select-input) {
+  border: 1px solid transparent;
+  margin: 2px;
+  padding: 4px 0;
+}
+
+.root :global(.Select-input) > input {
+  float: left;
+  padding: 0;
+}
+
+.root > input {
+  font-weight: inherit;
+  color: inherit;
+}
+
+.root :global(.Select-placeholder) {
+  padding: 8px 52px 8px 18px !important;
+  color: $dark-grey !important;
+}
+
+.root :global(.Select-value-label) {
+  padding: 8px 52px 8px 8px !important;
+  line-height: 52px !important;
+}
+
+.root :global(.Select-option) {
+  border-radius: 0 !important;
+  color: #999 !important;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+  transition-property: all;
+}
+
+.root :global(.Select-option):global(.is-focused),
+.root :global(.Select-option):hover {
+  color: white !important;
+  background-color: #ed7669 !important;
+}

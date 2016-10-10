@@ -1,0 +1,163 @@
+.root {
+  position: relative;
+  padding: 1em 0;
+  border-bottom: 1px solid color($light-grey lightness(-10%));
+  transition: background 0.2s;
+}
+
+.root:not(.isActive):hover {
+  cursor: pointer;
+  background: color($light-grey lightness(+10%));
+}
+
+.header,
+.terminalWrap {
+  margin-left: 20%;
+}
+
+.header h1 {
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.footer {
+  position: absolute;
+  top: 1.2em;
+  width: 20%;
+  color: color($light-grey lightness(-30%));
+  font-size: 0.85em;
+  text-transform: uppercase;
+  padding-left: 2em;
+  margin-top: 0.3em;
+  line-height: 1.4em;
+}
+
+.footer > p {
+  margin: 0;
+}
+
+.time,
+.user {
+  font-size: 1.1em;
+  text-transform: none;
+  color: $dark-grey;
+  margin-left: 0.2em;
+}
+
+.servers {
+  font-size: 0.9em;
+  list-style: none;
+  margin: 1px 0 0;
+  padding: 0;
+  min-height: 1.3em;
+}
+
+.servers li {
+  float: left;
+  margin-right: 2em;
+  font-weight: bold;
+  color: color($dark-grey lightness(+10%));
+}
+
+.servers a {
+  font-weight: normal;
+  color: color($light-grey lightness(-30%));
+  text-decoration: none;
+  transition: color 0.1s;
+
+  &:hover {
+    color: $dark-grey;
+  }
+}
+
+.terminalWrap {
+  margin-right: 3em;
+  max-width: 100%;
+  display: none;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.root.isActive .terminalWrap {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  display: block;
+}
+
+.terminal {
+  font-family: Inconsolata, "Courier New", Courier, monospace;
+  font-size: 0.9em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.actionIcon {
+  position: absolute;
+  top: 0.5em;
+  right: 2em;
+
+  path {
+    stroke: color($dark-grey lightness(+10%));
+  }
+}
+
+$transition-duration: 0.5s;
+
+.naviconButton {
+  position: absolute;
+  top: 1.3em;
+  right: 2em;
+  padding: 1em 0;
+  display: inline-block;
+  transition: $transition-duration / 2;
+  cursor: pointer;
+  user-select: none;
+}
+
+.naviconButton .navicon::before,
+.naviconButton .navicon::after {
+  transition: $transition-duration / 2;
+}
+
+.navicon {
+  position: relative;
+  display: block;
+  width: 3em;
+  height: 1px;
+  background: color($dark-grey lightness(+10%));
+  transition: $transition-duration;
+}
+
+.navicon::after,
+.navicon::before {
+  display: block;
+  content: "";
+  height: 1px;
+  width: 3em;
+  background: color($dark-grey lightness(+10%));
+  position: absolute;
+  transition: $transition-duration ($transition-duration / 2);
+}
+
+.navicon::after { top: -0.625em; }
+.navicon::before { top: 0.625em; }
+
+.isActive .naviconButton { transform: scale(0.8); }
+.isActive .naviconButton .navicon { background: transparent; }
+
+.isActive .naviconButton .navicon::after,
+.isActive .naviconButton .navicon::before {
+  top: 0 !important;
+  transition: $transition-duration;
+}
+.isActive .naviconButton .navicon::after { transform: rotate(45deg); }
+.isActive .naviconButton .navicon::before { transform: rotate(-45deg); }
+
+.loader {
+  margin-left: 20%;
+  display: none;
+}
+
+.isActive .loader {
+  display: block;
+}
