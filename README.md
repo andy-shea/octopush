@@ -7,7 +7,7 @@ A GUI for Capistrano
 ```
 git clone https://github.com/octahedron/octopush.git
 cd octopush
-npm install
+yarn
 ```
 
 ## Starting the App
