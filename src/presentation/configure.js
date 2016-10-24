@@ -1,6 +1,5 @@
 import Promise from 'bluebird';
 import {configureApp, configurePassport} from 'express-passport-security';
-import {userDetailsExtractor} from './auth';
 import StackService from '~/application/StackService';
 import ServerService from '~/application/ServerService';
 import UserRepository from '~/domain/user/UserRepository';
@@ -12,10 +11,12 @@ function configure(app) {
     next();
   });
 
-  configureApp(app, userDetailsExtractor, (user, req) => {
-    const stackService = req.injector.get(StackService);
-    const serverService = req.injector.get(ServerService);
-    return Promise.all([stackService.loadStacks(), serverService.loadServers()]).then(([stacks, servers]) => ({stacks, servers}));
+  configureApp(app, {
+    loadInitialData(user, req) {
+      const stackService = req.injector.get(StackService);
+      const serverService = req.injector.get(ServerService);
+      return Promise.all([stackService.loadStacks(), serverService.loadServers()]).then(([stacks, servers]) => ({stacks, servers}));
+    }
   });
 }
 
