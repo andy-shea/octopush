@@ -33,7 +33,7 @@ export function render(html, state) {
 ${icons}
 <div id="app">${html}</div>
 <script>
-  window.__INITIAL_STATE__ = ${JSON.stringify(state)}
+  window.__INITIAL_STATE__ = ${JSON.stringify(state)};
 </script>
 <script src="/vendors.js"></script>
 <script src="/socket.io/socket.io.js"></script>

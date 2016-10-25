@@ -1,4 +1,4 @@
-import {initialLoad} from 'react-cornerstone/server';
+import {configureMiddleware} from 'react-cornerstone/server';
 import {userDetailsExtractor} from './auth';
 import configureStore from './frontend/store';
 import createRoutes from './frontend/routes';
@@ -13,9 +13,11 @@ function getInitialState({user}) {
   }
   return initialState;
 }
+
 function getHelpers({injector}) {
   return {injector};
 }
-const middleware = initialLoad({configureStore, createRoutes, render, getInitialState, getHelpers});
+
+const middleware = configureMiddleware(configureStore, createRoutes, render, {getInitialState, getHelpers});
 
 export default middleware;

@@ -11,9 +11,9 @@ var commonClientConfig = {
     app: [path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')],
     vendors: [
       'autobind-decorator', 'bluebird', 'classnames', 'ftchr', 'junction-normalizr-decorator',
-      'junction-proptype-decorator', 'moment', 'normalizr', 'react', 'react-custom-scrollbars',
+      'junction-proptype-decorator', 'moment', 'normalizr', 'react', 'react-cornerstone', 'react-custom-scrollbars',
       'react-dom', 'react-redux', 'react-paginate', 'react-router', 'react-router-redux', 'react-select', 'redux',
-      'redux-auth-wrapper', 'redux-action-creator', 'redux-connect', 'redux-thunk', 'reselect']
+      'redux-auth-wrapper', 'redux-action-creator', 'redux-connect', 'reselect']
   },
   output: {
     filename: 'main.js',
