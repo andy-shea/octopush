@@ -1,10 +1,20 @@
 import React, {PropTypes} from 'react';
+import withHandlers from 'recompose/withHandlers';
 import cx from 'classnames';
 import Group from '~/domain/stack/Group';
 import ActionRow from '../ui/ActionRow';
 import {hostnames} from './GroupRow.css';
 import {iconEdit, iconRemove, newline} from '../ui/SimpleList.css';
 import {svgIcon, iconRemove as baseIconRemove} from '../ui/Icons.css';
+
+const handlers = withHandlers({
+  editGroup: props => () => {
+    props.editGroup(props.group);
+  },
+  removeGroup: props => () => {
+    props.removeGroup(props.group);
+  }
+});
 
 function GroupRow({group, servers, editGroup, removeGroup}) {
   const {name, isDeleting} = group;
@@ -28,4 +38,4 @@ GroupRow.propTypes = {
   removeGroup: PropTypes.func.isRequired
 };
 
-export default GroupRow;
+export default handlers(GroupRow);

@@ -33,6 +33,8 @@ function reducer(state = {map: {}}, action) {
       return {...state, map: nextDeploys};
     }
 
+    case types.START_DEPLOY: return {...state, isDeploying: true, error: undefined};
+
     case types.START_DEPLOY_SUCCESS: {
       const {result, entities: {deploys}} = action.response;
       const deploy = deploys[result];
@@ -52,7 +54,7 @@ function reducer(state = {map: {}}, action) {
       nextPagination.deploys.unshift(deploy.id);
       nextPagination.total++;
       nextPagination.totalPages = Math.ceil(nextPagination.total / nextPagination.limit);
-      return {...state, map: nextMap, pagination: nextPagination};
+      return {...state, map: nextMap, pagination: nextPagination, isDeploying: false};
     }
 
     case types.LOAD_LOG_SUCCESS: return updateDeploy(state, action, 'log', action.response);

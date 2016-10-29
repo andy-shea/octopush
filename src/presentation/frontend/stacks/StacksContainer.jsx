@@ -4,7 +4,7 @@ import autobind from 'autobind-decorator';
 import {actions} from './actions';
 import StackList from './StackList';
 import StackDetail from './StackDetail';
-import {getStacks, getStackEditing, getMeta} from './selectors';
+import {getStacks, getStackEditing, getStackMeta} from './selectors';
 import {getServers} from '../servers/selectors';
 
 function mapStateToProps(state) {
@@ -12,7 +12,7 @@ function mapStateToProps(state) {
     stacks: getStacks(state),
     stackEditing: getStackEditing(state),
     servers: getServers(state),
-    meta: getMeta(state)
+    meta: getStackMeta(state)
   };
 }
 

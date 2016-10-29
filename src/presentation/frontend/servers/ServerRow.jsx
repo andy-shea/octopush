@@ -1,9 +1,19 @@
 import React, {PropTypes} from 'react';
+import withHandlers from 'recompose/withHandlers';
 import cx from 'classnames';
 import Server from '~/domain/server/Server';
 import ActionRow from '../ui/ActionRow';
 import {iconEdit, iconRemove} from '../ui/SimpleList.css';
 import {svgIcon, iconRemove as baseIconRemove} from '../ui/Icons.css';
+
+const handlers = withHandlers({
+  editServer: props => () => {
+    props.editServer(props.server);
+  },
+  removeServer: props => () => {
+    props.removeServer(props.server);
+  }
+});
 
 function ServerRow({server, editServer, removeServer}) {
   const {hostname, isDeleting} = server;
@@ -20,4 +30,4 @@ ServerRow.propTypes = {
   removeServer: PropTypes.func.isRequired
 };
 
-export default ServerRow;
+export default handlers(ServerRow);

@@ -1,57 +1,37 @@
-import React, {Component, PropTypes} from 'react';
-import {findDOMNode} from 'react-dom';
-import autobind from 'autobind-decorator';
+import React, {PropTypes} from 'react';
+import configureForm from '../utils/form';
 import Button from '../ui/Button';
 import {root, textField} from '../ui/SaveEntityForm.css';
 
-const ENTER_KEY = 13;
-
-class SaveServerForm extends Component {
-
-  static propTypes = {
-    saveServer: PropTypes.func.isRequired,
-    meta: PropTypes.object,
-    server: PropTypes.object
-  }
-
-  state = {hostname: ''}
-
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.meta.isSaving) {
-      this.setState({hostname: nextProps.server ? nextProps.server.hostname : ''});
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.server !== this.props.server && this.props.server) {
-      findDOMNode(this.refs.hostname).focus();
-    }
-  }
-
-  @autobind
-  updateValue(e) {
-    this.setState({hostname: e.target.value});
-  }
-
-  @autobind
-  saveServer(e) {
-    if (e.nativeEvent instanceof KeyboardEvent && e.keyCode !== ENTER_KEY) return;
-    e.preventDefault();
-    const hostname = findDOMNode(this.refs.hostname).value.trim();
-    if (hostname) this.props.saveServer(hostname);
-  }
-
-  render() {
-    const {meta, server} = this.props;
-    return (
-      <div className={root}>
-        <input ref="hostname" className={textField} placeholder="Hostname" value={this.state.hostname}
-            onChange={this.updateValue} onKeyDown={this.saveServer} autoFocus/>
-          <Button onClick={this.saveServer} isLoading={meta.isSaving}>{server ? 'Save' : 'Add'}</Button>
-      </div>
-    );
-  }
-
+function onSubmit({saveServer, form}) {
+  const hostname = form.hostname.trim();
+  if (hostname) saveServer(hostname);
 }
 
-export default SaveServerForm;
+function initialState({server}) {
+  return {hostname: server ? server.hostname : ''};
+}
+
+const form = configureForm(['hostname'], onSubmit, {initialState});
+
+function SaveServerForm({meta, server, form: {hostname}, updateHostname, submitForm}) {
+  return (
+    <form className={root} onSubmit={submitForm}>
+      <input className={textField} placeholder="Hostname" value={hostname} onChange={updateHostname} autoFocus/>
+      <Button type="submit" isLoading={meta.isSaving}>{server ? 'Save' : 'Add'}</Button>
+    </form>
+  );
+}
+
+SaveServerForm.propTypes = {
+  form: PropTypes.shape({
+    hostname: PropTypes.string.isRequired
+  }).isRequired,
+  submitForm: PropTypes.func.isRequired,
+  updateHostname: PropTypes.func.isRequired,
+  saveServer: PropTypes.func.isRequired,
+  meta: PropTypes.object,
+  server: PropTypes.object
+};
+
+export default form(SaveServerForm);

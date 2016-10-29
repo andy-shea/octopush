@@ -1,50 +1,47 @@
-import React, {Component, PropTypes} from 'react';
-import {findDOMNode} from 'react-dom';
-import autobind from 'autobind-decorator';
+import React, {PropTypes} from 'react';
+import configureForm from '../utils/form';
 import cx from 'classnames';
 import Header from '../ui/Header';
 import {centre, content} from '../ui/Header.css';
 import {header, button} from './Login.css';
-import {form, button as baseButton, cta} from '../ui/Form.css';
+import {form as formStyles, button as baseButton, cta} from '../ui/Form.css';
 import {root} from '../ui/error.css';
 
-class Login extends Component {
+const form = configureForm(['email', 'password'], ({login, form: {email, password}}) => {
+  if (email && password) login(email, password);
+});
 
-  static propTypes = {
-    login: PropTypes.func.isRequired,
-    error: PropTypes.object
-  }
-
-  @autobind
-  login(event) {
-    event.preventDefault();
-    const username = findDOMNode(this.refs.username).value;
-    const password = findDOMNode(this.refs.password).value;
-    if (username && password) this.props.login(username, password);
-  }
-
-  render() {
-    const {error} = this.props;
-    return (
-      <Header className={cx(header, centre)}>
-        <form className={cx(form, content)}>
-          <p>
-            <label htmlFor="username">Email</label>
-            <input type="email" ref="username" autoFocus/>
-          </p>
-          <p>
-            <label htmlFor="password">Password</label>
-            <input type="password" ref="password"/>
-          </p>
-          {error && <p className={root}>{error.message}</p>}
-          <p>
-            <button type="submit" className={cx(baseButton, cta, button)} onClick={this.login}>Log in</button>
-          </p>
-        </form>
-      </Header>
-    );
-  }
-
+function Login({form: {email, password}, updateEmail, updatePassword, submitForm, error}) {
+  return (
+    <Header className={cx(header, centre)}>
+      <form className={cx(formStyles, content)} onSubmit={submitForm}>
+        <p>
+          <label htmlFor="username">Email</label>
+          <input type="email" value={email} onChange={updateEmail} autoFocus/>
+        </p>
+        <p>
+          <label htmlFor="password">Password</label>
+          <input type="password" value={password} onChange={updatePassword}/>
+        </p>
+        {error && <p className={root}>{error.message}</p>}
+        <p>
+          <button type="submit" className={cx(baseButton, cta, button)}>Log in</button>
+        </p>
+      </form>
+    </Header>
+  );
 }
 
-export default Login;
+Login.propTypes = {
+  form: PropTypes.shape({
+    email: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired
+  }).isRequired,
+  login: PropTypes.func.isRequired,
+  updateEmail: PropTypes.func.isRequired,
+  updatePassword: PropTypes.func.isRequired,
+  submitForm: PropTypes.func.isRequired,
+  error: PropTypes.object
+};
+
+export default form(Login);

@@ -17,7 +17,7 @@ function StackList({stacks, createStack, editStack, removeStack}) {
           <ul>
             {stacks && Object.keys(stacks).sort().map(slug => {
               const stack = stacks[slug];
-              return <StackRow key={stack.id} stack={stack} editStack={editStack.bind(null, stack)} removeStack={removeStack.bind(null, stack)}/>;
+              return <StackRow key={stack.id} stack={stack} editStack={editStack} removeStack={removeStack}/>;
             })}
           </ul>
         </div>

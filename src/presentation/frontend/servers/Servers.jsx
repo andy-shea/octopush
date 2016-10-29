@@ -15,7 +15,7 @@ function Servers({meta, servers, serverEditing, saveServer, editServer, removeSe
           <ul>
             {servers && Object.keys(servers).map(id => {
               const server = servers[id];
-              return <ServerRow key={id} server={server} editServer={editServer.bind(null, server)} removeServer={removeServer.bind(null, server)}/>;
+              return <ServerRow key={id} server={server} editServer={editServer} removeServer={removeServer}/>;
             })}
           </ul>
         </div>

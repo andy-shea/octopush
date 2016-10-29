@@ -31,3 +31,13 @@ export function getBranches(state) {
 export function getIsLoading(state) {
   return state.deploys.isLoading;
 }
+
+function getIsDeploying(state) {
+  return state.deploys.isDeploying;
+}
+
+function getError(state) {
+  return state.deploys.error;
+}
+
+export const getMeta = createSelector([getIsDeploying, getError], (isDeploying, error) => ({isSaving: isDeploying, error}));

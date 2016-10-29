@@ -7,7 +7,7 @@ import body from 'body-parser';
 import helmet from 'helmet';
 import {junctionProvider, junctionFlush} from 'junction-express-middleware';
 import configure from './configure';
-import initialLoad from './load';
+import middleware from './middleware';
 import provideInjector from './injector';
 import session from './session';
 import createApiRouter from './api';
@@ -28,7 +28,7 @@ app.use(provideInjector);
 configure(app);
 app.use('/api', createApiRouter());
 app.use(junctionFlush);
-app.use(initialLoad);
+app.use(middleware);
 app.use(error);
 
 const server = http.createServer(app);

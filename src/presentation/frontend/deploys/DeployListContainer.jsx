@@ -35,11 +35,18 @@ class DeploysContainer extends Component {
     loadDeploysAndBranches(slug, selected + 1);
   }
 
+  @autobind
+  toggleDeployDetails(deploy, e) {
+    if (e.target.classList.contains('toggle-deploy-btn') || !deploy.isExpanded) {
+      this.props.toggleDeployDetails(deploy);
+    }
+  }
+
   render() {
-    const {isLoading, currentStack, deploys, pagination, users, toggleDeployDetails} = this.props;
+    const {isLoading, currentStack, deploys, pagination, users} = this.props;
     return (
       <DeployList isLoading={isLoading} stack={currentStack} pagination={pagination} loadDeploys={this.loadDeploys}
-          toggleDeployDetails={toggleDeployDetails} deploys={deploys} users={users}/>
+          toggleDeployDetails={this.toggleDeployDetails} deploys={deploys} users={users}/>
     );
   }
 }
