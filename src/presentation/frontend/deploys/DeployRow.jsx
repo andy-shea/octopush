@@ -55,8 +55,8 @@ function DeployRow({diff, deploy, user: {name}, toggleDeployDetails}) {
 DeployRow.propTypes = {
   deploy: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  diff: PropTypes.string.isRequired,
-  toggleDeployDetails: PropTypes.func.isRequired
+  toggleDeployDetails: PropTypes.func.isRequired,
+  diff: PropTypes.string
 };
 
 export default handlers(DeployRow);

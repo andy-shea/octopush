@@ -67,7 +67,9 @@ function reducer(state = {map: {}, loaded: false}, action) {
     }
 
     case serverActionTypes.REMOVE_SERVER_SUCCESS:
-      return {...state, map: {...state.map, ...action.response.entities.stacks}};
+      return action.response.entities.stacks ?
+          {...state, map: {...state.map, ...action.response.entities.stacks}} :
+          state;
 
     default: return state;
   }
