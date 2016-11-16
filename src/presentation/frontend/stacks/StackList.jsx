@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react';
-import MenuScrollPane from '../ui/MenuScrollPane';
+import MenuScrollPane from '../ui/menu/MenuScrollPane';
 import StackRow from './StackRow';
 import {root} from './StackList.css';
-import {settingsPaneContent} from '../ui/Menu.css';
+import {settingsPaneContent} from '../ui/menu/Menu.css';
 import {headerButton} from '../ui/Form.css';
 
 function StackList({stacks, createStack, editStack, removeStack}) {

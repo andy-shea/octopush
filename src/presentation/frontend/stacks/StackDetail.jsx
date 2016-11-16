@@ -3,10 +3,10 @@ import Select from 'react-select';
 import cx from 'classnames';
 import configureForm from '../utils/form';
 import Button from '../ui/Button';
-import MenuScrollPane from '../ui/MenuScrollPane';
+import MenuScrollPane from '../ui/menu/MenuScrollPane';
 import GroupsContainer from './GroupsContainer';
 import styles from './StackDetail.css';
-import {settingsPaneContent} from '../ui/Menu.css';
+import {settingsPaneContent} from '../ui/menu/Menu.css';
 import {root, textField, firstFields} from '../ui/SaveEntityForm.css';
 import {iconClose} from '../ui/Icons.css';
 

@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react';
-import MenuScrollPane from '../ui/MenuScrollPane';
+import MenuScrollPane from '../ui/menu/MenuScrollPane';
 import ServerRow from './ServerRow';
 import SaveServerForm from './SaveServerForm';
 import {root} from './Servers.css';
-import {settingsPaneContent} from '../ui/Menu.css';
+import {settingsPaneContent} from '../ui/menu/Menu.css';
 
 function Servers({meta, servers, serverEditing, saveServer, editServer, removeServer}) {
   return (

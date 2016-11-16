@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import SaveGroupForm from './SaveGroupForm';
 import GroupRow from './GroupRow';
-import {settingsPaneContent} from '../ui/Menu.css';
+import {settingsPaneContent} from '../ui/menu/Menu.css';
 
 function Groups({meta, servers, groups, editGroup, removeGroup, saveGroup, groupEditing}) {
   return (
