@@ -3,9 +3,9 @@ import configureForm from '../utils/form';
 import cx from 'classnames';
 import Header from '../ui/Header';
 import {centre, content} from '../ui/Header.css';
-import {header, button} from './Login.css';
+import {header, button, root} from './Login.css';
 import {form as formStyles, button as baseButton, cta} from '../ui/Form.css';
-import {root} from '../ui/error.css';
+import errorStyles from '../ui/error.css';
 
 const form = configureForm(['email', 'password'], ({login, form: {email, password}}) => {
   if (email && password) login(email, password);
@@ -13,22 +13,24 @@ const form = configureForm(['email', 'password'], ({login, form: {email, passwor
 
 function Login({form: {email, password}, updateEmail, updatePassword, submitForm, error}) {
   return (
-    <Header className={cx(header, centre)}>
-      <form className={cx(formStyles, content)} onSubmit={submitForm}>
-        <p>
-          <label htmlFor="username">Email</label>
-          <input type="email" value={email} onChange={updateEmail} autoFocus/>
-        </p>
-        <p>
-          <label htmlFor="password">Password</label>
-          <input type="password" value={password} onChange={updatePassword}/>
-        </p>
-        {error && <p className={root}>{error.message}</p>}
-        <p>
-          <button type="submit" className={cx(baseButton, cta, button)}>Log in</button>
-        </p>
-      </form>
-    </Header>
+    <div className={root}>
+      <Header className={cx(header, centre)}>
+        <form className={cx(formStyles, content)} onSubmit={submitForm}>
+          <p>
+            <label htmlFor="username">Email</label>
+            <input type="email" value={email} onChange={updateEmail} autoFocus/>
+          </p>
+          <p>
+            <label htmlFor="password">Password</label>
+            <input type="password" value={password} onChange={updatePassword}/>
+          </p>
+          {error && <p className={errorStyles.root}>{error.message}</p>}
+          <p>
+            <button type="submit" className={cx(baseButton, cta, button)}>Log in</button>
+          </p>
+        </form>
+      </Header>
+    </div>
   );
 }
 
