@@ -1,3 +1,4 @@
+import serialize from 'serialize-javascript';
 import {HttpError} from 'react-cornerstone/server';
 import icons from './ui/icons.svg';
 import styles from './ui/Header.css';
@@ -33,7 +34,7 @@ export function render(html, state) {
 ${icons}
 <div id="app">${html}</div>
 <script>
-  window.__INITIAL_STATE__ = ${JSON.stringify(state)};
+  window.__INITIAL_STATE__ = ${serialize(state, {isJSON: true})};
 </script>
 <script src="/vendors.js"></script>
 <script src="/socket.io/socket.io.js"></script>
