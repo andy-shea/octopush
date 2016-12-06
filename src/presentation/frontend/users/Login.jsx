@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import configureForm from '../utils/form';
 import cx from 'classnames';
 import Header from '../ui/Header';
+import Button from '../ui/Button';
 import {centre, content} from '../ui/Header.css';
 import {header, button, root} from './Login.css';
 import {form as formStyles, button as baseButton, cta} from '../ui/Form.css';
@@ -11,7 +12,7 @@ const form = configureForm(['email', 'password'], ({login, form: {email, passwor
   if (email && password) login(email, password);
 });
 
-function Login({form: {email, password}, updateEmail, updatePassword, submitForm, error}) {
+function Login({form: {email, password}, updateEmail, updatePassword, submitForm, formState: {error, isActioning}}) {
   return (
     <div className={root}>
       <Header className={cx(header, centre)}>
@@ -26,7 +27,7 @@ function Login({form: {email, password}, updateEmail, updatePassword, submitForm
           </p>
           {error && <p className={errorStyles.root}>{error.message}</p>}
           <p>
-            <button type="submit" className={cx(baseButton, cta, button)}>Log in</button>
+            <Button type="submit" isLoading={isActioning} className={cx(baseButton, cta, button)}>Log in</Button>
           </p>
         </form>
       </Header>
@@ -43,7 +44,7 @@ Login.propTypes = {
   updateEmail: PropTypes.func.isRequired,
   updatePassword: PropTypes.func.isRequired,
   submitForm: PropTypes.func.isRequired,
-  error: PropTypes.object
+  formState: PropTypes.object
 };
 
 export default form(Login);

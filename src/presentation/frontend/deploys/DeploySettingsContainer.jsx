@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {actions} from './actions';
 import DeploySettings from './DeploySettings';
-import {getBranches, getMeta} from './selectors';
+import {getBranches, getFormState} from './selectors';
 import {getCurrentStack, getStacks} from '../stacks/selectors';
 import {getCurrentStackServers} from '../servers/selectors';
 
@@ -12,7 +12,7 @@ function mapStateToProps(state) {
     branches: getBranches(state),
     stacks: getStacks(state),
     servers: getCurrentStackServers(state),
-    meta: getMeta(state)
+    formState: getFormState(state)
   };
 }
 
@@ -21,7 +21,7 @@ class DeploySettingsContainer extends Component {
 
   static propTypes = {
     startDeploy: PropTypes.func.isRequired,
-    meta: PropTypes.object,
+    formState: PropTypes.object,
     currentStack: PropTypes.object,
     branches: PropTypes.array,
     stacks: PropTypes.object,
@@ -29,8 +29,8 @@ class DeploySettingsContainer extends Component {
   }
 
   render() {
-    const {meta, currentStack, branches, stacks, servers, startDeploy} = this.props;
-    return <DeploySettings meta={meta} stack={currentStack} stacks={stacks} servers={servers} branches={branches} startDeploy={startDeploy}/>;
+    const {formState, currentStack, branches, stacks, servers, startDeploy} = this.props;
+    return <DeploySettings formState={formState} stack={currentStack} stacks={stacks} servers={servers} branches={branches} startDeploy={startDeploy}/>;
   }
 }
 

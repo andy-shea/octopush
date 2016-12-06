@@ -28,7 +28,7 @@ function initialState({stack}) {
 
 const form = configureForm(['title', 'gitPath', 'selectedServers', 'diff'], onSubmit, {initialState});
 
-function StackDetail({meta, stack, servers, editStack, form: {title, gitPath, selectedServers, diff},
+function StackDetail({formState, stack, servers, editStack, form: {title, gitPath, selectedServers, diff},
     submitForm, updateTitle, updateGitPath, updateSelectedServers, updateDiff}) {
   const options = Object.keys(servers).map(id => ({value: id.toString(), label: servers[id].hostname}));
   return (
@@ -43,7 +43,7 @@ function StackDetail({meta, stack, servers, editStack, form: {title, gitPath, se
               className={styles.serversField} value={selectedServers} onChange={updateSelectedServers}/>
           <div className={root}>
             <input className={textField} placeholder="Diff URL" value={diff || ''} onChange={updateDiff}/>
-            <Button type="submit" isLoading={meta.isSaving}>{stack.id ? 'Save' : 'Add'}</Button>
+            <Button type="submit" isLoading={formState.isSaving}>{stack.id ? 'Save' : 'Add'}</Button>
           </div>
         </form>
 
@@ -69,7 +69,7 @@ StackDetail.propTypes = {
   editStack: PropTypes.func.isRequired,
   saveStack: PropTypes.func.isRequired,
   stack: PropTypes.object,
-  meta: PropTypes.object
+  formState: PropTypes.object
 };
 
 export default form(StackDetail);

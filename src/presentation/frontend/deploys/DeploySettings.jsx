@@ -40,7 +40,7 @@ const handlers = {
 const initialState = {branch: undefined, targets: undefined};
 const form = compose(withRouter, configureForm(['branch', 'targets'], onSubmit, {initialState, shouldResetFormOnProps, handlers}));
 
-function DeploySettings({meta, stack, stacks, servers, branches, form: {branch, targets}, updateBranch, updateTargets, submitForm, selectStack}) {
+function DeploySettings({formState, stack, stacks, servers, branches, form: {branch, targets}, updateBranch, updateTargets, submitForm, selectStack}) {
   return (
     <Header>
       <div className={cx(content, stackSelectWrap)}>
@@ -50,7 +50,7 @@ function DeploySettings({meta, stack, stacks, servers, branches, form: {branch, 
         <BranchSelect branches={branches} selectBranch={updateBranch} selectedBranch={branch}/>
         to
         <TargetsSelect groups={stack.groups} servers={servers} selectTargets={updateTargets} selectedTargets={targets}/>
-        <Button type="submit" isLoading={meta.isSaving} className={cx(button, large, cta, deployButton)}>Deploy!</Button>
+        <Button type="submit" isLoading={formState.isSaving} className={cx(button, large, cta, deployButton)}>Deploy!</Button>
       </form>}
     </Header>
   );
@@ -71,7 +71,7 @@ DeploySettings.propTypes = {
   stack: PropTypes.object,
   stacks: PropTypes.object,
   servers: PropTypes.object,
-  meta: PropTypes.object
+  formState: PropTypes.object
 };
 
 export default form(DeploySettings);

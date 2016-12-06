@@ -3,13 +3,13 @@ import {connect} from 'react-redux';
 import autobind from 'autobind-decorator';
 import {actions} from './actions';
 import Servers from './Servers';
-import {getServers, getServerEditing, getMeta} from './selectors';
+import {getServers, getServerEditing, getFormState} from './selectors';
 
 function mapStateToProps(state) {
   return {
     servers: getServers(state),
     serverEditing: getServerEditing(state),
-    meta: getMeta(state)
+    formState: getFormState(state)
   };
 }
 
@@ -21,7 +21,7 @@ class ServersContainer extends Component {
     updateServer: PropTypes.func.isRequired,
     addServer: PropTypes.func.isRequired,
     removeServer: PropTypes.func.isRequired,
-    meta: PropTypes.object,
+    formState: PropTypes.object,
     servers: PropTypes.object,
     serverEditing: PropTypes.object,
     addingError: PropTypes.object
@@ -38,9 +38,10 @@ class ServersContainer extends Component {
   }
 
   render() {
-    const {meta, serverEditing, servers, editServer, removeServer} = this.props;
+    const {formState, serverEditing, servers, editServer, removeServer} = this.props;
     return (
-      <Servers meta={meta} saveServer={this.saveServer} serverEditing={serverEditing} servers={servers} editServer={editServer} removeServer={removeServer}/>
+      <Servers formState={formState} saveServer={this.saveServer} serverEditing={serverEditing}
+          servers={servers} editServer={editServer} removeServer={removeServer}/>
     );
   }
 }

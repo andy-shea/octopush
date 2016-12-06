@@ -10,8 +10,8 @@ function withWillReceiveProps(willReceiveProps) {
   };
 }
 
-function defaultShouldResetFormOnProps(props, {meta}) {
-  return !meta.isSaving;
+function defaultShouldResetFormOnProps(props, {formState}) {
+  return !formState.isSaving;
 }
 
 function configureComponentWillReceiveProps(shouldResetFormOnProps, initialState) {

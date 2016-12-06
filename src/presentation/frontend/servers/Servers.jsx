@@ -5,13 +5,13 @@ import SaveServerForm from './SaveServerForm';
 import {root} from './Servers.css';
 import {settingsPaneContent} from '../ui/menu/Menu.css';
 
-function Servers({meta, servers, serverEditing, saveServer, editServer, removeServer}) {
+function Servers({formState, servers, serverEditing, saveServer, editServer, removeServer}) {
   return (
     <div className={root}>
       <h2>Servers</h2>
       <MenuScrollPane>
         <div className={settingsPaneContent}>
-          <SaveServerForm meta={meta} server={serverEditing} saveServer={saveServer}/>
+          <SaveServerForm formState={formState} server={serverEditing} saveServer={saveServer}/>
           <ul>
             {servers && Object.keys(servers).map(id => {
               const server = servers[id];
@@ -28,7 +28,7 @@ Servers.propTypes = {
   saveServer: PropTypes.func.isRequired,
   editServer: PropTypes.func.isRequired,
   removeServer: PropTypes.func.isRequired,
-  meta: PropTypes.object,
+  formState: PropTypes.object,
   servers: PropTypes.object,
   serverEditing: PropTypes.object
 };

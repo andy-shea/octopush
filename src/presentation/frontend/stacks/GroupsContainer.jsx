@@ -3,7 +3,7 @@ import autobind from 'autobind-decorator';
 import {connect} from 'react-redux';
 import {actions} from './actions';
 import Groups from './Groups';
-import {getStackEditing, getGroupEditing, getGroupMeta} from '../stacks/selectors';
+import {getStackEditing, getGroupEditing, getGroupFormState} from '../stacks/selectors';
 import {getStackEditingServers} from '../servers/selectors';
 
 const mapDispatchToProps = {
@@ -18,7 +18,7 @@ function mapStateToProps(state) {
     stackEditing: getStackEditing(state),
     groupEditing: getGroupEditing(state),
     servers: getStackEditingServers(state),
-    meta: getGroupMeta(state)
+    formState: getGroupFormState(state)
   };
 }
 
@@ -31,7 +31,7 @@ class GroupsContainer extends Component {
     removeGroup: PropTypes.func.isRequired,
     addGroup: PropTypes.func.isRequired,
     stackEditing: PropTypes.object.isRequired,
-    meta: PropTypes.object,
+    formState: PropTypes.object,
     groupEditing: PropTypes.object,
     servers: PropTypes.object
   }
@@ -55,9 +55,9 @@ class GroupsContainer extends Component {
   }
 
   render() {
-    const {meta, stackEditing, groupEditing, editGroup, servers} = this.props;
+    const {formState, stackEditing, groupEditing, editGroup, servers} = this.props;
     return (
-      <Groups meta={meta} servers={servers} groupEditing={groupEditing} groups={stackEditing.groups} editGroup={editGroup}
+      <Groups formState={formState} servers={servers} groupEditing={groupEditing} groups={stackEditing.groups} editGroup={editGroup}
           removeGroup={this.removeGroup} saveGroup={this.saveGroup}/>
     );
   }

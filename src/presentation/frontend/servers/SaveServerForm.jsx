@@ -14,11 +14,11 @@ function initialState({server}) {
 
 const form = configureForm(['hostname'], onSubmit, {initialState});
 
-function SaveServerForm({meta, server, form: {hostname}, updateHostname, submitForm}) {
+function SaveServerForm({formState, server, form: {hostname}, updateHostname, submitForm}) {
   return (
     <form className={root} onSubmit={submitForm}>
       <input className={textField} placeholder="Hostname" value={hostname} onChange={updateHostname} autoFocus/>
-      <Button type="submit" isLoading={meta.isSaving}>{server ? 'Save' : 'Add'}</Button>
+      <Button type="submit" isLoading={formState.isSaving}>{server ? 'Save' : 'Add'}</Button>
     </form>
   );
 }
@@ -30,7 +30,7 @@ SaveServerForm.propTypes = {
   submitForm: PropTypes.func.isRequired,
   updateHostname: PropTypes.func.isRequired,
   saveServer: PropTypes.func.isRequired,
-  meta: PropTypes.object,
+  formState: PropTypes.object,
   server: PropTypes.object
 };
 

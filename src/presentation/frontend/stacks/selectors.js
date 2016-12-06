@@ -45,5 +45,5 @@ function getGroupError(state) {
   return state.stacks.groupError;
 }
 
-export const getStackMeta = createSelector([getStackIsSaving, getStackError], (isSaving, error) => ({isSaving, error}));
-export const getGroupMeta = createSelector([getGroupIsSaving, getGroupError], (isSaving, error) => ({isSaving, error}));
+export const getStackFormState = createSelector([getStackIsSaving, getStackError], (isSaving, error) => ({isSaving, error}));
+export const getGroupFormState = createSelector([getGroupIsSaving, getGroupError], (isSaving, error) => ({isSaving, error}));

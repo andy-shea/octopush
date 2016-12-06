@@ -20,14 +20,14 @@ function initialState({group}) {
 
 const form = configureForm(['selectedServers', 'name'], onSubmit, {initialState});
 
-function SaveGroupForm({meta, servers, group, form: {selectedServers, name}, updateSelectedServers, updateName, submitForm}) {
+function SaveGroupForm({formState, servers, group, form: {selectedServers, name}, updateSelectedServers, updateName, submitForm}) {
   const options = servers ? Object.keys(servers).map(id => ({value: id.toString(), label: servers[id].hostname})) : [];
   return (
     <form onSubmit={submitForm}>
       <Select name="servers" instanceId="servers" options={options} multi placeholder="Servers" simpleValue value={selectedServers} onChange={updateSelectedServers}/>
       <div className={root}>
         <input className={textField} placeholder="Name" value={name} onChange={updateName}/>
-        <Button type="submit" isLoading={meta.isSaving}>{group.id ? 'Save' : 'Add'}</Button>
+        <Button type="submit" isLoading={formState.isSaving}>{group.id ? 'Save' : 'Add'}</Button>
       </div>
     </form>
   );
@@ -44,7 +44,7 @@ SaveGroupForm.propTypes = {
   submitForm: PropTypes.func.isRequired,
   group: PropTypes.object,
   servers: PropTypes.object,
-  meta: PropTypes.object
+  formState: PropTypes.object
 };
 
 export default form(SaveGroupForm);

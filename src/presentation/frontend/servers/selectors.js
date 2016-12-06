@@ -33,4 +33,4 @@ function getError(state) {
   return state.servers.error;
 }
 
-export const getMeta = createSelector([getIsSaving, getError], (isSaving, error) => ({isSaving, error}));
+export const getFormState = createSelector([getIsSaving, getError], (isSaving, error) => ({isSaving, error}));

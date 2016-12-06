@@ -2,13 +2,13 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {routerActions} from 'react-router-redux';
 import {actions} from './actions';
-import {isAuthenticated, getError} from './selectors';
+import {isAuthenticated, getFormState} from './selectors';
 import Login from './Login';
 
 function mapStateToProps(state, {location}) {
   return {
     authenticated: isAuthenticated(state),
-    error: getError(state),
+    formState: getFormState(state),
     redirect: location.query.redirect || '/'
   };
 }
@@ -20,7 +20,7 @@ class LoginContainer extends Component {
     login: PropTypes.func.isRequired,
     authenticated: PropTypes.bool.isRequired,
     redirect: PropTypes.string.isRequired,
-    error: PropTypes.object
+    formState: PropTypes.object
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,8 +33,8 @@ class LoginContainer extends Component {
   }
 
   render() {
-    const {error, login} = this.props;
-    return <Login error={error} login={login}/>;
+    const {formState, login} = this.props;
+    return <Login formState={formState} login={login}/>;
   }
 }
 
