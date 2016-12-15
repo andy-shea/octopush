@@ -1,10 +1,9 @@
 {
   "server": {
-    "address": "0.0.0.0",
+    "address": "localhost",
     "port": 3000
   },
   "db": {
-    "host": "127.0.0.1",
     "name": "octopush",
     "user": "_octopush"
   },

@@ -1,7 +1,4 @@
 {
-  "server": {
-    "address": "localhost"
-  },
   "db": {
     "host": "postgres",
     "password": "password"
