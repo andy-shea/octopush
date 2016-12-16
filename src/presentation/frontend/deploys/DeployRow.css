@@ -64,10 +64,10 @@
   color: color($light-grey lightness(-30%));
   text-decoration: none;
   transition: color 0.1s;
+}
 
-  &:hover {
-    color: $dark-grey;
-  }
+.servers a:hover {
+  color: $dark-grey;
 }
 
 .terminalWrap {
@@ -95,10 +95,10 @@
   position: absolute;
   top: 0.5em;
   right: 2em;
+}
 
-  path {
-    stroke: color($dark-grey lightness(+10%));
-  }
+.actionIcon path {
+  stroke: color($dark-grey lightness(+10%));
 }
 
 $transition-duration: 0.5s;
