@@ -51,6 +51,8 @@ var commonDistConfig = merge({
   cache: false,
   debug: false,
   plugins: [
+    new webpack.optimize.UglifyJsPlugin({mangle: false, compress: {screw_ie8: true, warnings: false}}),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('production')})
   ]

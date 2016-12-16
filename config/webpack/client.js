@@ -67,7 +67,6 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 else {
   module.exports = merge({
     output: {path: path.resolve(ROOT_PATH, 'dist', 'web')},
-    plugins: [new webpack.optimize.UglifyJsPlugin({compress: {screw_ie8: true, warnings: false}})],
     module: {
       loaders: [
         {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader'},

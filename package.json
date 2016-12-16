@@ -120,7 +120,7 @@
     "predev": "rimraf build && mkdir -p build/web && cp src/presentation/frontend/ui/favicons/* build/web",
     "dev": "NODE_ENV=development webpack --config config/webpack/server.js --watch",
     "preprod": "rimraf dist && mkdir -p dist/web && cp src/presentation/frontend/ui/favicons/* dist/web",
-    "prod": "NODE_ENV=production webpack -p --config config/webpack/server.js && NODE_ENV=production webpack -p --config config/webpack/client.js",
+    "prod": "NODE_ENV=production webpack --config config/webpack/server.js && NODE_ENV=production webpack --config config/webpack/client.js",
     "watch": "NODE_ENV=development webpack-dev-server --public=localhost:80 --hot --inline --config config/webpack/client.js & nodemon --watch build build/server.js"
   },
   "bin": {
