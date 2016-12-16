@@ -1,4 +1,7 @@
 {
+  "server": {
+    "port": 3001
+  },
   "db": {
     "host": "postgres",
     "password": "password"

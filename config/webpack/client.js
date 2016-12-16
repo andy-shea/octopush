@@ -46,7 +46,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     devServer: {
       contentBase: 'web',
       host: '0.0.0.0',
-      port: config.server.port + 1,
+      port: config.server.port - 1,
       historyApiFallback: true,
       compress: true,
       stats: {
