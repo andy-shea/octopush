@@ -11,9 +11,11 @@ var commonClientConfig = {
     app: [path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')],
     vendors: [
       'autobind-decorator', 'bluebird', 'classnames', 'ftchr', 'junction-normalizr-decorator',
-      'junction-proptype-decorator', 'moment', 'normalizr', 'react', 'react-cornerstone', 'react-custom-scrollbars',
-      'react-dom', 'react-redux', 'react-paginate', 'react-router', 'react-router-redux', 'react-select', 'redux',
-      'redux-auth-wrapper', 'redux-action-creator', 'redux-connect', 'reselect']
+      'junction-proptype-decorator', 'lodash.isfunction', 'moment', 'normalizr', 'react',
+      'react-addons-transition-group', 'react-cornerstone/client', 'react-cornerstone/common',
+      'react-custom-scrollbars', 'react-dom', 'react-redux', 'react-paginate', 'react-router',
+      'react-router-redux', 'react-select', 'recompose', 'redux', 'redux-auth-wrapper',
+      'redux-action-creator', 'redux-connect', 'reselect', 'string', 'velocity-animate']
   },
   output: {
     filename: 'main.js',
@@ -66,6 +68,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 }
 else {
   module.exports = merge({
+    devtool: 'source-map',
     output: {path: path.resolve(ROOT_PATH, 'dist', 'web')},
     module: {
       loaders: [
