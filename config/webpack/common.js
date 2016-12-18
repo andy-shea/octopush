@@ -12,10 +12,6 @@ var ROOT_PATH = path.resolve(__dirname, '..', '..');
 
 var commonConfig = {
   output: {publicPath: '/'},
-  plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en$/)
-  ],
   resolve: {
     extensions: ['', '.js', '.jsx', '.json'],
     alias: {'socket.io-client': path.resolve(ROOT_PATH, 'node_modules', 'socket.io-client', 'socket.io.js')}

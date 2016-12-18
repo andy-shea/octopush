@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import withHandlers from 'recompose/withHandlers';
 import cx from 'classnames';
-import moment from 'moment';
+import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import Terminal from './Terminal';
 import {root, isActive, header, servers, footer, time, user, naviconButton, navicon} from './DeployRow.css';
 
@@ -42,7 +42,7 @@ function DeployRow({diff, deploy, user: {name}, toggleDeployDetails}) {
       </header>
       <Terminal log={deploy.log}/>
       <footer className={footer}>
-        <p>Deployed <b className={time}>{moment(deploy.createdAt).fromNow()}</b></p>
+        <p>Deployed <b className={time} title={deploy.createdAt}>{distanceInWordsToNow(deploy.createdAt, {includeSeconds: true})} ago</b></p>
         <p>by <i className={user}>{name}</i></p>
       </footer>
       <span className={cx(naviconButton, 'toggle-deploy-btn')}>

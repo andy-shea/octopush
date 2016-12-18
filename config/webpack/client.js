@@ -11,11 +11,12 @@ var commonClientConfig = {
     app: [path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')],
     vendors: [
       'autobind-decorator', 'bluebird', 'classnames', 'ftchr', 'junction-normalizr-decorator',
-      'junction-proptype-decorator', 'lodash.isfunction', 'moment', 'normalizr', 'react',
-      'react-addons-transition-group', 'react-cornerstone/client', 'react-cornerstone/common',
-      'react-custom-scrollbars', 'react-dom', 'react-redux', 'react-paginate', 'react-router',
-      'react-router-redux', 'react-select', 'recompose', 'redux', 'redux-auth-wrapper',
-      'redux-action-creator', 'redux-connect', 'reselect', 'string', 'velocity-animate']
+      'junction-proptype-decorator', 'lodash.isfunction', 'date-fns/distance_in_words_to_now',
+      'normalizr', 'react', 'react-addons-transition-group', 'react-cornerstone/client',
+      'react-cornerstone/common', 'react-custom-scrollbars', 'react-dom', 'react-redux',
+      'react-paginate', 'react-router', 'react-router-redux', 'react-select', 'recompose',
+      'redux', 'redux-auth-wrapper', 'redux-action-creator', 'redux-connect', 'reselect',
+      'string', 'velocity-animate']
   },
   output: {
     filename: 'main.js',
