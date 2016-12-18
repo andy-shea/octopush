@@ -31,6 +31,7 @@ var commonServerConfig = {
     ]
   },
   plugins: [
+    new webpack.BannerPlugin("require('source-map-support').install();", {raw: true, entryOnly: false}),
     new webpack.BannerPlugin("var promise = require('bluebird');require('babel-runtime/core-js/promise').default = promise;promise.onPossiblyUnhandledRejection(function(error) {throw error});", {raw: true, entryOnly: true})
   ]
 };
@@ -39,7 +40,6 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   module.exports = merge({
     devtool: 'cheap-module-source-map',
     output: {path: path.resolve(ROOT_PATH, 'build')},
-    plugins: [new webpack.BannerPlugin("require('source-map-support').install();", {raw: true, entryOnly: false})],
     module: {
       loaders: [{test: /\.css$/, exclude: /node_modules|assets\/vendor/, loader: 'css-loader/locals?sourceMap&module&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'}]
     }
@@ -47,6 +47,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 }
 else {
   module.exports = merge({
+    devtool: 'source-map',
     output: {path: path.resolve(ROOT_PATH, 'dist')},
     module: {
       loaders: [{test: /\.css$/, exclude: /node_modules|assets\/vendor/, loader: 'css-loader/locals?module&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'}]
