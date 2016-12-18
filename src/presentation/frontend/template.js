@@ -1,5 +1,6 @@
 import serialize from 'serialize-javascript';
 import {HttpError} from 'react-cornerstone/server';
+import cx from 'classnames';
 import icons from './ui/icons.svg';
 import styles from './ui/Header.css';
 import loginStyles from './users/Login.css';
@@ -50,12 +51,14 @@ export function renderError(code, err) {
       "We can't seem to find the page you're looking for" :
       "We're not entirely sure what happened, but rest assured we are looking into it";
   return renderLayout(`
-<header class="${[styles.root, 'clearfix', loginStyles.header].join(' ')}">
-  <h1 class="ir" style="background-image:url(${logo});">Octopush</h1>
-  <div class="${styles.content}">
-    <h2>${title}</h2>
-    <pre>${process.env.NODE_ENV === 'development' ? err.stack : message}</pre>
-  </div>
-</header>
+<div class="${loginStyles.root}">
+  <header class="${cx(styles.root, 'clearfix', loginStyles.header, styles.centre)}">
+    <h1 class="ir" style="background-image:url(${logo});">Octopush</h1>
+    <div class="${styles.content}">
+      <h2>${title}</h2>
+      <pre>${process.env.NODE_ENV === 'development' ? err.stack : message}</pre>
+    </div>
+  </header>
+</div>
   `);
 }
