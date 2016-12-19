@@ -2,13 +2,16 @@ var webpack = require('webpack');
 var merge = require('webpack-merge');
 var path = require('path');
 var config = require('config');
+var WebpackMd5Hash = require('webpack-md5-hash');
+var ManifestPlugin = require('webpack-manifest-plugin');
+var ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var {commonDevConfig, commonDistConfig, ROOT_PATH} = require('./common');
 
 var commonClientConfig = {
   name: 'browser',
   entry: {
-    app: [path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')],
+    main: [path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')],
     vendors: [
       'autobind-decorator', 'bluebird', 'classnames', 'ftchr', 'junction-normalizr-decorator',
       'junction-proptype-decorator', 'lodash.isfunction', 'date-fns/distance_in_words_to_now',
@@ -18,14 +21,16 @@ var commonClientConfig = {
       'redux', 'redux-auth-wrapper', 'redux-action-creator', 'redux-connect', 'reselect',
       'string', 'velocity-animate']
   },
-  output: {
-    filename: 'main.js',
-    publicPath: '/'
-  },
+  output: {publicPath: '/'},
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
-    new ExtractTextPlugin('main.css', {allChunks: true}),
-    new webpack.NoErrorsPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({name: 'vendors', minChunks: Infinity}),
+    new WebpackMd5Hash(),
+    new ManifestPlugin({fileName: 'asset-manifest.json'}),
+    new ChunkManifestPlugin({
+      filename: 'chunk-manifest.json',
+      manifestVariable: '__WEBPACK_MANIFEST__'
+    }),
+    new webpack.NoErrorsPlugin()
   ],
   module: {
     loaders: [
@@ -38,7 +43,12 @@ var commonClientConfig = {
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   module.exports = merge({
-    output: {path: path.resolve(ROOT_PATH, 'build', 'web')},
+    output: {
+      path: path.resolve(ROOT_PATH, 'build', 'web'),
+      filename: '[name].js',
+      chunkFilename: '[name].js'
+    },
+    plugins: [new ExtractTextPlugin('main.css', {allChunks: true})],
     module: {
       loaders: [
         {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader', query: {presets: ['react-hmre']}},
@@ -70,7 +80,12 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 else {
   module.exports = merge({
     devtool: 'source-map',
-    output: {path: path.resolve(ROOT_PATH, 'dist', 'web')},
+    output: {
+      path: path.resolve(ROOT_PATH, 'dist', 'web'),
+      filename: '[name].[chunkhash].js',
+      chunkFilename: '[name].[chunkhash].js'
+    },
+    plugins: [new ExtractTextPlugin('main.[chunkhash].css', {allChunks: true})],
     module: {
       loaders: [
         {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader'},

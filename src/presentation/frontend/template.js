@@ -1,6 +1,7 @@
 import serialize from 'serialize-javascript';
 import {HttpError} from 'react-cornerstone/server';
 import cx from 'classnames';
+import {includeChunkManifest, includeAsset} from './assets';
 import icons from './ui/icons.svg';
 import styles from './ui/Header.css';
 import loginStyles from './users/Login.css';
@@ -15,13 +16,14 @@ function renderLayout(body) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <link href='//fonts.googleapis.com/css?family=Inconsolata:400,700|Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="/${includeAsset('main.css')}">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
   <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
   <link rel="manifest" href="/manifest.json">
   <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
   <meta name="theme-color" content="#ffffff">
+  ${includeChunkManifest()}
 </head>
 <body>
   ${body}
@@ -37,9 +39,9 @@ ${icons}
 <script>
   window.__INITIAL_STATE__ = ${serialize(state, {isJSON: true})};
 </script>
-<script src="/vendors.js"></script>
+<script src="/${includeAsset('vendors.js')}"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/main.js"></script>
+<script src="/${includeAsset('main.js')}"></script>
   `);
 }
 
