@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import config from 'config';
-import path from 'path';
 import express from 'express';
 import http from 'http';
 import body from 'body-parser';
@@ -19,7 +18,6 @@ import logger from '../infrastructure/logger';
 const app = express();
 
 app.use(helmet());
-if (process.env.NODE_ENV === 'development') app.use(express.static(path.join(__dirname, '..', '..', 'build', 'web')));
 app.use(body.urlencoded({extended: true}));
 app.use(body.json());
 app.use(session);
