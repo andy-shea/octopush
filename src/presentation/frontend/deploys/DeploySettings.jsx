@@ -18,7 +18,7 @@ function shouldResetFormOnProps({stack, clearTargets}, nextProps) {
 
 function onSubmit({form, stack, startDeploy}) {
   const {branch, targets} = form;
-  if (branch && targets) startDeploy(stack, branch, targets);
+  if (branch && targets) startDeploy({stack, branch, targets});
 }
 
 const handlers = {

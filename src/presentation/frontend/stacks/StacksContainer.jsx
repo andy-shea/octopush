@@ -40,11 +40,11 @@ class StacksContainer extends Component {
           || gitPath !== stack.gitPath
           || diff !== stack.diff
           || selectedServers !== currentServers) {
-        updateStack(stack, title, gitPath, selectedServers, diff);
+        updateStack({stack, title, gitPath, serverIds: selectedServers, diff});
       }
       else editStack(null);
     }
-    else addStack(title, gitPath, selectedServers, diff);
+    else addStack({title, gitPath, serverIds: selectedServers, diff});
   }
 
   render() {

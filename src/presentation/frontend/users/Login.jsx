@@ -9,7 +9,7 @@ import {form as formStyles, button as baseButton, cta} from '../ui/Form.css';
 import errorStyles from '../ui/error.css';
 
 const form = configureForm(['email', 'password'], ({login, form: {email, password}}) => {
-  if (email && password) login(email, password);
+  if (email && password) login({username: email, password});
 });
 
 function Login({form: {email, password}, updateEmail, updatePassword, submitForm, formState: {error, isActioning}}) {

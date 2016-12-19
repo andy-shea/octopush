@@ -9,7 +9,7 @@ export const types = createTypes([...async('LOGIN')], 'USERS');
 
 export const actions = {
   login: asyncActionCreator(types.LOGIN, {
-    client: (username, password) => post('/login', {username, password}),
+    client: ({username, password}) => post('/login', {username, password}),
     schema: {
       stacks: arrayOf(Stack.normalizedSchema),
       servers: arrayOf(Server.normalizedSchema),

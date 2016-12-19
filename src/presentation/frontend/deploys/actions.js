@@ -23,12 +23,12 @@ export const actions = {
   },
   addLogLine: actionCreator(types.ADD_LOG_LINE, 'deploy', 'line'),
   startDeploy: asyncActionCreator(types.START_DEPLOY, {
-    client: (stack, branch, targets) => post('/api/deploys', {slug: stack.slug, branch, targets}),
+    client: ({stack, branch, targets}) => post('/api/deploys', {slug: stack.slug, branch, targets}),
     schema: Deploy.normalizedSchema
   }),
   loadDeploysAndBranches: asyncActionCreator(types.LOAD_DEPLOYS_BRANCHES, {
-    client: (slug, page) => get(`/api/deploys/${slug || ''}`, {page}),
-    server: (slug, page, injector) => injector.get(require('~/application/DeployService')).loadDeploysAndBranches(slug, page),
+    client: ({slug, page}) => get(`/api/deploys/${slug || ''}`, {page}),
+    server: ({slug, page, injector}) => injector.get(require('~/application/DeployService')).loadDeploysAndBranches(slug, page),
     schema: {pagination: {deploys: arrayOf(Deploy.normalizedSchema)}}
   }),
   loadLog: asyncActionCreator(types.LOAD_LOG, deploy => get(`/api/deploys/${deploy.id}/log`))

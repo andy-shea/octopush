@@ -8,7 +8,7 @@ import DeployListContainer from './DeployListContainer';
 const asyncItems = [{
   promise: ({params, store: {getState, dispatch}, helpers = {}}) => {
     if (isAuthenticated(getState())) {
-      return dispatch(actions.loadDeploysAndBranches(params.stack, 1, helpers.injector));
+      return dispatch(actions.loadDeploysAndBranches({slug: params.stack, page: 1, injector: helpers.injector}));
     }
   }
 }];

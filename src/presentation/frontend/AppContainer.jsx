@@ -11,8 +11,8 @@ const asyncItems = [{
   promise: ({store: {getState, dispatch}, helpers = {}}) => {
     if (shouldLoadStacks(getState())) {
       return Promise.all([
-        dispatch(stackActions.loadStacks(helpers.injector)),
-        dispatch(serverActions.loadServers(helpers.injector))
+        dispatch(stackActions.loadStacks(helpers)),
+        dispatch(serverActions.loadServers(helpers))
       ]);
     }
   }

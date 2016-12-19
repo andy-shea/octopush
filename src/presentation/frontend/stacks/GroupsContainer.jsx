@@ -42,16 +42,16 @@ class GroupsContainer extends Component {
     if (group.id) {
       const currentServers = group.serverIds ? group.serverIds.join(',') : null;
       if (name !== group.name || selectedServers !== currentServers) {
-        updateGroup(stackEditing, group, name, selectedServers);
+        updateGroup({stack: stackEditing, group, name, serverIds: selectedServers});
       }
       else editGroup(null);
     }
-    else addGroup(stackEditing, name, selectedServers);
+    else addGroup({stack: stackEditing, name, serverIds: selectedServers});
   }
 
   @autobind
   removeGroup(group) {
-    this.props.removeGroup(this.props.stackEditing, group);
+    this.props.removeGroup({stack: this.props.stackEditing, group});
   }
 
   render() {

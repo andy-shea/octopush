@@ -11,7 +11,7 @@ const handlers = withHandlers({
     props.editServer(props.server);
   },
   removeServer: props => () => {
-    props.removeServer(props.server);
+    props.removeServer({server: props.server});
   }
 });
 

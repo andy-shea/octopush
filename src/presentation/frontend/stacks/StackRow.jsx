@@ -12,7 +12,7 @@ const handlers = withHandlers({
     props.editStack(props.stack);
   },
   removeStack: props => () => {
-    props.removeStack(props.stack);
+    props.removeStack({stack: props.stack});
   }
 });
 

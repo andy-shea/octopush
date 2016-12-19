@@ -32,7 +32,7 @@ class DeploysContainer extends Component {
   @autobind
   loadDeploys({selected}) {
     const {currentStack: {slug}, loadDeploysAndBranches} = this.props;
-    loadDeploysAndBranches(slug, selected + 1);
+    loadDeploysAndBranches({slug, page: selected + 1});
   }
 
   @autobind

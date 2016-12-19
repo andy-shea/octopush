@@ -31,10 +31,10 @@ class ServersContainer extends Component {
   saveServer(hostname) {
     const {serverEditing, editServer, updateServer, addServer} = this.props;
     if (serverEditing) {
-      if (hostname !== serverEditing.hostname) updateServer(serverEditing, hostname);
+      if (hostname !== serverEditing.hostname) updateServer({server: serverEditing, newHostname: hostname});
       else editServer(null);
     }
-    else addServer(hostname);
+    else addServer({hostname});
   }
 
   render() {
