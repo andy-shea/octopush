@@ -18,7 +18,7 @@ export const actions = {
     if (!deploy.log) {
       // TOGGLE_DEPLOY_DETAILS will change deploy so need instance in new state
       const deploys = getDeploys(getState());
-      dispatch(actions.loadLog(deploys[Object.keys(deploys).find(index => deploys[index].id === deploy.id)]));
+      dispatch(actions.loadLog({deploy: deploys[Object.keys(deploys).find(index => deploys[index].id === deploy.id)]}));
     }
   },
   addLogLine: actionCreator(types.ADD_LOG_LINE, 'deploy', 'line'),
@@ -31,5 +31,5 @@ export const actions = {
     server: ({slug, page, injector}) => injector.get(require('~/application/DeployService')).loadDeploysAndBranches(slug, page),
     schema: {pagination: {deploys: arrayOf(Deploy.normalizedSchema)}}
   }),
-  loadLog: asyncActionCreator(types.LOAD_LOG, deploy => get(`/api/deploys/${deploy.id}/log`))
+  loadLog: asyncActionCreator(types.LOAD_LOG, ({deploy}) => get(`/api/deploys/${deploy.id}/log`))
 };
