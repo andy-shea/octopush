@@ -6,6 +6,31 @@
   version "2.0.0-rc.4"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-2.0.0-rc.4.tgz#f3f98f906fcf0cb87d2c7d7f230ca95ea81cb6e0"
 
+"@webpack-blocks/core@^0.1.1":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@webpack-blocks/core/-/core-0.1.2.tgz#18ae5d73c7e3ccb58461603817377f504be45a15"
+  dependencies:
+    webpack-merge "^0.14.1"
+
+"@webpack-blocks/dev-server@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@webpack-blocks/dev-server/-/dev-server-0.2.0.tgz#c69b78946097668526ab081331243738e04e00d6"
+  dependencies:
+    webpack "^1.13.2"
+    webpack-dev-server "^1.16.2"
+
+"@webpack-blocks/webpack@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@webpack-blocks/webpack/-/webpack-0.2.0.tgz#27cd1a32fef2bc5a07cfdbc307615d5b327b56a8"
+  dependencies:
+    "@webpack-blocks/core" "^0.1.1"
+    css-loader "^0.25.0"
+    file-loader "^0.9.0"
+    json-loader "^0.5.4"
+    style-loader "^0.13.1"
+    url-loader "^0.5.7"
+    webpack "^1.13.2"
+
 Base64@~0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/Base64/-/Base64-0.2.1.tgz#ba3a4230708e186705065e66babdd4c35cf60028"
@@ -3963,7 +3988,7 @@ load-json-file@^1.0.0:
     pinkie-promise "^2.0.0"
     strip-bom "^2.0.0"
 
-loader-utils@^0.2.11, loader-utils@^0.2.15, loader-utils@^0.2.3, loader-utils@^0.2.7, loader-utils@~0.2.2, loader-utils@~0.2.5:
+loader-utils@0.2.x, loader-utils@^0.2.11, loader-utils@^0.2.15, loader-utils@^0.2.3, loader-utils@^0.2.7, loader-utils@~0.2.2, loader-utils@~0.2.5:
   version "0.2.16"
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-0.2.16.tgz#f08632066ed8282835dff88dfb52704765adee6d"
   dependencies:
@@ -4407,6 +4432,10 @@ mime-types@^2.1.11, mime-types@~2.1.11, mime-types@~2.1.7:
   resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.12.tgz#152ba256777020dd4663f54c2e7bc26381e71729"
   dependencies:
     mime-db "~1.24.0"
+
+mime@1.2.x:
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-1.2.11.tgz#58203eed86e3a5ef17aed2b7d9ebd47f0a60dd10"
 
 mime@1.3.4, mime@^1.3.4:
   version "1.3.4"
@@ -6830,6 +6859,13 @@ update-notifier@0.5.0:
     repeating "^1.1.2"
     semver-diff "^2.0.0"
     string-length "^1.0.0"
+
+url-loader@^0.5.7:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/url-loader/-/url-loader-0.5.7.tgz#67e8779759f8000da74994906680c943a9b0925d"
+  dependencies:
+    loader-utils "0.2.x"
+    mime "1.2.x"
 
 url-parse-lax@^1.0.0:
   version "1.0.0"

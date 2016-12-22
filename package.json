@@ -69,6 +69,8 @@
     "velocity-animate": "^1.4.0"
   },
   "devDependencies": {
+    "@webpack-blocks/dev-server": "^0.2.0",
+    "@webpack-blocks/webpack": "^0.2.0",
     "acorn": "^4.0.3",
     "astring": "^0.7.1",
     "autoprefixer": "^6.5.0",
