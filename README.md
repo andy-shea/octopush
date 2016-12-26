@@ -15,14 +15,14 @@ yarn
 In a shell, run `npm run dev`.  This will build `build/server.js` which contains the server-side
 code to be run by nodejs and will run in watch mode to rebuild when changes are made.
 
-In a separate shell, run `docker-compose up` to start the application in a docker container.
+In a separate shell, run `docker-compose up` to start the front-end application in a docker container.
 Docker has been configured to map port 80 of the host to port 3001 of the container which the
 web-dev-server listens on.
 
 ## Adding Users
 
 Adding users can be done via the CLI.  In the nodejs docker container, run `npm link` to provision
-the `octopush` CLI utility.  Adding a user can the be achieved by passing a name and email to the
+the `octopush` CLI utility.  Adding a user can be achieved by passing a name and email to the
 `users:add` command:
 
 ```
