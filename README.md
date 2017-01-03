@@ -16,7 +16,7 @@ In a shell, run `npm run dev`.  This will build `build/server.js` which contains
 code to be run by nodejs and will run in watch mode to rebuild when changes are made.
 
 In a separate shell, run `docker-compose up` to start the front-end application in a docker container.
-Docker has been configured to map port 80 of the host to port 3001 of the container which the
+Docker has been configured to map port 80 of the host to port 3000 of the container which the
 web-dev-server listens on.
 
 ## Adding Users
