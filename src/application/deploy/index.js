@@ -36,6 +36,6 @@ export function startDeploy(deploy, expandedTargets, emitLine) {
         emitLine(stack, deploy, `\u001b[97;41m${err}\u001b[0m`);
       });
     });
-    child.send(JSON.stringify(deploy));
+    child.send(JSON.stringify({branch, slugPath, branchPath, expandedTargets}));
   });
 }

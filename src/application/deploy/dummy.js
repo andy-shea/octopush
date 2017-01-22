@@ -1,6 +1,6 @@
 process.on('message', data => {
   const fetch = require('isomorphic-fetch');
-  const {hosts} = JSON.parse(data);
+  const {expandedTargets} = JSON.parse(data);
   let i = 0;
 
   function dummy() {
@@ -8,7 +8,7 @@ process.on('message', data => {
     if (i === 9) {
       process.send(JSON.stringify({
         key: '{{{octopush}}}',
-        data: hosts.map(host => {
+        data: expandedTargets.map(host => {
           host.revisionFrom = 'z99hfa5';
           host.revisionTo = 'v631y05';
           return host;
