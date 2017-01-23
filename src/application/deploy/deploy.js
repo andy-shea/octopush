@@ -1,4 +1,7 @@
 process.on('message', data => {
+  // dummy script to mimic flow of data from Capistrano deploy to Octopush
+  // replace with code to perform Capistrano deploy ensuring output is sent back to parent process
+
   const fetch = require('isomorphic-fetch');
   const {expandedTargets} = JSON.parse(data);
   let i = 0;
@@ -8,11 +11,11 @@ process.on('message', data => {
     if (i === 9) {
       process.send(JSON.stringify({
         key: '{{{octopush}}}',
-        data: expandedTargets.map(host => {
-          host.revisionFrom = 'z99hfa5';
-          host.revisionTo = 'v631y05';
-          return host;
-        })
+        data: expandedTargets.map(name => ({
+          name,
+          revisionFrom: 'z99hfa5',
+          revisionTo: 'v631y05'
+        }))
       }));
       setTimeout(dummy, 1000);
     }

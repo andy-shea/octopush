@@ -19,7 +19,7 @@ export function startDeploy(deploy, expandedTargets, emitLine) {
   const stream = fs.createWriteStream(path.join(logPath, logFilename));
 
   stream.once('open', function openStream() {
-    const child = cp.fork(path.join(__dirname, 'dummy'));
+    const child = cp.fork(path.join(__dirname, 'deploy'));
     child.on('message', line => {
       if (line.indexOf('{{{octopush}}}') !== -1) deploy.hosts = JSON.parse(line).data;
       else {
