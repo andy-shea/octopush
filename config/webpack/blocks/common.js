@@ -11,6 +11,7 @@ const {group} = require('./group');
 const ROOT_PATH = path.resolve(__dirname, '..', '..', '..');
 
 exports.common = group([
+  setOutput({publicPath: '/'}),
   customConfig({
     resolve: {extensions: ['', '.js', '.jsx', '.json']},
     module: {
