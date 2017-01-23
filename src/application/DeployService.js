@@ -42,6 +42,7 @@ class DeployService {
     return this.stackRepo.findBySlug(slug).then(stack => {
       const expandedTargets = expandTargets(stack, targets);
       const deploy = new Deploy(branch, user, stack);
+      deploy.createdAt = new Date();
       deploy.hosts = expandedTargets.map(name => ({name}));
       this.deployRepo.add(deploy);
       startDeploy(deploy, expandedTargets, emitLine);
