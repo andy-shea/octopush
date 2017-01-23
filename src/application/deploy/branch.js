@@ -1,27 +1,53 @@
 import Promise from 'bluebird';
 import git from 'gift';
+import GitHubApi from 'github';
 import logger from '~/infrastructure/logger';
 
-export function getBranches(stack) {
-  return new Promise(fulfill => {
-    if (process.env.NODE_ENV === 'development') fulfill(['Test', 'Prod']);
-    else {
-      git(stack.gitPath).branches((err, branches) => {
-        if (err) {
-          logger.error(err);
-          fulfill(null);
-        }
-        else {
-          let branchNames = branches.map(branch => branch.name);
-          branchNames.sort();
-          const masterIndex = branchNames.indexOf('master');
-          if (masterIndex !== -1) {
-            branchNames.splice(masterIndex, 1);
-            branchNames.unshift('Test', 'Prod');
-          }
-          fulfill(branchNames);
-        }
-      });
+const githubPrefix = 'https://github.com/';
+
+const github = new GitHubApi({
+  debug: (process.env.NODE_ENV === 'development'),
+  protocol: 'https',
+  host: 'api.github.com',
+  Promise,
+  timeout: 5000
+});
+
+function getLocalBranches(gitPath) {
+  return new Promise((resolve, reject) => {
+    git(gitPath).branches((err, branches) => {
+      if (err) reject(err);
+      else resolve(branches);
+    });
+  });
+}
+
+function getGithubBranches(gitPath) {
+  const [owner, repo] = gitPath.replace(githubPrefix, '').replace('.git', '').split('/');
+  return new Promise((resolve, reject) => {
+    github.repos.getBranches({owner, repo}, (err, res) => {
+      if (err) reject(err);
+      else resolve(res);
+    });
+  });
+}
+
+export function getBranches({gitPath}) {
+  if (process.env.NODE_ENV === 'development' && !gitPath.startsWith(githubPrefix)) {
+    return Promise.resolve(['Test', 'Prod']);
+  }
+
+  const getBranchesMeta = gitPath.startsWith(githubPrefix) ? getGithubBranches : getLocalBranches;
+  return getBranchesMeta(gitPath).then(branches => {
+    let branchNames = branches.map(({name}) => name);
+    branchNames.sort();
+    const masterIndex = branchNames.indexOf('master');
+    if (masterIndex !== -1) {
+      branchNames.splice(masterIndex, 1);
+      branchNames.unshift('Test', 'Prod');
     }
+    return branchNames;
+  }).catch(err => {
+    logger.error(err);
   });
 }

@@ -29,6 +29,7 @@
     "express-session": "^1.14.1",
     "ftchr": "^0.1.1",
     "gift": "^0.9.0",
+    "github": "^8.1.0",
     "glob": "^7.1.1",
     "helmet": "^2.3.0",
     "junction-express-middleware": "^0.1.3",
