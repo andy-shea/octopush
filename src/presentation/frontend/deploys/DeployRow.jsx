@@ -4,17 +4,8 @@ import cx from 'classnames';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import format from 'date-fns/format';
 import Terminal from './Terminal';
-import {root, isActive, header, servers, footer, time, user, naviconButton, navicon} from './DeployRow.css';
-
-function diffUrl(diff, revFrom, revTo) {
-  return diff.replace('{{from}}', revFrom).replace('{{to}}', revTo);
-}
-
-function viewDiff(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  window.open(e.target.href);
-}
+import Hosts from './Hosts';
+import {root, isActive, header, footer, time, user, naviconButton, navicon} from './DeployRow.css';
 
 const handlers = withHandlers({
   toggleDeployDetails: props => e => {
@@ -27,19 +18,7 @@ function DeployRow({diff, deploy, user: {name}, toggleDeployDetails}) {
     <article className={cx(root, {[isActive]: deploy.isExpanded})} onClick={toggleDeployDetails}>
       <header className={cx(header, 'clearfix')}>
         <h1>{deploy.branch}</h1>
-        <ul className={servers}>
-          {deploy.hosts.map(host => (
-            <li key={host.name}>
-              {host.name}
-              {
-                host.revisionFrom && diff &&
-                <a href={diffUrl(diff, host.revisionFrom, host.revisionTo)} onClick={viewDiff}>
-                  [{host.revisionFrom} → {host.revisionTo}]
-                </a>
-              }
-            </li>
-          ))}
-        </ul>
+        <Hosts hosts={deploy.hosts} diff={diff}/>
       </header>
       <Terminal log={deploy.log}/>
       <footer className={footer}>

@@ -1,7 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {Scrollbars} from 'react-custom-scrollbars';
 import PageLoader from '../ui/PageLoader';
-import {terminalWrap, terminal, loader} from './DeployRow.css';
+import {root} from './Terminal.css';
+import {terminalWrap, loader} from './DeployRow.css';
 
 class Terminal extends Component {
 
@@ -18,7 +19,7 @@ class Terminal extends Component {
     if (typeof log === 'undefined') return <PageLoader className={loader}/>;
     return (
       <Scrollbars ref="terminal" className={terminalWrap} autoHeight autoHeightMin={50} autoHeightMax={400} style={{width: 'auto'}}>
-        <pre className={terminal} dangerouslySetInnerHTML={{__html: log}}/>
+        <pre className={root} dangerouslySetInnerHTML={{__html: log}}/>
       </Scrollbars>
     );
   }
