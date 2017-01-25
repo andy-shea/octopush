@@ -21,21 +21,21 @@ export function startDeploy(deploy, expandedTargets, emitLine) {
   stream.once('open', function openStream() {
     const child = cp.fork(path.join(__dirname, 'deploy'));
     child.on('message', line => {
-      if (line.indexOf('{{{octopush}}}') !== -1) deploy.hosts = JSON.parse(line).data;
+      if (line.indexOf('{{{octopush}}}') !== -1) {
+        deploy.hosts = JSON.parse(line).data;
+        db.transaction(trx => mapper.updateDeploy(trx, deploy, ['hosts'])).then(() => {
+          eventEmitter.emit('octopush:deploy', {stack, deploy, hosts: expandedTargets});
+          return null;
+        }).catch(err => {
+          emitLine(stack, deploy, `\u001b[97;41m${err}\u001b[0m`);
+        });
+      }
       else {
         stream.write(line);
         emitLine(deploy, line);
       }
     });
-    child.on('exit', () => {
-      stream.end();
-      db.transaction(trx => mapper.updateDeploy(trx, deploy, ['hosts'])).then(() => {
-        eventEmitter.emit('octopush:deploy', {stack, deploy, hosts: expandedTargets});
-        return null;
-      }).catch(err => {
-        emitLine(stack, deploy, `\u001b[97;41m${err}\u001b[0m`);
-      });
-    });
+    child.on('exit', () => stream.end());
     child.send(JSON.stringify({branch, slugPath, branchPath, expandedTargets}));
   });
 }
