@@ -14,6 +14,7 @@ import em from '../domain/entityManager';
 import error from './error';
 import socket from '../infrastructure/socket';
 import logger from '../infrastructure/logger';
+import '../infrastructure/plugins';
 
 const app = express();
 
