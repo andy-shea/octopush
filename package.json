@@ -1,7 +1,7 @@
 {
   "name": "Octopush",
   "description": "A GUI for Capistrano",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "MIT",
   "repository": {
     "type": "git",
