@@ -5,7 +5,8 @@
   },
   "db": {
     "name": "octopush",
-    "user": "_octopush"
+    "user": "_octopush",
+    "debug": false
   },
   "log": {
     "path": "log",

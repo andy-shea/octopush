@@ -8,8 +8,8 @@ const db = require('knex')({
     password: config.db.password,
     database: config.db.name,
     charset: 'utf8'
-  }
-  // , debug: true
+  },
+  debug: config.db.debug
 });
 
 export default db;
