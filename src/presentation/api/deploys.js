@@ -28,22 +28,22 @@ router.get('/:slug?', (req, res, next) => {
   service.loadDeploysAndBranches(slug, page).then(setData(res, next)).catch(handleError(req, res, next));
 });
 
+function emitLine(deploy, line) {
+  socket.io().sockets.emit('octopush.action', {
+    type: types.ADD_LOG_LINE,
+    payload: {
+      deployId: deploy.id,
+      line: convert.toHtml(s(line).escapeHTML().s)
+    }
+  });
+}
+
 router.post('/', (req, res, next) => {
   const {user, body: {slug, branch, targets}, injector} = req;
   const service = injector.get(DeployService);
   if (!slug) return next(HttpError.badRequest('Missing stack slug'));
   if (!branch) return next(HttpError.badRequest('Missing deploy branch'));
   if (!targets) return next(HttpError.badRequest('Missing deploy targets'));
-
-  function emitLine(deploy, line) {
-    socket.io().sockets.emit('octopush.action', {
-      type: types.ADD_LOG_LINE,
-      payload: {
-        deployId: deploy.id,
-        line: convert.toHtml(s(line).escapeHTML().s)
-      }
-    });
-  }
 
   service.createAndStartDeploy(slug, branch, targets, user, emitLine)
       .then(setData(res, next, 201))
