@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import SaveGroupForm from './SaveGroupForm';
 import GroupRow from './GroupRow';
 import {settingsPaneContent} from '../ui/menu/Menu.css';

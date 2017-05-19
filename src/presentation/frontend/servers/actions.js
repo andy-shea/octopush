@@ -1,4 +1,3 @@
-import {arrayOf} from 'normalizr';
 import {get, post, del} from 'ftchr';
 import Server from '~/domain/server/Server';
 import Stack from '~/domain/stack/Stack';
@@ -17,7 +16,7 @@ export const actions = {
   loadServers: asyncActionCreator(types.LOAD_SERVERS, {
     client: () => get('/api/servers'),
     server: ({injector}) => injector.get(require('~/application/ServerService')).loadServers(),
-    schema: arrayOf(Server.normalizedSchema)
+    schema: [Server.normalizedSchema]
   }),
   addServer: asyncActionCreator(types.ADD_SERVER, {
     client: ({hostname}) => post('/api/servers', {hostname}),
@@ -29,6 +28,6 @@ export const actions = {
   }),
   removeServer: asyncActionCreator(types.REMOVE_SERVER, {
     client: ({server}) => del(`/api/servers/${server.id}`),
-    schema: arrayOf(Stack.normalizedSchema)
+    schema: [Stack.normalizedSchema]
   })
 };

@@ -5,6 +5,7 @@ devServer.proxy = proxy;
 function devServer(options) {
   const defaults = {
     historyApiFallback: true,
+    disableHostCheck: true,
     compress: true,
     stats: {
       chunks: false,

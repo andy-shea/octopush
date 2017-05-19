@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
 import DeployRow from './DeployRow';
 import PageLoader from '../ui/PageLoader';

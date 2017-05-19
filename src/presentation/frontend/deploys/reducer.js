@@ -57,7 +57,7 @@ function reducer(state = {map: {}}, action) {
       return {...state, map: nextMap, pagination: nextPagination, isDeploying: false};
     }
 
-    case types.LOAD_LOG_SUCCESS: return updateDeploy(state, action, 'log', action.response);
+    case types.LOAD_LOG_SUCCESS: return updateDeploy(state, action, 'log', action.response.contents);
 
     default: return state;
   }

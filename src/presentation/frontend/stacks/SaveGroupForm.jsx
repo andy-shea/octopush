@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Select from 'react-select';
 import configureForm from '../utils/form';
 import Button from '../ui/Button';

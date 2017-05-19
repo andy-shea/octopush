@@ -1,4 +1,3 @@
-import {arrayOf} from 'normalizr';
 import {get, post} from 'ftchr';
 import Deploy from '~/domain/deploy/Deploy';
 import {actionCreator, asyncActionCreator, async, createTypes} from 'redux-action-creator';
@@ -29,7 +28,7 @@ export const actions = {
   loadDeploysAndBranches: asyncActionCreator(types.LOAD_DEPLOYS_BRANCHES, {
     client: ({slug, page}) => get(`/api/deploys/${slug || ''}`, {page}),
     server: ({slug, page, injector}) => injector.get(require('~/application/DeployService')).loadDeploysAndBranches(slug, page),
-    schema: {pagination: {deploys: arrayOf(Deploy.normalizedSchema)}}
+    schema: {pagination: {deploys: [Deploy.normalizedSchema]}}
   }),
   loadLog: asyncActionCreator(types.LOAD_LOG, ({deploy}) => get(`/api/deploys/${deploy.id}/log`))
 };

@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Promise from 'bluebird';
 import {asyncConnect} from 'redux-connect';
 import Layout from './ui/Layout';

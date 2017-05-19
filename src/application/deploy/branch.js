@@ -27,7 +27,7 @@ function getGithubBranches(gitPath) {
   return new Promise((resolve, reject) => {
     github.repos.getBranches({owner, repo}, (err, res) => {
       if (err) reject(err);
-      else resolve(res);
+      else resolve(res.data);
     });
   });
 }

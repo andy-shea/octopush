@@ -1,4 +1,3 @@
-import {arrayOf} from 'normalizr';
 import {get, post, del} from 'ftchr';
 import Stack from '~/domain/stack/Stack';
 import {actionCreator, asyncActionCreator, async, createTypes} from 'redux-action-creator';
@@ -23,7 +22,7 @@ export const actions = {
   loadStacks: asyncActionCreator(types.LOAD_STACKS, {
     client: () => get('/api/stacks'),
     server: ({injector}) => injector.get(require('~/application/StackService')).loadStacks(),
-    schema: arrayOf(Stack.normalizedSchema)
+    schema: [Stack.normalizedSchema]
   }),
   addStack: asyncActionCreator(types.ADD_STACK, {
     client: ({title, gitPath, serverIds, diff}) => post('/api/stacks', {title, gitPath, serverIds, diff}),
