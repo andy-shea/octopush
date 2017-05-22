@@ -1,9 +1,16 @@
 module.exports = babel;
 
-function babel(query) {
+function babel(options) {
   return () => ({
     module: {
-      loaders: [{test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader', query: Object.assign({cacheDirectory: '/tmp'}, query)}]
+      rules: [{
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: {
+          loader: 'babel-loader',
+          options: Object.assign({cacheDirectory: '/tmp'}, options)
+        }
+      }]
     }
   });
 }

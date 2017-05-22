@@ -1,7 +1,6 @@
 const path = require('path');
 const config = require('config');
-const {createConfig} = require('@webpack-blocks/core')
-const {addPlugins, entryPoint, env, setOutput, sourceMaps, webpack} = require('@webpack-blocks/webpack');
+const {createConfig, addPlugins, entryPoint, env, setOutput, sourceMaps, webpack} = require('@webpack-blocks/webpack2');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
@@ -11,7 +10,7 @@ const image = require('./blocks/image');
 const babel = require('./blocks/babel');
 const devServer = require('./blocks/dev-server');
 const extractCss = require('./blocks/extract-css');
-const {postCss} = require('./blocks/postcss');
+const postCss = require('./blocks/postcss');
 
 const development = [
   setOutput({
@@ -71,10 +70,10 @@ module.exports = createConfig([
       filename: 'chunk-manifest.json',
       manifestVariable: '__WEBPACK_MANIFEST__'
     }),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ]),
   image(true),
+  actionCreator(path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend')), // must come after babel transpilation
   env('development', development),
-  env('production', production),
-  actionCreator(path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend')) // must come after babel transpilation
+  env('production', production)
 ]);

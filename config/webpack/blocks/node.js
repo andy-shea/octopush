@@ -16,7 +16,7 @@ function node() {
     resolve: {extensions: ['.node']},
     externals: nodeModules,
     module: {
-      loaders: [{test: /\.node$/, loader: 'node-loader'}]
+      rules: [{test: /\.node$/, loader: 'node-loader'}]
     }
   });
 }

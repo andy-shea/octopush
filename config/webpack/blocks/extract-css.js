@@ -5,10 +5,13 @@ module.exports = extractCss;
 function extractCss(output) {
   return () => ({
     module: {
-      loaders: [
-        {test: /\.css$/, include: /node_modules/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader')},
+      rules: [
+        {test: /\.css$/, include: /node_modules/, use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader'
+        })},
       ]
     },
-    plugins: [new ExtractTextPlugin(output, {allChunks: true})]
+    plugins: [new ExtractTextPlugin({filename: output, allChunks: true})]
   });
 }

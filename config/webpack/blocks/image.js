@@ -1,10 +1,30 @@
 module.exports = image;
 
 function image(emitFile) {
-  const fileLoader = 'file?emitFile=' + (emitFile ? 'true' : 'false') + '&hash=sha512&digest=hex&name=[hash].[ext]';
   return () => ({
     module: {
-      loaders: [{test: /\.(jpe?g|png|gif)$/i, loaders: [fileLoader, 'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false']}]
+      rules: [{
+        test: /\.(jpe?g|png|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              emitFile: emitFile,
+              hash: 'sha512',
+              digest: 'hex',
+              name: '[hash].[ext]'
+            }
+          },
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              bypassOnDebug: true,
+              optipng: {optimizationLevel: 7},
+              gifsicle: {interlaced: false}
+            }
+          }
+        ]
+      }]
     }
   });
 }

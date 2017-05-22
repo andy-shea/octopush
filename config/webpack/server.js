@@ -1,12 +1,11 @@
 const path = require('path');
 const config = require('config');
-const {createConfig} = require('@webpack-blocks/core')
-const {addPlugins, customConfig, entryPoint, env, setOutput, sourceMaps, webpack} = require('@webpack-blocks/webpack');
+const {createConfig, addPlugins, customConfig, entryPoint, env, setOutput, sourceMaps, webpack} = require('@webpack-blocks/webpack2');
 const {common, ROOT_PATH} = require('./blocks/common');
 const node = require('./blocks/node');
 const image = require('./blocks/image');
 const babel = require('./blocks/babel');
-const {postCss} = require('./blocks/postcss');
+const postCss = require('./blocks/postcss');
 
 const development = [
   setOutput({path: path.resolve(ROOT_PATH, 'build')}),
@@ -25,15 +24,19 @@ module.exports = createConfig([
   setOutput({filename: 'server.js'}),
   babel(),
   addPlugins([
-    new webpack.BannerPlugin("require('source-map-support').install();", {raw: true, entryOnly: false}),
-    new webpack.BannerPlugin("var promise = require('bluebird');require('babel-runtime/core-js/promise').default = promise;promise.onPossiblyUnhandledRejection(function(error) {throw error});", {raw: true, entryOnly: true})
+    new webpack.BannerPlugin({banner: "require('source-map-support').install();", raw: true, entryOnly: false}),
+    new webpack.BannerPlugin({
+      banner: "var promise = require('bluebird');require('babel-runtime/core-js/promise').default = promise;promise.onPossiblyUnhandledRejection(function(error) {throw error});",
+      raw: true,
+      entryOnly: true
+    })
   ]),
   image(false),
   customConfig({
     module: {
-      loaders: [
+      rules: [
         {test: /\.css$/, include: /node_modules/, loader: 'css-loader'},
-        {test: /\.svg$/, exclude: /node_modules/, loader: 'raw'},
+        {test: /\.svg$/, exclude: /node_modules/, loader: 'raw-loader'},
       ]
     }
   }),
