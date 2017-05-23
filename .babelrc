@@ -4,7 +4,8 @@
       "targets": {
         "node": "current",
         "browsers": "last 1 version"
-      }
+      },
+      "modules": false
     }],
     "react"
   ],
