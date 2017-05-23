@@ -4,9 +4,9 @@ module.exports = (() => {
   require('reflect-metadata');
   const Command = require('cmnd').Command;
   const prompt = require('prompt');
-  const entityManager = require('../../../../domain/entityManager');
-  const UserRepository = require('../../../../domain/user/UserRepository');
-  const UserService = require('../../../../application/UserService');
+  const entityManager = require('../../../../domain/entityManager').default;
+  const UserRepository = require('../../../../domain/user/UserRepository').default;
+  const UserService = require('../../../../application/UserService').default;
   const session = entityManager.session();
   const service = new UserService(new UserRepository(session));
 
