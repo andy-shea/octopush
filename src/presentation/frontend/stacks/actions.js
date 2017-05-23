@@ -21,7 +21,10 @@ export const actions = {
   editGroup: actionCreator(types.EDIT_GROUP, 'group'),
   loadStacks: asyncActionCreator(types.LOAD_STACKS, {
     client: () => get('/api/stacks'),
-    server: ({injector}) => injector.get(require('~/application/StackService')).loadStacks(),
+    server: ({injector}) => {
+      const StackService = require('~/application/StackService').default;
+      return injector.get(StackService).loadStacks();
+    },
     schema: [Stack.normalizedSchema]
   }),
   addStack: asyncActionCreator(types.ADD_STACK, {

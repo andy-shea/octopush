@@ -1,6 +1,7 @@
 import config from 'config';
+import knex from 'knex';
 
-const db = require('knex')({
+const db = knex({
   client: 'pg',
   connection: {
     host: config.db.host,

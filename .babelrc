@@ -13,7 +13,6 @@
     "angular2-annotations",
     "transform-decorators-legacy",
     "transform-flow-strip-types",
-    "add-module-exports",
     ["babel-root-import", [{
       "rootPathSuffix": "src"
     }]]

@@ -27,7 +27,10 @@ export const actions = {
   }),
   loadDeploysAndBranches: asyncActionCreator(types.LOAD_DEPLOYS_BRANCHES, {
     client: ({slug, page}) => get(`/api/deploys/${slug || ''}`, {page}),
-    server: ({slug, page, injector}) => injector.get(require('~/application/DeployService')).loadDeploysAndBranches(slug, page),
+    server: ({slug, page, injector}) => {
+      const DeployService = require('~/application/DeployService').default;
+      return injector.get(DeployService).loadDeploysAndBranches(slug, page);
+    },
     schema: {pagination: {deploys: [Deploy.normalizedSchema]}}
   }),
   loadLog: asyncActionCreator(types.LOAD_LOG, ({deploy}) => get(`/api/deploys/${deploy.id}/log`))

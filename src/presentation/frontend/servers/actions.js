@@ -15,7 +15,10 @@ export const actions = {
   editServer: actionCreator(types.EDIT_SERVER, 'server'),
   loadServers: asyncActionCreator(types.LOAD_SERVERS, {
     client: () => get('/api/servers'),
-    server: ({injector}) => injector.get(require('~/application/ServerService')).loadServers(),
+    server: ({injector}) => {
+      const ServerService = require('~/application/ServerService').default;
+      return injector.get(ServerService).loadServers();
+    },
     schema: [Server.normalizedSchema]
   }),
   addServer: asyncActionCreator(types.ADD_SERVER, {
