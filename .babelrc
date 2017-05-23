@@ -1,5 +1,13 @@
 {
-  "presets": ["es2015", "stage-0", "react"],
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": "current",
+        "browsers": "last 1 version"
+      }
+    }],
+    "react"
+  ],
   "ignore": ["src/presentation/cli"],
   "env": {
     "production": {
@@ -10,11 +18,13 @@
     }
   },
   "plugins": [
+    "transform-object-rest-spread",
     "angular2-annotations",
     "transform-decorators-legacy",
     "transform-flow-strip-types",
     ["babel-root-import", [{
       "rootPathSuffix": "src"
-    }]]
+    }]],
+    "transform-class-properties"
   ]
 }

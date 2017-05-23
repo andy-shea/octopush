@@ -73,7 +73,7 @@ module.exports = createConfig([
     new webpack.NoEmitOnErrorsPlugin()
   ]),
   image(true),
-  actionCreator(path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend')), // must come after babel transpilation
   env('development', development),
-  env('production', production)
+  env('production', production),
+  actionCreator(path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend')) // must come before babel transpilation
 ]);
