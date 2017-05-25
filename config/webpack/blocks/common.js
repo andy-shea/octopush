@@ -17,7 +17,8 @@ exports.common = group([
       cache: true,
       stats: {
         colors: true,
-        reasons: true
+        reasons: true,
+        children: false
       }
     }),
     addPlugins([new webpack.LoaderOptionsPlugin({debug: true})])

@@ -7,6 +7,15 @@
     "type": "git",
     "url": "git://github.com/octahedron/octopush"
   },
+  "scripts": {
+    "lint": "eslint src/ --ext '.js,.jsx' && stylelint src/**/*.css",
+    "dev": "node ./src",
+    "prebuild": "rimraf dist && mkdir -p dist/web",
+    "build": "NODE_ENV=production webpack"
+  },
+  "bin": {
+    "octopush": "./src/presentation/cli/index.js"
+  },
   "dependencies": {
     "angular2-di": "^2.0.0-rc.4.2",
     "ansi-to-html": "^0.6.2",
@@ -115,20 +124,11 @@
     "stylelint-config-standard": "^16.0.0",
     "universal-action-creator-loader": "^0.3.0",
     "webpack": "^2.6.0",
-    "webpack-dev-server": "^2.4.5",
+    "webpack-dev-middleware": "^1.10.2",
+    "webpack-hot-middleware": "^2.18.0",
+    "webpack-hot-server-middleware": "^0.1.0",
     "webpack-manifest-plugin": "^1.1.0",
     "webpack-md5-hash": "^0.0.5",
     "webpack-merge": "^4.1.0"
-  },
-  "scripts": {
-    "lint": "eslint src/ --ext '.js,.jsx' && stylelint src/**/*.css",
-    "predev": "rimraf build && mkdir -p build/web && cp src/presentation/frontend/ui/favicons/* build/web",
-    "dev": "NODE_ENV=development webpack --config config/webpack/server.js --watch",
-    "preprod": "rimraf dist && mkdir -p dist/web && cp src/presentation/frontend/ui/favicons/* dist/web",
-    "prod": "NODE_ENV=production webpack --config config/webpack/server.js && NODE_ENV=production webpack --config config/webpack/client.js",
-    "watch": "NODE_ENV=development webpack-dev-server --public=localhost:80 --hot --inline --config config/webpack/client.js & nodemon --watch build build/server.js"
-  },
-  "bin": {
-    "octopush": "./src/presentation/cli/index.js"
   }
 }

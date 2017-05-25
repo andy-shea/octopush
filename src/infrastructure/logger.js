@@ -1,6 +1,6 @@
-import bunyan from 'bunyan';
-import path from 'path';
-import PrettyStream from 'bunyan-prettystream';
+const bunyan = require('bunyan');
+const path = require('path');
+const PrettyStream = require('bunyan-prettystream');
 
 const streams = [{
   level: (process.env.NODE_ENV === 'development') ? 'debug' : 'info',
@@ -12,6 +12,4 @@ if (process.env.NODE_ENV === 'development') {
   streams.push({level: 'debug', type: 'raw', stream: prettyStdOut});
 }
 
-const logger = bunyan.createLogger({name: 'octopush', streams});
-
-export default logger;
+module.exports = bunyan.createLogger({name: 'octopush', streams});

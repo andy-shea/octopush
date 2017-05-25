@@ -6,34 +6,22 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 const {common, ROOT_PATH} = require('./blocks/common');
 const actionCreator = require('./blocks/action-creator');
+const name = require('./blocks/name');
 const image = require('./blocks/image');
 const babel = require('./blocks/babel');
-const devServer = require('./blocks/dev-server');
 const extractCss = require('./blocks/extract-css');
 const postCss = require('./blocks/postcss');
 
 const development = [
   setOutput({
-    path: path.resolve(ROOT_PATH, 'build', 'web'),
+    path: path.resolve(ROOT_PATH, 'build'),
     filename: '[name].js',
     chunkFilename: '[name].js'
   }),
   babel({presets: ['react-hmre']}),
   postCss(),
   extractCss('main.css'),
-  sourceMaps('eval'),
-  devServer({
-    contentBase: 'web',
-    host: '0.0.0.0',
-    port: config.server.port - 1,
-  }),
-  devServer.proxy({
-    '/socket.io': {
-      target: `ws://localhost:${config.server.port}`,
-      ws: true
-    },
-    '**' : `http://localhost:${config.server.port}`
-  })
+  sourceMaps('eval')
 ];
 
 const production = [
@@ -49,9 +37,14 @@ const production = [
 ];
 
 module.exports = createConfig([
+  name('client'),
   common,
   entryPoint({
-    main: [path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')],
+    main: [
+      'react-hot-loader/patch',
+      'webpack-hot-middleware/client',
+      path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')
+    ],
     vendors: [
       'autobind-decorator', 'bluebird', 'classnames', 'ftchr', 'junction-normalizr-decorator',
       'junction-proptype-decorator', 'lodash.isfunction', 'date-fns/distance_in_words_to_now',
@@ -63,6 +56,7 @@ module.exports = createConfig([
   }),
   setOutput({publicPath: '/'}),
   addPlugins([
+    new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.CommonsChunkPlugin({name: 'vendors', minChunks: Infinity}),
     new WebpackMd5Hash(),
     new ManifestPlugin({fileName: 'asset-manifest.json'}),

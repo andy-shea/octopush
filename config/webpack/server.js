@@ -2,13 +2,14 @@ const path = require('path');
 const config = require('config');
 const {createConfig, addPlugins, customConfig, entryPoint, env, setOutput, sourceMaps, webpack} = require('@webpack-blocks/webpack2');
 const {common, ROOT_PATH} = require('./blocks/common');
+const name = require('./blocks/name');
 const node = require('./blocks/node');
 const image = require('./blocks/image');
 const babel = require('./blocks/babel');
 const postCss = require('./blocks/postcss');
 
 const development = [
-  setOutput({path: path.resolve(ROOT_PATH, 'build')}),
+  setOutput({path: path.resolve(ROOT_PATH, 'build'), libraryTarget: 'commonjs2'}),
   sourceMaps()
 ];
 
@@ -18,8 +19,9 @@ const production = [
 ];
 
 module.exports = createConfig([
+  name('server'),
   common,
-  entryPoint({app: [path.resolve(ROOT_PATH, 'src', 'presentation', 'server')]}),
+  entryPoint({main: [path.resolve(ROOT_PATH, 'src', 'presentation', 'server')]}),
   node(),
   setOutput({filename: 'server.js'}),
   babel(),

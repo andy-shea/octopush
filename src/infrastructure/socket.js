@@ -1,17 +1,18 @@
-import logger from './logger';
-import socketio from 'socket.io';
+const logger = require('./logger');
+const socketio = require('socket.io');
 
 let socket;
 
-export function configure(server) {
+function configure(server) {
   socket = socketio(server);
   socket.on('connection', conn => {
     logger.info(`Socket connection from ${conn.handshake.headers.host}`);
   });
 }
 
-export function io() {
+function io() {
   return socket;
 }
 
-export default {configure, io};
+exports.configure = configure;
+exports.io = io;

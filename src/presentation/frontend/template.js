@@ -7,6 +7,21 @@ import styles from './ui/Header.css';
 import loginStyles from './users/Login.css';
 import logo from './ui/octopus.png';
 
+import '!file-loader?name=[name].[ext]!./ui/favicons/android-chrome-192x192.png';
+import '!file-loader?name=[name].[ext]!./ui/favicons/android-chrome-512x512.png';
+import appleTouchIcon from '!file-loader?name=[name].[ext]!./ui/favicons/apple-touch-icon.png';
+import '!file-loader?name=[name].[ext]!./ui/favicons/browserconfig.xml';
+import favicon16 from '!file-loader?name=[name].[ext]!./ui/favicons/favicon-16x16.png';
+import favicon32 from '!file-loader?name=[name].[ext]!./ui/favicons/favicon-32x32.png';
+import '!file-loader?name=[name].[ext]!./ui/favicons/favicon.ico';
+import manifest from '!file-loader?name=[name].[ext]!./ui/favicons/manifest.json';
+import '!file-loader?name=[name].[ext]!./ui/favicons/mstile-70x70.png';
+import '!file-loader?name=[name].[ext]!./ui/favicons/mstile-144x144.png';
+import '!file-loader?name=[name].[ext]!./ui/favicons/mstile-150x150.png';
+import '!file-loader?name=[name].[ext]!./ui/favicons/mstile-310x150.png';
+import '!file-loader?name=[name].[ext]!./ui/favicons/mstile-310x310.png';
+import safariPinnedTab from '!file-loader?name=[name].[ext]!./ui/favicons/safari-pinned-tab.svg';
+
 function renderLayout(body) {
   return `
 <!doctype html>
@@ -17,11 +32,11 @@ function renderLayout(body) {
   <meta name="viewport" content="width=device-width">
   <link href='//fonts.googleapis.com/css?family=Inconsolata:400,700|Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="/${includeAsset('main.css')}">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
-  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="apple-touch-icon" sizes="180x180" href="${appleTouchIcon}">
+  <link rel="icon" type="image/png" href="${favicon32}" sizes="32x32">
+  <link rel="icon" type="image/png" href="${favicon16}" sizes="16x16">
+  <link rel="manifest" href="${manifest}">
+  <link rel="mask-icon" href="${safariPinnedTab}" color="#5bbad5">
   <meta name="theme-color" content="#ffffff">
   ${includeChunkManifest()}
 </head>
