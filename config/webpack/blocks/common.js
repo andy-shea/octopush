@@ -30,7 +30,8 @@ exports.common = group([
       new webpack.optimize.UglifyJsPlugin({
         sourceMap: (process.env.NODE_ENV === 'development'),
         compress: {screw_ie8: true},
-        mangle: {except: ['Deploy', 'Server', 'Group', 'Stack', 'User']}
+        mangle: {screw_ie8: true, except: ['Deploy', 'Server', 'Group', 'Stack', 'User']},
+        output: {screw_ie8: true, comments: false}
       })
     ])
   ])

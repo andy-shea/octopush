@@ -3,7 +3,7 @@
 const config = require('config');
 const express = require('express');
 const http = require('http');
-const socket = require('./infrastructure/socket');
+const configureSocket = require('./infrastructure/socket');
 const logger = require('./infrastructure/logger');
 
 const app = express();
@@ -17,12 +17,12 @@ if (process.env.NODE_ENV === 'development') {
   const compiler = webpack(webpackConfig);
   app.use(webpackDevMiddleware(compiler, {quiet: true}));
   app.use(webpackHotMiddleware(compiler.compilers.find(comp => comp.name === 'client')));
-  app.use(webpackHotServerMiddleware(compiler));
+  app.use(webpackHotServerMiddleware(compiler, {chunkName: 'server'}));
 }
 else app.use(require('./presentation/server').default());
 
 const server = http.createServer(app);
-socket.configure(server);
+app.set('socket', configureSocket(server));
 server.listen(config.server.port, config.server.address, () => {
   logger.info(`Frontend server listening on ${server.address().address}:${server.address().port}`);
 });

@@ -4,7 +4,6 @@ import Ansi from 'ansi-to-html';
 import s from 'string';
 import {setData} from 'junction-express-middleware';
 import NotFoundError from '~/domain/NotFoundError';
-import socket from '~/infrastructure/socket';
 import DeployService from '~/application/DeployService';
 import {types} from '../frontend/deploys/actions';
 
@@ -28,14 +27,16 @@ router.get('/:slug?', (req, res, next) => {
   service.loadDeploysAndBranches(slug, page).then(setData(res, next)).catch(handleError(req, res, next));
 });
 
-function emitLine(deploy, line) {
-  socket.io().sockets.emit('octopush.action', {
-    type: types.ADD_LOG_LINE,
-    payload: {
-      deployId: deploy.id,
-      line: convert.toHtml(s(line).escapeHTML().s)
-    }
-  });
+function emitLine(socket) {
+  return (deploy, line) => {
+    socket.sockets.emit('octopush.action', {
+      type: types.ADD_LOG_LINE,
+      payload: {
+        deployId: deploy.id,
+        line: convert.toHtml(s(line).escapeHTML().s)
+      }
+    });
+  };
 }
 
 router.post('/', (req, res, next) => {
@@ -45,7 +46,7 @@ router.post('/', (req, res, next) => {
   if (!branch) return next(HttpError.badRequest('Missing deploy branch'));
   if (!targets) return next(HttpError.badRequest('Missing deploy targets'));
 
-  service.createAndStartDeploy(slug, branch, targets, user, emitLine)
+  service.createAndStartDeploy(slug, branch, targets, user, emitLine(req.app.get('socket')))
       .then(setData(res, next, 201))
       .catch(handleError(req, res, next));
 });

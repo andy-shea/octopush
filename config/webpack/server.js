@@ -21,12 +21,11 @@ const production = [
 module.exports = createConfig([
   name('server'),
   common,
-  entryPoint({main: [path.resolve(ROOT_PATH, 'src', 'presentation', 'server')]}),
+  entryPoint({server: [path.resolve(ROOT_PATH, 'src', 'presentation', 'server')]}),
   node(),
   setOutput({filename: 'server.js'}),
   babel(),
   addPlugins([
-    new webpack.BannerPlugin({banner: "require('source-map-support').install();", raw: true, entryOnly: false}),
     new webpack.BannerPlugin({
       banner: "var promise = require('bluebird');require('babel-runtime/core-js/promise').default = promise;promise.onPossiblyUnhandledRejection(function(error) {throw error});",
       raw: true,

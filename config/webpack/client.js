@@ -32,7 +32,7 @@ const production = [
   }),
   babel(),
   postCss(true),
-  extractCss('main.[chunkhash].css'),
+  extractCss('[name].[chunkhash].css'),
   sourceMaps('source-map')
 ];
 
