@@ -13,6 +13,10 @@ const extractCss = require('./blocks/extract-css');
 const postCss = require('./blocks/postcss');
 
 const development = [
+  entryPoint({main: [
+    'react-hot-loader/patch',
+    'webpack-hot-middleware/client'
+  ]}),
   setOutput({
     path: path.resolve(ROOT_PATH, 'build'),
     filename: '[name].js',
@@ -21,7 +25,8 @@ const development = [
   babel({presets: ['react-hmre']}),
   postCss(),
   extractCss('main.css'),
-  sourceMaps('eval')
+  sourceMaps('eval'),
+  addPlugins([new webpack.HotModuleReplacementPlugin()])
 ];
 
 const production = [
@@ -39,24 +44,8 @@ const production = [
 module.exports = createConfig([
   name('client'),
   common,
-  entryPoint({
-    main: [
-      'react-hot-loader/patch',
-      'webpack-hot-middleware/client',
-      path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')
-    ],
-    vendors: [
-      'autobind-decorator', 'bluebird', 'classnames', 'ftchr', 'junction-normalizr-decorator',
-      'junction-proptype-decorator', 'lodash.isfunction', 'date-fns/distance_in_words_to_now',
-      'normalizr', 'react', 'react-addons-transition-group', 'react-cornerstone/client',
-      'react-cornerstone/common', 'react-custom-scrollbars', 'react-dom', 'react-redux',
-      'react-paginate', 'react-router', 'react-router-redux', 'react-select', 'recompose',
-      'redux', 'redux-auth-wrapper', 'redux-action-creator', 'redux-connect', 'reselect',
-      'string', 'velocity-animate']
-  }),
   setOutput({publicPath: '/'}),
   addPlugins([
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.CommonsChunkPlugin({name: 'vendors', minChunks: Infinity}),
     new WebpackMd5Hash(),
     new ManifestPlugin({fileName: 'asset-manifest.json'}),
@@ -69,5 +58,16 @@ module.exports = createConfig([
   image(true),
   env('development', development),
   env('production', production),
+  entryPoint({
+    main: [path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')],
+    vendors: [
+      'autobind-decorator', 'bluebird', 'classnames', 'ftchr', 'junction-normalizr-decorator',
+      'junction-proptype-decorator', 'lodash.isfunction', 'date-fns/distance_in_words_to_now',
+      'normalizr', 'react', 'react-addons-transition-group', 'react-cornerstone/client',
+      'react-cornerstone/common', 'react-custom-scrollbars', 'react-dom', 'react-redux',
+      'react-paginate', 'react-router', 'react-router-redux', 'react-select', 'recompose',
+      'redux', 'redux-auth-wrapper', 'redux-action-creator', 'redux-connect', 'reselect',
+      'string', 'velocity-animate']
+  }),
   actionCreator(path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend')) // must come before babel transpilation
 ]);
