@@ -1,16 +1,16 @@
-require('reflect-metadata');
-const express = require('express');
-const createApiRouter = require('./api').default;
-const body = require('body-parser');
-const helmet = require('helmet');
-const {junctionProvider, junctionFlush} = require('junction-express-middleware');
-const configure = require('./configure').default;
-const middleware = require('./middleware').default;
-const provideInjector = require('./injector').default;
-const session = require('./session').default;
-const em = require('../domain/entityManager').default;
-const error = require('./error').default;
-require('../infrastructure/plugins');
+import 'reflect-metadata';
+import express from 'express';
+import createApiRouter from './api';
+import body from 'body-parser';
+import helmet from 'helmet';
+import {junctionProvider, junctionFlush} from 'junction-express-middleware';
+import configure from './configure';
+import middleware from './middleware';
+import provideInjector from './injector';
+import session from './session';
+import em from '../domain/entityManager';
+import error from './error';
+import '../infrastructure/plugins';
 
 function serverMiddleware() {
   const router = express.Router();
@@ -31,4 +31,4 @@ function serverMiddleware() {
 }
 
 
-module.exports = serverMiddleware;
+export default serverMiddleware;
