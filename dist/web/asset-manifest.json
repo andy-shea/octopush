@@ -1,9 +1,11 @@
 {
-  "main.css": "main.7231138b661801e1728c.css",
-  "main.css.map": "main.7231138b661801e1728c.css.map",
-  "main.js": "main.7231138b661801e1728c.js",
-  "main.js.map": "main.7231138b661801e1728c.js.map",
+  "main.css": "main.9ad75c6bc50fe04b22c5.css",
+  "main.css.map": "main.9ad75c6bc50fe04b22c5.css.map",
+  "main.js": "main.9ad75c6bc50fe04b22c5.js",
+  "main.js.map": "main.9ad75c6bc50fe04b22c5.js.map",
   "octopus.png": "010af7eed9a70abca68adbbb2bc0a49b.png",
-  "vendors.js": "vendors.36e8bc24294fd1330cee.js",
-  "vendors.js.map": "vendors.36e8bc24294fd1330cee.js.map"
+  "runtime.js": "runtime.d41d8cd98f00b204e980.js",
+  "runtime.js.map": "runtime.d41d8cd98f00b204e980.js.map",
+  "vendors.js": "vendors.1be320053dadd6dafdd6.js",
+  "vendors.js.map": "vendors.1be320053dadd6dafdd6.js.map"
 }
