@@ -25,7 +25,7 @@ const development = [
   babel({presets: ['react-hmre']}),
   postCss(),
   extractCss('main.css'),
-  sourceMaps('eval'),
+  sourceMaps('inline-source-map'),
   addPlugins([new webpack.HotModuleReplacementPlugin()])
 ];
 
