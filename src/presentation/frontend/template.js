@@ -1,3 +1,5 @@
+import fs from 'fs';
+import glob from 'glob';
 import serialize from 'serialize-javascript';
 import {HttpError} from 'react-cornerstone/server';
 import cx from 'classnames';
@@ -20,6 +22,11 @@ import './ui/favicons/mstile-144x144.png';
 import './ui/favicons/mstile-150x150.png';
 import './ui/favicons/mstile-310x150.png';
 import './ui/favicons/mstile-310x310.png';
+
+let webpackLoader = '';
+if (process.env.NODE_ENV === 'production') {
+  webpackLoader = fs.readFileSync(glob.sync('./dist/web/runtime.*.js').pop(), 'utf8');
+}
 
 function renderLayout(body) {
   return `
@@ -51,6 +58,7 @@ export function render(html, state) {
 ${icons}
 <div id="app">${html}</div>
 <script>
+  ${webpackLoader}
   window.__INITIAL_STATE__ = ${serialize(state, {isJSON: true})};
 </script>
 <script src="/${includeAsset('vendors.js')}"></script>

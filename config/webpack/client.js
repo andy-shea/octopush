@@ -4,6 +4,7 @@ const {createConfig, addPlugins, entryPoint, env, setOutput, sourceMaps, webpack
 const WebpackMd5Hash = require('webpack-md5-hash');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
+const NameAllModulesPlugin = require('name-all-modules-plugin');
 const {common, ROOT_PATH} = require('./blocks/common');
 const actionCreator = require('./blocks/action-creator');
 const name = require('./blocks/name');
@@ -38,21 +39,28 @@ const production = [
   babel(),
   postCss(true),
   extractCss('[name].[chunkhash].css'),
-  sourceMaps('source-map')
+  sourceMaps('source-map'),
+  addPlugins([
+    new webpack.optimize.CommonsChunkPlugin({name: 'runtime'}),
+    new ManifestPlugin({fileName: 'asset-manifest.json'}),
+    new ChunkManifestPlugin({
+      filename: 'chunk-manifest.json',
+      manifestVariable: '__WEBPACK_MANIFEST__'
+    })
+  ])
 ];
 
+// caching strategy: https://medium.com/webpack/predictable-long-term-caching-with-webpack-d3eee1d3fa31
 module.exports = createConfig([
   name('client'),
   common,
   setOutput({publicPath: '/'}),
   addPlugins([
+    new webpack.NamedModulesPlugin(),
+    new webpack.NamedChunksPlugin(c => c.name || c.modules.map(m => path.relative(m.context, m.request)).join('_')),
     new webpack.optimize.CommonsChunkPlugin({name: 'vendors', minChunks: Infinity}),
+    new NameAllModulesPlugin(),
     new WebpackMd5Hash(),
-    new ManifestPlugin({fileName: 'asset-manifest.json'}),
-    new ChunkManifestPlugin({
-      filename: 'chunk-manifest.json',
-      manifestVariable: '__WEBPACK_MANIFEST__'
-    }),
     new webpack.NoEmitOnErrorsPlugin()
   ]),
   image(true),
