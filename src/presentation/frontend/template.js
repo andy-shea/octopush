@@ -6,21 +6,20 @@ import icons from './ui/icons.svg';
 import styles from './ui/Header.css';
 import loginStyles from './users/Login.css';
 import logo from './ui/octopus.png';
-
-import '!file-loader?name=[name].[ext]!./ui/favicons/android-chrome-192x192.png';
-import '!file-loader?name=[name].[ext]!./ui/favicons/android-chrome-512x512.png';
-import appleTouchIcon from '!file-loader?name=[name].[ext]!./ui/favicons/apple-touch-icon.png';
-import '!file-loader?name=[name].[ext]!./ui/favicons/browserconfig.xml';
-import favicon16 from '!file-loader?name=[name].[ext]!./ui/favicons/favicon-16x16.png';
-import favicon32 from '!file-loader?name=[name].[ext]!./ui/favicons/favicon-32x32.png';
-import '!file-loader?name=[name].[ext]!./ui/favicons/favicon.ico';
-import manifest from '!file-loader?name=[name].[ext]!./ui/favicons/manifest.json';
-import '!file-loader?name=[name].[ext]!./ui/favicons/mstile-70x70.png';
-import '!file-loader?name=[name].[ext]!./ui/favicons/mstile-144x144.png';
-import '!file-loader?name=[name].[ext]!./ui/favicons/mstile-150x150.png';
-import '!file-loader?name=[name].[ext]!./ui/favicons/mstile-310x150.png';
-import '!file-loader?name=[name].[ext]!./ui/favicons/mstile-310x310.png';
-import safariPinnedTab from '!file-loader?name=[name].[ext]!./ui/favicons/safari-pinned-tab.svg';
+import appleTouchIcon from './ui/favicons/apple-touch-icon.png';
+import favicon16 from './ui/favicons/favicon-16x16.png';
+import favicon32 from './ui/favicons/favicon-32x32.png';
+import manifest from './ui/favicons/manifest.json';
+import safariPinnedTab from './ui/favicons/safari-pinned-tab.svg';
+import './ui/favicons/android-chrome-192x192.png';
+import './ui/favicons/android-chrome-512x512.png';
+import './ui/favicons/browserconfig.xml';
+import './ui/favicons/favicon.ico';
+import './ui/favicons/mstile-70x70.png';
+import './ui/favicons/mstile-144x144.png';
+import './ui/favicons/mstile-150x150.png';
+import './ui/favicons/mstile-310x150.png';
+import './ui/favicons/mstile-310x310.png';
 
 function renderLayout(body) {
   return `

@@ -5,6 +5,7 @@ function image(emitFile) {
     module: {
       rules: [{
         test: /\.(jpe?g|png|gif)$/i,
+        exclude: /ui\/favicons/,
         use: [
           {
             loader: 'file-loader',

@@ -5,16 +5,19 @@ const {common, ROOT_PATH} = require('./blocks/common');
 const name = require('./blocks/name');
 const node = require('./blocks/node');
 const image = require('./blocks/image');
+const favicon = require('./blocks/favicon');
 const babel = require('./blocks/babel');
 const postCss = require('./blocks/postcss');
 
 const development = [
   setOutput({path: path.resolve(ROOT_PATH, 'build'), libraryTarget: 'commonjs2'}),
+  favicon(),
   sourceMaps()
 ];
 
 const production = [
   setOutput({path: path.resolve(ROOT_PATH, 'dist')}),
+  favicon('./web/'),
   sourceMaps('source-map')
 ];
 
@@ -37,7 +40,7 @@ module.exports = createConfig([
     module: {
       rules: [
         {test: /\.css$/, include: /node_modules/, loader: 'css-loader'},
-        {test: /\.svg$/, exclude: /node_modules/, loader: 'raw-loader'},
+        {test: /\.svg$/, exclude: [/node_modules/, /ui\/favicons/], loader: 'raw-loader'},
       ]
     }
   }),
