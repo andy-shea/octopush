@@ -10,6 +10,7 @@ const babel = require('./blocks/babel');
 const postCss = require('./blocks/postcss');
 
 const development = [
+  entryPoint({server: [path.resolve(ROOT_PATH, 'src', 'presentation', 'server')]}),
   setOutput({path: path.resolve(ROOT_PATH, 'build'), libraryTarget: 'commonjs2'}),
   favicon(),
   sourceMaps()
@@ -24,9 +25,9 @@ const production = [
 module.exports = createConfig([
   name('server'),
   common,
-  entryPoint({server: [path.resolve(ROOT_PATH, 'src', 'presentation', 'server')]}),
-  node(),
+  entryPoint({server: [path.resolve(ROOT_PATH, 'src')]}),
   setOutput({filename: 'server.js'}),
+  node(),
   babel(),
   addPlugins([
     new webpack.BannerPlugin({
