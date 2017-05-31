@@ -9,7 +9,7 @@
   },
   "scripts": {
     "lint": "eslint src/ --ext '.js,.jsx' && stylelint src/**/*.css",
-    "dev": "node ./src",
+    "dev": "NODE_ENV=development node ./src",
     "prebuild": "rimraf dist && mkdir -p dist/web",
     "build": "NODE_ENV=production webpack"
   },

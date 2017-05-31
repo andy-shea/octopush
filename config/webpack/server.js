@@ -17,6 +17,7 @@ const development = [
 ];
 
 const production = [
+  entryPoint({server: [path.resolve(ROOT_PATH, 'src')]}),
   setOutput({path: path.resolve(ROOT_PATH, 'dist')}),
   favicon('./web/'),
   sourceMaps('source-map')
@@ -25,7 +26,6 @@ const production = [
 module.exports = createConfig([
   name('server'),
   common,
-  entryPoint({server: [path.resolve(ROOT_PATH, 'src')]}),
   setOutput({filename: 'server.js'}),
   node(),
   babel(),
