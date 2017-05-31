@@ -5,7 +5,7 @@ A GUI for Capistrano
 ## Install
 
 ```
-git clone https://github.com/octahedron/octopush.git
+git clone https://github.com/andy-shea/octopush.git
 cd octopush
 yarn
 ```

@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/octahedron/octopush"
+    "url": "git://github.com/andy-shea/octopush"
   },
   "scripts": {
     "lint": "eslint src/ --ext '.js,.jsx' && stylelint src/**/*.css",
