@@ -9,7 +9,7 @@ function DeployList({isLoading, pagination, deploys, users, toggleDeployDetails,
   if (stack) {
     const paginationControl = (deploys && pagination.totalPages > 0) ? (
       <nav className={deployPagination}>
-        <ReactPaginate pageNum={pagination.totalPages} marginPagesDisplayed={2} pageRangeDisplayed={5} clickCallback={loadDeploys}/>
+        <ReactPaginate pageNum={1} marginPagesDisplayed={2} pageRangeDisplayed={5} clickCallback={loadDeploys}/>
       </nav>
     ) : null;
     return (

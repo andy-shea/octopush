@@ -1,42 +1,28 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {routerActions} from 'react-router-redux';
+import compose from 'recompose/compose';
+import lifecycle from 'recompose/lifecycle';
 import {actions} from './actions';
-import {isAuthenticated, getFormState} from './selectors';
+import {getIsAuthenticated, getFormState, getRedirectPath} from './selectors';
 import Login from './Login';
 
-function mapStateToProps(state, {location}) {
+function mapStateToProps(state) {
   return {
-    authenticated: isAuthenticated(state),
+    isAuthenticated: getIsAuthenticated(state),
     formState: getFormState(state),
-    redirect: location.query.redirect || '/'
+    redirectPath: getRedirectPath(state),
+    routesMap: state.location.routesMap
   };
 }
 
-@connect(mapStateToProps, {...actions, replace: routerActions.replace})
-class LoginContainer extends Component {
-
-  static propTypes = {
-    login: PropTypes.func.isRequired,
-    authenticated: PropTypes.bool.isRequired,
-    redirect: PropTypes.string.isRequired,
-    formState: PropTypes.object
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.ensureNotLoggedIn(nextProps);
-  }
-
-  ensureNotLoggedIn(props) {
-    const {authenticated, replace, redirect} = props;
-    if (authenticated) replace(redirect);
-  }
-
-  render() {
-    const {formState, login} = this.props;
-    return <Login formState={formState} login={login}/>;
-  }
+function componentWillReceiveProps({isAuthenticated, redirectAfterLogin, redirectPath, routesMap}) {
+  if (isAuthenticated) redirectAfterLogin(redirectPath, routesMap);
 }
+
+const enhance = compose(
+  connect(mapStateToProps, actions),
+  lifecycle({componentWillReceiveProps})
+);
+
+const LoginContainer = enhance(Login);
 
 export default LoginContainer;

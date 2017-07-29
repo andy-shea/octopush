@@ -9,8 +9,12 @@ export function getAuthenticatedUser(state) {
   return map[authenticatedUser];
 }
 
-export function isAuthenticated(state) {
+export function getIsAuthenticated(state) {
   return !!state.users.authenticatedUser;
+}
+
+export function getRedirectPath(state) {
+  return (state.location.query && state.location.query.redirect) || '/';
 }
 
 function getIsActioning(state) {

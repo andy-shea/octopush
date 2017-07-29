@@ -1,6 +1,6 @@
 import {createSelector} from 'reselect';
 import {getCurrentStackSlug} from '../deploys/selectors';
-import {isAuthenticated} from '../users/selectors';
+import {getIsAuthenticated} from '../users/selectors';
 
 export function isLoaded(state) {
   return state.stacks.loaded;
@@ -27,7 +27,7 @@ export function getGroupEditing(state) {
   return state.stacks.groupEditing;
 }
 
-export const shouldLoadStacks = createSelector([isAuthenticated, isLoaded], (authenticated, loaded) => authenticated && !loaded);
+export const shouldLoadStacks = createSelector([getIsAuthenticated, isLoaded], (authenticated, loaded) => authenticated && !loaded);
 
 function getStackIsSaving(state) {
   return state.stacks.stackIsSaving;

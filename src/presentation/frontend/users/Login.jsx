@@ -13,7 +13,7 @@ const form = configureForm(['email', 'password'], ({login, form: {email, passwor
   if (email && password) login({username: email, password});
 });
 
-function Login({form: {email, password}, updateEmail, updatePassword, submitForm, formState: {error, isActioning}}) {
+export function Login({form: {email, password}, updateEmail, updatePassword, submitForm, formState: {error, isActioning}}) {
   return (
     <div className={root}>
       <Header className={cx(header, centre)}>

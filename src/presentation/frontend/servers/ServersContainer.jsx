@@ -14,7 +14,7 @@ function mapStateToProps(state) {
   };
 }
 
-@connect(mapStateToProps, {...actions})
+@connect(mapStateToProps, actions)
 class ServersContainer extends Component {
 
   static propTypes = {

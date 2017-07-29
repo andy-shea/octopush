@@ -1,9 +1,9 @@
 import {types} from './actions';
-import {types as deployTypes} from '../deploys/actions';
+import {types as routerTypes} from '../router/routes';
 
 function reducer(state = {map: {}}, action) {
   switch (action.type) {
-    case deployTypes.LOAD_DEPLOYS_BRANCHES_SUCCESS: return {...state, map: {...state.map, ...action.response.entities.users}};
+    case routerTypes.STACK_SUCCESS: return {...state, map: {...state.map, ...action.response.entities.users}};
 
     case types.LOGIN: return {...state, isActioning: true, error: undefined};
 

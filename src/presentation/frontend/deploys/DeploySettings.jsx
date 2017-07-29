@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
-import {withRouter} from 'react-router';
 import cx from 'classnames';
 import Button from '../ui/Button';
 import configureForm from '../utils/form';
@@ -23,8 +21,8 @@ function onSubmit({form, stack, startDeploy}) {
 }
 
 const handlers = {
-  selectStack({router}) {
-    return ({value}) => router.push(`/${value}`);
+  selectStack({loadDeploys}) {
+    return ({value}) => loadDeploys(value);
   },
   updateBranch({updateForm}) {
     return ({value}) => {
@@ -39,7 +37,7 @@ const handlers = {
 };
 
 const initialState = {branch: undefined, targets: undefined};
-const form = compose(withRouter, configureForm(['branch', 'targets'], onSubmit, {initialState, shouldResetFormOnProps, handlers}));
+const form = configureForm(['branch', 'targets'], onSubmit, {initialState, shouldResetFormOnProps, handlers});
 
 function DeploySettings({formState, stack, stacks, servers, branches, form: {branch, targets}, updateBranch, updateTargets, submitForm, selectStack}) {
   return (
@@ -65,7 +63,6 @@ DeploySettings.propTypes = {
   submitForm: PropTypes.func.isRequired,
   updateBranch: PropTypes.func.isRequired,
   updateTargets: PropTypes.func.isRequired,
-  router: PropTypes.object.isRequired,
   startDeploy: PropTypes.func.isRequired,
   selectStack: PropTypes.func.isRequired,
   branches: PropTypes.array,

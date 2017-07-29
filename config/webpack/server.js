@@ -24,6 +24,7 @@ const production = [
 ];
 
 module.exports = createConfig([
+  entryPoint({server: ['babel-polyfill']}),
   name('server'),
   common,
   setOutput({filename: 'server.js'}),

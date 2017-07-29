@@ -8,23 +8,25 @@
     "node": true,
     "jquery": true
   },
-  "ecmaFeatures": {
-    "arrowFunctions": true,
-    "blockBindings": true,
-    "classes": true,
-    "defaultParams": true,
-    "destructuring": true,
-    "forOf": true,
-    "generators": false,
-    "modules": true,
-    "objectLiteralComputedProperties": true,
-    "objectLiteralDuplicateProperties": false,
-    "objectLiteralShorthandMethods": true,
-    "objectLiteralShorthandProperties": true,
-    "spread": true,
-    "superInFunctions": true,
-    "templateStrings": true,
-    "jsx": true
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "arrowFunctions": true,
+      "blockBindings": true,
+      "classes": true,
+      "defaultParams": true,
+      "destructuring": true,
+      "forOf": true,
+      "generators": false,
+      "objectLiteralComputedProperties": true,
+      "objectLiteralDuplicateProperties": false,
+      "objectLiteralShorthandMethods": true,
+      "objectLiteralShorthandProperties": true,
+      "spread": true,
+      "superInFunctions": true,
+      "templateStrings": true,
+      "jsx": true
+    }
   },
   "rules": {
     "strict": [2, "never"],
@@ -99,7 +101,10 @@
     "wrap-iife": [2, "any"],
     "yoda": 2,
 
-    "indent": [2, 2, {"SwitchCase": 1}],
+    "indent": [2, 2, {
+      "SwitchCase": 1,
+      "MemberExpression": 2
+    }],
     "brace-style": [2,
       "stroustrup", {
       "allowSingleLine": true
@@ -134,7 +139,7 @@
     "no-extra-parens": [2, "functions"],
     "no-underscore-dangle": 0,
     "one-var": [2, "never"],
-    "padded-blocks": [2, "never"],
+    "padded-blocks": [2, {"blocks": "never", "switches": "never", "classes": "always"}],
     "semi": [2, "always"],
     "semi-spacing": [2, {
       "before": false,
@@ -142,7 +147,11 @@
     }],
     "keyword-spacing": 2,
     "space-before-blocks": 2,
-    "space-before-function-paren": [2, "never"],
+    "space-before-function-paren": [2, {
+      "anonymous": "never",
+      "named": "never",
+      "asyncArrow": "always"
+    }],
     "space-infix-ops": 2,
     "spaced-comment": [2, "always"],
 

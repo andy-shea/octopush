@@ -17,12 +17,12 @@ function mapStateToProps(state) {
   };
 }
 
-@connect(mapStateToProps, {...actions})
-class DeploysContainer extends Component {
+@connect(mapStateToProps, actions)
+class DeploysListContainer extends Component {
 
   static propTypes = {
     toggleDeployDetails: PropTypes.func.isRequired,
-    loadDeploysAndBranches: PropTypes.func.isRequired,
+    loadDeploys: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
     currentStack: PropTypes.object,
     deploys: PropTypes.array,
@@ -32,8 +32,9 @@ class DeploysContainer extends Component {
 
   @autobind
   loadDeploys({selected}) {
-    const {currentStack: {slug}, loadDeploysAndBranches} = this.props;
-    loadDeploysAndBranches({slug, page: selected + 1});
+    const {currentStack: {slug}, loadDeploys} = this.props;
+    console.log(slug, selected + 1);
+    loadDeploys(slug, selected + 1);
   }
 
   @autobind
@@ -52,4 +53,4 @@ class DeploysContainer extends Component {
   }
 }
 
-export default DeploysContainer;
+export default DeploysListContainer;

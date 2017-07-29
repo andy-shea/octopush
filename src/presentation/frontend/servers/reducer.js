@@ -3,9 +3,9 @@ import {types as userActionTypes} from '../users/actions';
 
 function reducer(state = {map: {}, loaded: false}, action) {
   switch (action.type) {
-    case userActionTypes.LOGIN_SUCCESS:
-    case types.LOAD_SERVERS_SUCCESS:
+    case userActionTypes.LOGIN_SUCCESS: {
       return {...state, map: {...state.map, ...action.response.entities.servers}, loaded: true};
+    }
 
     case types.EDIT_SERVER: {
       const {server} = action.payload;

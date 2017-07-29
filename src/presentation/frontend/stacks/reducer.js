@@ -9,9 +9,9 @@ function mergeStacks(state, action) {
 
 function reducer(state = {map: {}, loaded: false}, action) {
   switch (action.type) {
-    case userActionTypes.LOGIN_SUCCESS:
-    case types.LOAD_STACKS_SUCCESS:
+    case userActionTypes.LOGIN_SUCCESS: {
       return {...state, map: {...state.map, ...action.response.entities.stacks}, loaded: true};
+    }
 
     case types.CREATE_STACK: return {...state, stackEditing: true};
 

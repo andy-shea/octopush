@@ -15,6 +15,7 @@ const postCss = require('./blocks/postcss');
 
 const development = [
   entryPoint({main: [
+    'babel-polyfill',
     'react-hot-loader/patch',
     'webpack-hot-middleware/client'
   ]}),
@@ -31,6 +32,7 @@ const development = [
 ];
 
 const production = [
+  entryPoint({main: ['babel-polyfill']}),
   setOutput({
     path: path.resolve(ROOT_PATH, 'dist', 'web'),
     filename: '[name].[chunkhash].js',
@@ -53,6 +55,7 @@ const production = [
 // caching strategy: https://medium.com/webpack/predictable-long-term-caching-with-webpack-d3eee1d3fa31
 module.exports = createConfig([
   name('client'),
+  actionCreator(path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend')),
   common,
   setOutput({publicPath: '/'}),
   addPlugins([
@@ -70,12 +73,11 @@ module.exports = createConfig([
     main: [path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')],
     vendors: [
       'autobind-decorator', 'bluebird', 'classnames', 'ftchr', 'junction-normalizr-decorator',
-      'junction-proptype-decorator', 'lodash.isfunction', 'date-fns/distance_in_words_to_now',
-      'normalizr', 'react', 'react-addons-transition-group', 'react-cornerstone/client',
+      'junction-proptype-decorator', 'history', 'lodash.isfunction', 'date-fns/distance_in_words_to_now',
+      'normalizr', 'query-string', 'react', 'react-addons-transition-group', 'react-cornerstone/client',
       'react-cornerstone/common', 'react-custom-scrollbars', 'react-dom', 'react-redux',
-      'react-paginate', 'react-router', 'react-router-redux', 'react-select', 'recompose',
-      'redux', 'redux-auth-wrapper', 'redux-action-creator', 'redux-connect', 'reselect',
+      'react-paginate', 'react-select', 'react-universal-component', 'recompose',
+      'redux', 'redux-action-creator', 'redux-first-router', 'reselect',
       'string', 'velocity-animate']
-  }),
-  actionCreator(path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend')) // must come before babel transpilation
+  })
 ]);

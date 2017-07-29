@@ -6,11 +6,11 @@ import withHandlers from 'recompose/withHandlers';
 import cx from 'classnames';
 import 'normalize.css/normalize.css';
 import 'react-select/dist/react-select.css';
-import Menu from './menu/Menu';
-import {container, pushed} from './menu/Menu.css';
-import './base.css';
-import './helpers.css';
-import './ReactSelect.css';
+import Menu from './ui/menu/Menu';
+import {container, pushed} from './ui/menu/Menu.css';
+import './ui/base.css';
+import './ui/helpers.css';
+import './ui/ReactSelect.css';
 
 const handlers = {
   openPane: ({updateMenu}) => settingsPane => {
@@ -27,19 +27,18 @@ const enhance = compose(
   withHandlers(handlers)
 );
 
-function Layout({isAuthenticated, children, toggleMenu, menu: {isExpanded, settingsPane}, openPane}) {
+function App({children, toggleMenu, menu: {isExpanded, settingsPane}, openPane}) {
   return (
     <div>
       <div id="container" className={cx(container, {[pushed]: isExpanded})}>
         {children}
       </div>
-      {isAuthenticated && <Menu toggleMenu={toggleMenu} isExpanded={isExpanded} settingsPane={settingsPane} openPane={openPane}/>}
+      <Menu toggleMenu={toggleMenu} isExpanded={isExpanded} settingsPane={settingsPane} openPane={openPane}/>
     </div>
   );
 }
 
-Layout.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
+App.propTypes = {
   children: PropTypes.node.isRequired,
   toggleMenu: PropTypes.func.isRequired,
   openPane: PropTypes.func.isRequired,
@@ -49,4 +48,4 @@ Layout.propTypes = {
   })
 };
 
-export default enhance(Layout);
+export default enhance(App);

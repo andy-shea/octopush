@@ -1,4 +1,5 @@
 import {types} from './actions';
+import {types as routerTypes} from '../router/routes';
 
 function updateDeploy(state, action, prop, value) {
   const {deploy} = action.payload;
@@ -9,19 +10,19 @@ function updateDeploy(state, action, prop, value) {
 
 function reducer(state = {map: {}}, action) {
   switch (action.type) {
-    case types.LOAD_DEPLOYS_BRANCHES: {
+    case routerTypes.STACK: {
       if (state.currentStackSlug !== action.payload.slug) {
         return {map: {}, pagination: undefined, branches: [], currentStackSlug: action.payload.slug, isLoading: true};
       }
       return {...state, map: {}, pagination: {...state.pagination, deploys: []}, isLoading: true};
     }
 
-    case types.LOAD_DEPLOYS_BRANCHES_SUCCESS: {
+    case routerTypes.STACK_SUCCESS: {
       const {result: {pagination, branches, slug}, entities: {deploys}} = action.response;
       return {...state, map: deploys, pagination, branches, currentStackSlug: slug, isLoading: false};
     }
 
-    case types.LOAD_DEPLOYS_BRANCHES_FAIL: return {...state, isLoading: false};
+    case routerTypes.STACK_FAIL: return {...state, isLoading: false};
 
     case types.TOGGLE_DEPLOY_DETAILS: return updateDeploy(state, action, 'isExpanded', !action.payload.deploy.isExpanded);
 
