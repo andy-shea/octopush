@@ -8,7 +8,7 @@ function BranchSelect({branches, selectBranch, selectedBranch}) {
   const branchOptions = branches && branches.map(branch => ({value: branch, label: branch}));
   return (
     <Select name="branch" instanceId="branch" clearable={false} options={branchOptions} placeholder="branch"
-        className={cx(deploySelect, branchSelect)} value={selectedBranch} onChange={selectBranch}/>
+      className={cx(deploySelect, branchSelect)} value={selectedBranch} onChange={selectBranch}/>
   );
 }
 

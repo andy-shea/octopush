@@ -11,7 +11,7 @@ function StackSelect({stacks, selectStack, selected}) {
 
   return (
     <Select name="stack" instanceId="stack" clearable={false} options={stackOptions}
-        className={root} value={selected && selected.slug} onChange={selectStack}/>
+      className={root} value={selected && selected.slug} onChange={selectStack}/>
   );
 }
 

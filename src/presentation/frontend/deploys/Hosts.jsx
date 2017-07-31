@@ -14,9 +14,9 @@ function viewDiff(e) {
 
 function renderDiff(revisionFrom, revisionTo, diff) {
   const revChange = revisionFrom && `[${revisionFrom} → ${revisionTo}]`;
-  return diff ?
-      <a className={rev} href={diffUrl(diff, revisionFrom, revisionTo)} onClick={viewDiff}>{revChange}</a> :
-      <span className={rev}>{revChange}</span>;
+  return diff
+    ? <a className={rev} href={diffUrl(diff, revisionFrom, revisionTo)} onClick={viewDiff}>{revChange}</a>
+    : <span className={rev}>{revChange}</span>;
 }
 
 function Hosts({hosts, diff}) { // eslint-disable-line react/no-multi-comp

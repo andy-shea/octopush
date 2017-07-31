@@ -5,25 +5,31 @@ import DeployRow from './DeployRow';
 import PageLoader from '../ui/PageLoader';
 import {deployPagination, pageLoader} from './DeployList.css';
 
+function renderPaginationControl(deploys, {totalPages, page}, loadDeploys) {
+  if (!deploys || totalPages === 1) return null;
+  return (
+    <nav className={deployPagination}>
+      <ReactPaginate initialPage={page - 1} pageCount={totalPages} marginPagesDisplayed={2}
+        pageRangeDisplayed={5} onPageChange={loadDeploys} disableInitialCallback/>
+    </nav>
+  );
+}
+
 function DeployList({isLoading, pagination, deploys, users, toggleDeployDetails, stack, loadDeploys}) {
   if (stack) {
-    const paginationControl = (deploys && pagination.totalPages > 1) ? (
-      <nav className={deployPagination}>
-        <ReactPaginate initialPage={pagination.page - 1} pageCount={pagination.totalPages} marginPagesDisplayed={2}
-          pageRangeDisplayed={5} onPageChange={loadDeploys} disableInitialCallback/>
-      </nav>
-    ) : null;
     return (
       <div>
-        {isLoading ?
-          <PageLoader className={pageLoader}/> :
-          <div>
-            {deploys && deploys.sort((thisDeploy, thatDeploy) => thatDeploy.id - thisDeploy.id).map(deploy =>
-              <DeployRow key={deploy.id} deploy={deploy} user={users[deploy.id]} diff={stack.diff} toggleDeployDetails={toggleDeployDetails}/>
-            )}
-          </div>
+        {isLoading
+          ? <PageLoader className={pageLoader}/>
+          : (
+            <div>
+              {deploys && deploys.sort((thisDeploy, thatDeploy) => thatDeploy.id - thisDeploy.id).map(deploy =>
+                <DeployRow key={deploy.id} deploy={deploy} user={users[deploy.id]} diff={stack.diff} toggleDeployDetails={toggleDeployDetails}/>
+              )}
+            </div>
+          )
         }
-        {paginationControl}
+        {renderPaginationControl(deploys, pagination, loadDeploys)}
       </div>
     );
   }

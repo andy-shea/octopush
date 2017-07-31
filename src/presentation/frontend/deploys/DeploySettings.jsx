@@ -11,7 +11,7 @@ import {button, large, cta} from '../ui/Form.css';
 import {content} from '../ui/Header.css';
 import {deployButton, stackSelectWrap, deploy} from './DeploySettings.css';
 
-function shouldResetFormOnProps({stack, clearTargets}, nextProps) {
+function shouldResetFormOnProps({stack}, nextProps) {
   return (nextProps.stack !== stack);
 }
 

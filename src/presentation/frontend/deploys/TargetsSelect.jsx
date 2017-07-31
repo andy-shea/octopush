@@ -9,7 +9,7 @@ function TargetsSelect({groups, servers, selectedTargets, selectTargets}) {
   const targetOptions = targets.map(target => ({value: target, label: target}));
   return (
     <Select name="targets" instanceId="targets" options={targetOptions} multi placeholder="targets"
-        className={cx(deploySelect, targetsSelect)} value={selectedTargets} onChange={selectTargets}/>
+      className={cx(deploySelect, targetsSelect)} value={selectedTargets} onChange={selectTargets}/>
   );
 }
 
