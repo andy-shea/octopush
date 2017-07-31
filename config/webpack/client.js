@@ -61,7 +61,10 @@ module.exports = createConfig([
   addPlugins([
     new webpack.NamedModulesPlugin(),
     new webpack.NamedChunksPlugin(c => c.name || c.modules.map(m => path.relative(m.context, m.request)).join('_')),
-    new webpack.optimize.CommonsChunkPlugin({name: 'vendors', minChunks: Infinity}),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendors',
+      minChunks: module => module.context && module.context.indexOf('node_modules') !== -1
+    }),
     new NameAllModulesPlugin(),
     new WebpackMd5Hash(),
     new webpack.NoEmitOnErrorsPlugin()
@@ -69,15 +72,5 @@ module.exports = createConfig([
   image(true),
   env('development', development),
   env('production', production),
-  entryPoint({
-    main: [path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')],
-    vendors: [
-      'autobind-decorator', 'bluebird', 'classnames', 'ftchr', 'junction-normalizr-decorator',
-      'junction-proptype-decorator', 'history', 'lodash.isfunction', 'date-fns/distance_in_words_to_now',
-      'normalizr', 'query-string', 'react', 'react-addons-transition-group', 'react-cornerstone/client',
-      'react-cornerstone/common', 'react-custom-scrollbars', 'react-dom', 'react-redux',
-      'react-paginate', 'react-select', 'react-universal-component', 'recompose',
-      'redux', 'redux-action-creator', 'redux-first-router', 'reselect',
-      'string', 'velocity-animate']
-  })
+  entryPoint({main: path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')})
 ]);
