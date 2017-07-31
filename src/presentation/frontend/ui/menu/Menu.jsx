@@ -9,9 +9,9 @@ function Menu({toggleMenu, isExpanded, openPane, settingsPane}) {
   return (
     <div className={menu}>
       <ReactTransitionGroup component="div">
-        {isExpanded ?
-            <MenuContents key="menu-contents" toggleMenu={toggleMenu} settingsPane={settingsPane} openPane={openPane}/> :
-            <MenuButton key="menu-btn" toggleMenu={toggleMenu}/>
+        {isExpanded
+          ? <MenuContents key="menu-contents" toggleMenu={toggleMenu} settingsPane={settingsPane} openPane={openPane}/>
+          : <MenuButton key="menu-btn" toggleMenu={toggleMenu}/>
         }
       </ReactTransitionGroup>
     </div>

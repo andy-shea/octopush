@@ -17,7 +17,7 @@ function mapStateToProps(state) {
   };
 }
 
-@connect(mapStateToProps, {...actions})
+@connect(mapStateToProps, actions)
 class StacksContainer extends Component {
 
   static propTypes = {
@@ -50,10 +50,11 @@ class StacksContainer extends Component {
 
   render() {
     const {formState, servers, stacks, stackEditing, createStack, editStack, removeStack} = this.props;
-    return stackEditing ?
-        <StackDetail formState={formState} stack={stackEditing} servers={servers} saveStack={this.saveStack} editStack={editStack}/> :
-        <StackList createStack={createStack} stacks={stacks} editStack={editStack} removeStack={removeStack}/>;
+    return stackEditing
+      ? <StackDetail formState={formState} stack={stackEditing} servers={servers} saveStack={this.saveStack} editStack={editStack}/>
+      : <StackList createStack={createStack} stacks={stacks} editStack={editStack} removeStack={removeStack}/>;
   }
+
 }
 
 export default StacksContainer;

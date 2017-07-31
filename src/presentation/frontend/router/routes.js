@@ -1,6 +1,6 @@
 import {redirect} from 'redux-first-router';
 import querySerializer from 'query-string';
-import {get} from 'ftchr';
+import {get} from '../utils/fetch';
 import Deploy from '~/domain/deploy/Deploy';
 import {getIsAuthenticated} from '../users/selectors';
 import {async, createRouteTypes, asyncRoute} from 'redux-action-creator';
@@ -18,12 +18,14 @@ function createRoutesConfig(helpers) {
       [types.LOGIN]: '/login',
       ...asyncRoute(types.STACK, '/:stack?', {
         isSecure: true,
-        client: async ({stack, page}) => {
+        client: async ({stack, query}) => {
+          const page = query ? query.page : 1;
           return get(`/api/deploys/${stack || ''}`, {page});
         },
-        server: async ({stack, page}, dispatch, getState, {injector}) => {
+        server: async ({stack}, dispatch, getState, {injector}) => {
           const DeployService = require('~/application/DeployService').default;
-          return injector.get(DeployService).loadDeploysAndBranches(stack, page);
+          const {location: {query = {page: 1}}} = getState();
+          return injector.get(DeployService).loadDeploysAndBranches(stack, query.page);
         },
         schema: {pagination: {deploys: [Deploy.normalizedSchema]}}
       }, helpers)

@@ -11,8 +11,8 @@ function updateDeploy(state, action, prop, value) {
 function reducer(state = {map: {}}, action) {
   switch (action.type) {
     case routerTypes.STACK: {
-      if (state.currentStackSlug !== action.payload.slug) {
-        return {map: {}, pagination: undefined, branches: [], currentStackSlug: action.payload.slug, isLoading: true};
+      if (state.currentStackSlug !== action.payload.stack) {
+        return {map: {}, pagination: undefined, branches: [], currentStackSlug: action.payload.stack, isLoading: true};
       }
       return {...state, map: {}, pagination: {...state.pagination, deploys: []}, isLoading: true};
     }
@@ -58,7 +58,7 @@ function reducer(state = {map: {}}, action) {
       return {...state, map: nextMap, pagination: nextPagination, isDeploying: false};
     }
 
-    case types.LOAD_LOG_SUCCESS: return updateDeploy(state, action, 'log', action.response.contents);
+    case types.LOAD_LOG_SUCCESS: return updateDeploy(state, action, 'log', action.response);
 
     default: return state;
   }

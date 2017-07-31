@@ -17,7 +17,7 @@ const handlers = withHandlers({
   }
 });
 
-function StackRow({stack, editStack, removeStack}) {
+export function StackRow({stack, editStack, removeStack}) {
   const {title, gitPath, isDeleting} = stack;
   const actions = [
     <svg title="Edit" className={cx(svgIcon, iconEdit, middle)} dangerouslySetInnerHTML={{__html: '<use xlink:href="#edit"/>'}} onClick={editStack}/>,

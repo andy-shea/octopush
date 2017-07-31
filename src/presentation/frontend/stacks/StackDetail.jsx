@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
+import withHandlers from 'recompose/withHandlers';
 import Select from 'react-select';
 import cx from 'classnames';
 import configureForm from '../utils/form';
@@ -27,7 +29,10 @@ function initialState({stack}) {
   return {title: '', gitPath: '', diff: '', selectedServers: null};
 }
 
-const form = configureForm(['title', 'gitPath', 'selectedServers', 'diff'], onSubmit, {initialState});
+const enhance = compose(
+  configureForm(['title', 'gitPath', 'selectedServers', 'diff'], onSubmit, {initialState}),
+  withHandlers({editStack: props => () => props.editStack(null)})
+);
 
 function StackDetail({formState, stack, servers, editStack, form: {title, gitPath, selectedServers, diff},
     submitForm, updateTitle, updateGitPath, updateSelectedServers, updateDiff}) {
@@ -41,7 +46,7 @@ function StackDetail({formState, stack, servers, editStack, form: {title, gitPat
           <input className={cx(textField, firstFields)} placeholder="Title" value={title} onChange={updateTitle} autoFocus/>
           <input className={cx(textField, firstFields)} placeholder="Git Path" value={gitPath} onChange={updateGitPath}/>
           <Select name="servers" instanceId="whitelist" options={options} multi placeholder="Server Whitelist" simpleValue
-              className={styles.serversField} value={selectedServers} onChange={updateSelectedServers}/>
+            className={styles.serversField} value={selectedServers} onChange={updateSelectedServers}/>
           <div className={root}>
             <input className={textField} placeholder="Diff URL" value={diff || ''} onChange={updateDiff}/>
             <Button type="submit" isLoading={formState.isSaving}>{stack.id ? 'Save' : 'Add'}</Button>
@@ -73,4 +78,4 @@ StackDetail.propTypes = {
   formState: PropTypes.object
 };
 
-export default form(StackDetail);
+export default enhance(StackDetail);

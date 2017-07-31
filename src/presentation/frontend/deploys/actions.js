@@ -1,4 +1,4 @@
-import {get, post} from 'ftchr';
+import {get, post} from '../utils/fetch';
 import Deploy from '~/domain/deploy/Deploy';
 import {actionCreator, asyncActionCreator, async, createTypes} from 'redux-action-creator';
 import {getDeploys} from './selectors';
@@ -22,7 +22,7 @@ export const actions = {
   },
   loadDeploys: (stack, page = 1) => {
     const action = {type: routerTypes.STACK, payload: {stack}};
-    if (page > 1) action.query = {page};
+    if (page > 1) action.payload.query = {page};
     return action;
   },
   addLogLine: actionCreator(types.ADD_LOG_LINE, 'deploy', 'line'),

@@ -1,4 +1,4 @@
-import {post} from 'ftchr';
+import {post} from '../utils/fetch';
 import Stack from '~/domain/stack/Stack';
 import Server from '~/domain/server/Server';
 import User from '~/domain/user/User';

@@ -1,4 +1,4 @@
-import {get, post, del} from 'ftchr';
+import {get, post, del} from '../utils/fetch';
 import Stack from '~/domain/stack/Stack';
 import {actionCreator, asyncActionCreator, async, createTypes} from 'redux-action-creator';
 

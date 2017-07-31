@@ -4,7 +4,7 @@ import SaveGroupForm from './SaveGroupForm';
 import GroupRow from './GroupRow';
 import {settingsPaneContent} from '../ui/menu/Menu.css';
 
-function Groups({formState, servers, groups, editGroup, removeGroup, saveGroup, groupEditing}) {
+function Groups({formState, servers, stack: {groups}, editGroup, removeGroup, saveGroup, groupEditing}) {
   return (
     <div>
       <h3>Server Groups</h3>
@@ -26,7 +26,9 @@ Groups.propTypes = {
   removeGroup: PropTypes.func.isRequired,
   saveGroup: PropTypes.func.isRequired,
   formState: PropTypes.object,
-  groups: PropTypes.array,
+  stack: PropTypes.shape({
+    groups: PropTypes.array
+  }),
   groupEditing: PropTypes.object
 };
 

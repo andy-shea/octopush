@@ -103,7 +103,9 @@
 
     "indent": [2, 2, {
       "SwitchCase": 1,
-      "MemberExpression": 2
+      "MemberExpression": 2,
+      "FunctionDeclaration": {"body": 1, "parameters": 2},
+      "FunctionExpression": {"body": 1, "parameters": 2}
     }],
     "brace-style": [2,
       "stroustrup", {

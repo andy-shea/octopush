@@ -1,11 +1,28 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import autobind from 'autobind-decorator';
+import compose from 'recompose/compose';
+import withHandlers from 'recompose/withHandlers';
 import {connect} from 'react-redux';
 import {actions} from './actions';
 import Groups from './Groups';
 import {getStackEditing, getGroupEditing, getGroupFormState} from '../stacks/selectors';
 import {getStackEditingServers} from '../servers/selectors';
+
+const handlers = withHandlers({
+  saveGroup: props => (group, name, selectedServers) => {
+    const {stack, updateGroup, editGroup, addGroup} = props;
+    if (group.id) {
+      const currentServers = group.serverIds ? group.serverIds.join(',') : null;
+      if (name !== group.name || selectedServers !== currentServers) {
+        updateGroup({stack, group, name, serverIds: selectedServers});
+      }
+      else editGroup(null);
+    }
+    else addGroup({stack, name, serverIds: selectedServers});
+  },
+
+  removeGroup: ({removeGroup, stack}) => group => {
+    removeGroup({stack, group});
+  }
+});
 
 const mapDispatchToProps = {
   editGroup: actions.editGroup,
@@ -16,52 +33,13 @@ const mapDispatchToProps = {
 
 function mapStateToProps(state) {
   return {
-    stackEditing: getStackEditing(state),
+    stack: getStackEditing(state),
     groupEditing: getGroupEditing(state),
     servers: getStackEditingServers(state),
     formState: getGroupFormState(state)
   };
 }
 
-@connect(mapStateToProps, mapDispatchToProps)
-class GroupsContainer extends Component {
-
-  static propTypes = {
-    editGroup: PropTypes.func.isRequired,
-    updateGroup: PropTypes.func.isRequired,
-    removeGroup: PropTypes.func.isRequired,
-    addGroup: PropTypes.func.isRequired,
-    stackEditing: PropTypes.object.isRequired,
-    formState: PropTypes.object,
-    groupEditing: PropTypes.object,
-    servers: PropTypes.object
-  }
-
-  @autobind
-  saveGroup(group, name, selectedServers) {
-    const {stackEditing, updateGroup, editGroup, addGroup} = this.props;
-    if (group.id) {
-      const currentServers = group.serverIds ? group.serverIds.join(',') : null;
-      if (name !== group.name || selectedServers !== currentServers) {
-        updateGroup({stack: stackEditing, group, name, serverIds: selectedServers});
-      }
-      else editGroup(null);
-    }
-    else addGroup({stack: stackEditing, name, serverIds: selectedServers});
-  }
-
-  @autobind
-  removeGroup(group) {
-    this.props.removeGroup({stack: this.props.stackEditing, group});
-  }
-
-  render() {
-    const {formState, stackEditing, groupEditing, editGroup, servers} = this.props;
-    return (
-      <Groups formState={formState} servers={servers} groupEditing={groupEditing} groups={stackEditing.groups} editGroup={editGroup}
-          removeGroup={this.removeGroup} saveGroup={this.saveGroup}/>
-    );
-  }
-}
+const GroupsContainer = compose(connect(mapStateToProps, mapDispatchToProps), handlers)(Groups);
 
 export default GroupsContainer;

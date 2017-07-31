@@ -10,11 +10,14 @@ import {root, isActive, header, footer, time, user, naviconButton, navicon} from
 
 const handlers = withHandlers({
   toggleDeployDetails: props => e => {
-    props.toggleDeployDetails(props.deploy, e);
+    const {deploy, toggleDeployDetails} = props;
+    if (e.target.classList.contains('toggle-deploy-btn') || !deploy.isExpanded) {
+      toggleDeployDetails(deploy, e);
+    }
   }
 });
 
-function DeployRow({diff, deploy, user: {name}, toggleDeployDetails}) {
+export function DeployRow({diff, deploy, user: {name}, toggleDeployDetails}) {
   return (
     <article className={cx(root, {[isActive]: deploy.isExpanded})} onClick={toggleDeployDetails}>
       <header className={cx(header, 'clearfix')}>

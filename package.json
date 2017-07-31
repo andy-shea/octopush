@@ -35,7 +35,7 @@
     "express": "^4.15.3",
     "express-passport-security": "^0.8.0",
     "express-session": "^1.15.4",
-    "ftchr": "^0.2.2",
+    "ftchr": "^2.1.0",
     "gift": "^0.10.0",
     "github": "^9.2.0",
     "glob": "^7.1.2",

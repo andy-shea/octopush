@@ -15,7 +15,7 @@ function reducer(state = {map: {}, loaded: false}, action) {
 
     case types.CREATE_STACK: return {...state, stackEditing: true};
 
-    case types.EDIT_STACK: return {...state, stackEditing: action.payload.stack.slug};
+    case types.EDIT_STACK: return {...state, stackEditing: action.payload.stack ? action.payload.stack.slug : undefined};
 
     case types.UPDATE_GROUP:
     case types.ADD_GROUP: return {...state, groupIsSaving: true, groupError: undefined};
@@ -67,9 +67,9 @@ function reducer(state = {map: {}, loaded: false}, action) {
     }
 
     case serverActionTypes.REMOVE_SERVER_SUCCESS:
-      return action.response.entities.stacks ?
-          {...state, map: {...state.map, ...action.response.entities.stacks}} :
-          state;
+      return action.response.entities.stacks
+        ? {...state, map: {...state.map, ...action.response.entities.stacks}}
+        : state;
 
     default: return state;
   }

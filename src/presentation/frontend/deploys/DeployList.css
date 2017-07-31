@@ -20,6 +20,10 @@
   overflow: hidden;
 }
 
+.deployPagination a:focus {
+  outline: none;
+}
+
 .deployPagination li:global(.selected) {
   border: 1px solid color($light-grey lightness(-10%));
   background: color($light-grey lightness(+10%));
