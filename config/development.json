@@ -3,7 +3,7 @@
     "address": "0.0.0.0"
   },
   "db": {
-    "host": "postgres",
+    "host": "db",
     "password": "password"
   },
   "defaultSlug": "my-application",
