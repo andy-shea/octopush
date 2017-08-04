@@ -16,7 +16,7 @@ function createRoutesConfig(helpers) {
   return {
     map: {
       [types.LOGIN]: '/login',
-      ...asyncRoute(types.STACK, '/:stack?', {
+      ...asyncRoute(types.STACK, '/:stack([a-z0-9\-]+)?', {
         isSecure: true,
         client: async ({stack, query}) => {
           const page = query ? query.page : 1;
