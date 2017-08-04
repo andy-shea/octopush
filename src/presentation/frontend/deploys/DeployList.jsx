@@ -6,7 +6,7 @@ import PageLoader from '../ui/PageLoader';
 import {deployPagination, pageLoader} from './DeployList.css';
 
 function renderPaginationControl(deploys, {totalPages, page}, loadDeploys) {
-  if (!deploys || totalPages === 1) return null;
+  if (!deploys || totalPages <= 1) return null;
   return (
     <nav className={deployPagination}>
       <ReactPaginate initialPage={page - 1} pageCount={totalPages} marginPagesDisplayed={2}
@@ -29,7 +29,7 @@ function DeployList({isLoading, pagination, deploys, users, toggleDeployDetails,
             </div>
           )
         }
-        {renderPaginationControl(deploys, pagination, loadDeploys)}
+        {pagination && renderPaginationControl(deploys, pagination, loadDeploys)}
       </div>
     );
   }
