@@ -37,18 +37,20 @@ class ServerRepository extends Repository {
     return baseFindQuery.clone().where('id', 'in', ids).map(this.__restore);
   }
 
-  findByStack(stack) {
-    return baseFindQuery.clone()
-        .innerJoin('servers_stacks', 'servers.id', 'server_id')
-        .where({stack_id: stack.id})
-        .map(this.__restore);
+  findByStack({id, slug}) {
+    const query = baseFindQuery.clone().innerJoin('servers_stacks', 'servers.id', 'server_id');
+    if (id) query.where({stack_id: stack.id});
+    else query.innerJoin('stacks', 'stack_id', 'stacks.id').where({slug});
+    return query.map(this.__restore);
   }
 
-  findByStacks(stacks) {
+  findByStacks({ids, criteria}) {
     const query = baseFindQuery.clone()
         .select('stack_id')
-        .innerJoin('servers_stacks', 'servers.id', 'server_id')
-        .where('stack_id', 'in', stacks.map(stack => stack.id));
+        .innerJoin('servers_stacks', 'servers.id', 'server_id');
+    if (ids) query.where('stack_id', 'in', ids);
+    else query.innerJoin('stacks', 'stack_id', 'stacks.id').where(criteria);
+
     return query.then(serversData => {
       return serversData.reduce((serversMap, serverData) => {
         if (!serversMap[serverData.stack_id]) serversMap[serverData.stack_id] = [];

@@ -1,3 +1,4 @@
+import Promise from 'bluebird';
 import autobind from 'autobind-decorator';
 import {Injectable} from 'angular2-di';
 import {Session} from 'junction-orm/lib/startSession';
@@ -46,55 +47,51 @@ class StackRepository extends Repository {
   }
 
   @autobind
-  __restore(stackData) {
+  __restore([stackData, servers]) {
     if (!stackData) throw new NotFoundError('No stack found');
     if (this.session.has('Stack', stackData.id)) return this.session.retrieve('Stack', stackData.id);
     const stack = restore(stackData);
-    return this.serverRepository.findByStack(stack).then(servers => {
-      stack.servers = servers;
-      restoreGroups(stack);
+    stack.servers = servers;
+    restoreGroups(stack);
+    return this.session ? this.session.track(stack) : stack;
+  }
+
+  @autobind
+  __restoreAll([stacksData, serversMap]) {
+    return stacksData.map(stackData => {
+      if (this.session.has('Stack', stackData.id)) return this.session.retrieve('Stack', stackData.id);
+
+      const stack = restore(stackData);
+      if (serversMap[stack.id]) {
+        stack.servers = serversMap[stack.id];
+        restoreGroups(stack);
+      }
       return this.session ? this.session.track(stack) : stack;
     });
   }
 
-  @autobind
-  __restoreAll(stacksData) {
-    const {all, toLoad} = stacksData.reduce((stacks, stackData) => {
-      if (this.session.has('Stack', stackData.id)) stacks.all.push(this.session.retrieve('Stack', stackData.id));
-      else {
-        const stack = restore(stackData);
-        stacks.toLoad.push(stack);
-        stacks.all.push(stack);
-      }
-      return stacks;
-    }, {all: [], toLoad: []});
-
-    return this.serverRepository.findByStacks(toLoad).then(serversMap => {
-      return all.map(stack => {
-        if (serversMap[stack.id]) {
-          stack.servers = serversMap[stack.id];
-          restoreGroups(stack);
-          return this.session ? this.session.track(stack) : stack;
-        }
-        return stack;
-      });
-    });
-  }
-
   findById(id) {
-    return baseFindQuery.clone().where('stacks.id', id).first().then(this.__restore);
+    const getStack = baseFindQuery.clone().where({id}).first();
+    const getServersMap = this.serverRepository.findByStack({slug});
+    return Promise.all([getStack, getServersMap]).then(this.__restore);
   }
 
   findByCriteria(criteria = {}, sort = 'title') {
-    return baseFindQuery.clone().where(criteria).orderBy(sort).then(this.__restoreAll);
+    const getStacks = baseFindQuery.clone().where(criteria).orderBy(sort);
+    const getServersMap = this.serverRepository.findByStacks({criteria});
+    return Promise.all([getStacks, getServersMap]).then(this.__restoreAll);
   }
 
   findByIds(ids) {
-    return baseFindQuery.clone().where('stacks.id', 'in', ids).then(this.__restoreAll);
+    const getStacks = baseFindQuery.clone().where('stacks.id', 'in', ids);
+    const getServers = this.serverRepository.findByStacks({ids});
+    return Promise.all([getStacks, getServers]).then(this.__restoreAll);
   }
 
   findBySlug(slug) {
-    return baseFindQuery.clone().where({slug}).first().then(this.__restore);
+    const getStack = baseFindQuery.clone().where({slug}).first();
+    const getServers = this.serverRepository.findByStack({slug});
+    return Promise.all([getStack, getServers]).then(this.__restore);
   }
 
 }

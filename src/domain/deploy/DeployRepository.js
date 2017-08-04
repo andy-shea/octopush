@@ -12,6 +12,10 @@ import db from '~/persistence';
 const DEPLOYS_PER_PAGE = 10;
 const {schema: {timestampable}} = Deploy;
 
+function extractUserData({user_id: id, name, email}) {
+  return {id, name, email};
+}
+
 function restore(deployData) {
   const deploy = new Deploy(deployData.branch, deployData.user_id);
   deploy.id = deployData.id;
@@ -24,7 +28,9 @@ function restore(deployData) {
   return deploy;
 }
 
-const baseFindQuery = db('deploys').select('id', 'branch', 'log_file', 'hosts', 'user_id', 'stack_id', 'created_at', 'updated_at');
+const baseFindQuery = db('deploys')
+    .select('deploys.id', 'branch', 'log_file', 'hosts', 'user_id', 'stack_id', 'deploys.created_at', 'deploys.updated_at', 'name', 'email')
+    .innerJoin('users', 'user_id', 'users.id');
 
 @Injectable()
 class DeployRepository extends Repository {
@@ -41,10 +47,8 @@ class DeployRepository extends Repository {
     if (!deployData) throw new NotFoundError('No deploy found');
     if (this.session.has('Deploy', deployData.id)) return this.session.retrieve('Deploy', deployData.id);
     const deploy = restore(deployData);
-    const getUser = this.userRepository.findById(deployData.user_id);
-    const getStack = this.stackRepository.findById(deployData.stack_id);
-    return Promise.all([getUser, getStack]).then(([user, stack]) => {
-      deploy.user = user;
+    deploy.user = this.userRepository.__restore(extractUserData(deployData));
+    return this.stackRepository.findById(deployData.stack_id).then(stack => {
       deploy.stack = stack;
       return this.session ? this.session.track(deploy) : deploy;
     });
@@ -52,25 +56,12 @@ class DeployRepository extends Repository {
 
   @autobind
   __restoreAll(stack, deploysData) {
-    const {all, toLoad} = deploysData.reduce((deploys, deployData) => {
-      if (this.session.has('Deploy', deployData.id)) deploys.all.push(this.session.retrieve('Deploy', deployData.id));
-      else {
-        const deploy = restore(deployData);
-        deploys.toLoad.push(deploy);
-        deploys.all.push(deploy);
-      }
-      return deploys;
-    }, {all: [], toLoad: []});
-
-    return this.userRepository.findByIds(toLoad.map(deploy => deploy.user)).then(usersMap => {
-      return all.map(deploy => {
-        if (usersMap[deploy.user]) {
-          deploy.user = usersMap[deploy.user];
-          deploy.stack = stack;
-          return this.session ? this.session.track(deploy) : deploy;
-        }
-        return deploy;
-      });
+    return deploysData.map(deployData => {
+      if (this.session.has('Deploy', deployData.id)) return this.session.retrieve('Deploy', deployData.id);
+      const deploy = restore(deployData);
+      deploy.user = this.userRepository.__restore(extractUserData(deployData));
+      deploy.stack = stack;
+      return this.session ? this.session.track(deploy) : deploy;
     });
   }
 
@@ -81,11 +72,16 @@ class DeployRepository extends Repository {
         .limit(DEPLOYS_PER_PAGE)
         .offset((page - 1) * DEPLOYS_PER_PAGE);
     const getTotalDeploys = db('deploys').where({stack_id: stack.id}).count('id').first().then(data => data.count);
+
     return Promise.all([getDeploys, getTotalDeploys]).then(([deploysData, total]) => {
-      return this.__restoreAll(stack, deploysData).then(deploys => {
-        const totalCount = parseInt(total, 10);
-        return {deploys, limit: DEPLOYS_PER_PAGE, total: totalCount, totalPages: Math.ceil(totalCount / DEPLOYS_PER_PAGE), page};
-      });
+      const totalCount = parseInt(total, 10);
+      return {
+        deploys: this.__restoreAll(stack, deploysData),
+        limit: DEPLOYS_PER_PAGE,
+        total: totalCount,
+        totalPages: Math.ceil(totalCount / DEPLOYS_PER_PAGE),
+        page
+      };
     });
   }
 
