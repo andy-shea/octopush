@@ -1,7 +1,7 @@
 import fs from 'fs';
 import glob from 'glob';
 import serialize from 'serialize-javascript';
-import {HttpError} from 'react-cornerstone/server';
+import {HttpError} from 'react-cornerstone';
 import cx from 'classnames';
 import {includeChunkManifest, includeAsset} from './assets';
 import icons from './ui/icons.svg';

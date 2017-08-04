@@ -10,7 +10,7 @@ const babel = require('./blocks/babel');
 const postCss = require('./blocks/postcss');
 
 const development = [
-  entryPoint({server: [path.resolve(ROOT_PATH, 'src', 'presentation', 'server')]}),
+  entryPoint([path.resolve(ROOT_PATH, 'src', 'presentation', 'server')]),
   setOutput({path: path.resolve(ROOT_PATH, 'build'), libraryTarget: 'commonjs2'}),
   favicon(),
   sourceMaps()
@@ -23,8 +23,8 @@ const production = [
   sourceMaps('source-map')
 ];
 
-module.exports = createConfig([
-  entryPoint({server: ['babel-polyfill']}),
+module.exports = createConfig.vanilla([
+  entryPoint(['babel-polyfill']),
   name('server'),
   common,
   setOutput({filename: 'server.js'}),

@@ -1,5 +1,5 @@
 import express from 'express';
-import {HttpError} from 'react-cornerstone/server';
+import {HttpError} from 'react-cornerstone';
 import {setData, setStatus} from 'junction-express-middleware';
 import StackService from '~/application/StackService';
 

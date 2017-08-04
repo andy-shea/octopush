@@ -15,9 +15,12 @@ if (process.env.NODE_ENV === 'development') {
   const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
   const webpackConfig = require('../webpack.config.js');
   const compiler = webpack(webpackConfig);
-  app.use(webpackDevMiddleware(compiler, {quiet: true}));
+  app.use(webpackDevMiddleware(compiler, {
+    serverSideRender: true
+    // noInfo: true // if on, server-side rebuild notifications are not logged to terminal
+  }));
   app.use(webpackHotMiddleware(compiler.compilers.find(comp => comp.name === 'client')));
-  app.use(webpackHotServerMiddleware(compiler, {chunkName: 'server'}));
+  app.use(webpackHotServerMiddleware(compiler, {chunkName: 'main'}));
 }
 else app.use(require('./presentation/server').default());
 

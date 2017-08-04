@@ -1,4 +1,4 @@
-import {configureStoreCreator} from 'react-cornerstone/common';
+import {configureStoreCreator} from 'react-cornerstone';
 import routerReducer from './router/reducer';
 import deploysReducer from './deploys/reducer';
 import serversReducer from './servers/reducer';

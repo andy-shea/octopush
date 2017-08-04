@@ -1,4 +1,4 @@
-import {HttpError} from 'react-cornerstone/server';
+import {HttpError} from 'react-cornerstone';
 import logger from '~/infrastructure/logger';
 import {renderError} from './frontend/template';
 

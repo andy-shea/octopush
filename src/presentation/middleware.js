@@ -1,4 +1,4 @@
-import {configureMiddleware} from 'react-cornerstone/server';
+import {configureMiddleware} from 'react-cornerstone';
 import {normalize} from 'normalizr';
 import configureStore from './frontend/store';
 import createRoutesConfig from './frontend/router/routes';

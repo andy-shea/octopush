@@ -14,31 +14,29 @@ const extractCss = require('./blocks/extract-css');
 const postCss = require('./blocks/postcss');
 
 const development = [
-  entryPoint({main: [
+  entryPoint([
     'babel-polyfill',
     'react-hot-loader/patch',
     'webpack-hot-middleware/client'
-  ]}),
+  ]),
   setOutput({
     path: path.resolve(ROOT_PATH, 'build'),
     filename: '[name].js',
     chunkFilename: '[name].js'
   }),
-  babel({presets: ['react-hmre']}),
   postCss(),
   extractCss('main.css'),
-  sourceMaps('inline-source-map'),
+  sourceMaps('eval'),
   addPlugins([new webpack.HotModuleReplacementPlugin()])
 ];
 
 const production = [
-  entryPoint({main: ['babel-polyfill']}),
+  entryPoint(['babel-polyfill']),
   setOutput({
     path: path.resolve(ROOT_PATH, 'dist', 'web'),
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js'
   }),
-  babel(),
   postCss(true),
   extractCss('[name].[chunkhash].css'),
   sourceMaps('source-map'),
@@ -53,9 +51,10 @@ const production = [
 ];
 
 // caching strategy: https://medium.com/webpack/predictable-long-term-caching-with-webpack-d3eee1d3fa31
-module.exports = createConfig([
+module.exports = createConfig.vanilla([
   name('client'),
   actionCreator(path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend')),
+  babel(),
   common,
   setOutput({publicPath: '/'}),
   addPlugins([
@@ -72,5 +71,5 @@ module.exports = createConfig([
   image(true),
   env('development', development),
   env('production', production),
-  entryPoint({main: path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')})
+  entryPoint([path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')])
 ]);

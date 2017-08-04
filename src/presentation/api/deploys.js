@@ -1,5 +1,5 @@
 import express from 'express';
-import {HttpError} from 'react-cornerstone/server';
+import {HttpError} from 'react-cornerstone';
 import Ansi from 'ansi-to-html';
 import s from 'string';
 import {setData} from 'junction-express-middleware';
