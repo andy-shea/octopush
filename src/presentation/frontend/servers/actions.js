@@ -11,6 +11,8 @@ export const types = createTypes([
   ...async('REMOVE_SERVER')
 ], 'SERVERS');
 
+export const formName = 'servers';
+
 export const actions = {
   editServer: actionCreator(types.EDIT_SERVER, 'server'),
   loadServers: asyncActionCreator(types.LOAD_SERVERS, {
@@ -23,11 +25,13 @@ export const actions = {
   }),
   addServer: asyncActionCreator(types.ADD_SERVER, {
     client: ({hostname}) => post('/api/servers', {hostname}),
-    schema: Server.normalizedSchema
+    schema: Server.normalizedSchema,
+    formName
   }),
   updateServer: asyncActionCreator(types.UPDATE_SERVER, {
     client: ({server, newHostname}) => post(`/api/servers/${server.id}`, {newHostname}),
-    schema: Server.normalizedSchema
+    schema: Server.normalizedSchema,
+    formName
   }),
   removeServer: asyncActionCreator(types.REMOVE_SERVER, {
     client: ({server}) => del(`/api/servers/${server.id}`),

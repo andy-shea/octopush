@@ -4,12 +4,12 @@ import SaveGroupForm from './SaveGroupForm';
 import GroupRow from './GroupRow';
 import {settingsPaneContent} from '../ui/menu/Menu.css';
 
-function Groups({formState, servers, stack: {groups}, editGroup, removeGroup, saveGroup, groupEditing}) {
+function Groups({servers, stack: {groups}, editGroup, removeGroup, saveGroup, groupEditing}) {
   return (
     <div>
       <h3>Server Groups</h3>
       <div className={settingsPaneContent}>
-        <SaveGroupForm formState={formState} servers={servers} saveGroup={saveGroup} group={groupEditing || {name: ''}}/>
+        <SaveGroupForm servers={servers} saveGroup={saveGroup} group={groupEditing || {name: ''}}/>
         <ul>
           {groups && groups.sort((thisGroup, thatGroup) => thisGroup.id - thatGroup.id).map(group => (
             <GroupRow key={group.id} servers={group.servers.map(id => servers[id])} editGroup={editGroup} removeGroup={removeGroup} group={group}/>
@@ -25,7 +25,6 @@ Groups.propTypes = {
   editGroup: PropTypes.func.isRequired,
   removeGroup: PropTypes.func.isRequired,
   saveGroup: PropTypes.func.isRequired,
-  formState: PropTypes.object,
   stack: PropTypes.shape({
     groups: PropTypes.array
   }),

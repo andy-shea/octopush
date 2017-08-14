@@ -11,6 +11,8 @@ export const types = createTypes([
   ...async('LOAD_LOG')
 ], 'DEPLOYS');
 
+export const formName = 'deploys';
+
 export const actions = {
   toggleDeployDetails: deploy => (dispatch, getState) => {
     dispatch({type: types.TOGGLE_DEPLOY_DETAILS, payload: {deploy}});
@@ -28,7 +30,8 @@ export const actions = {
   addLogLine: actionCreator(types.ADD_LOG_LINE, 'deploy', 'line'),
   startDeploy: asyncActionCreator(types.START_DEPLOY, {
     client: ({stack, branch, targets}) => post('/api/deploys', {slug: stack.slug, branch, targets}),
-    schema: Deploy.normalizedSchema
+    schema: Deploy.normalizedSchema,
+    formName
   }),
   loadLog: asyncActionCreator(types.LOAD_LOG, ({deploy}) => get(`/api/deploys/${deploy.id}/log`))
 };

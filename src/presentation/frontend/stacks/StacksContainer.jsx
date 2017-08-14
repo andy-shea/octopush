@@ -5,15 +5,14 @@ import autobind from 'autobind-decorator';
 import {actions} from './actions';
 import StackList from './StackList';
 import StackDetail from './StackDetail';
-import {getStacks, getStackEditing, getStackFormState} from './selectors';
+import {getStacks, getStackEditing} from './selectors';
 import {getServers} from '../servers/selectors';
 
 function mapStateToProps(state) {
   return {
     stacks: getStacks(state),
     stackEditing: getStackEditing(state),
-    servers: getServers(state),
-    formState: getStackFormState(state)
+    servers: getServers(state)
   };
 }
 
@@ -26,7 +25,6 @@ class StacksContainer extends Component {
     updateStack: PropTypes.func.isRequired,
     removeStack: PropTypes.func.isRequired,
     addStack: PropTypes.func.isRequired,
-    formState: PropTypes.object,
     stacks: PropTypes.object,
     stackEditing: PropTypes.object,
     servers: PropTypes.object
@@ -49,9 +47,9 @@ class StacksContainer extends Component {
   }
 
   render() {
-    const {formState, servers, stacks, stackEditing, createStack, editStack, removeStack} = this.props;
+    const {servers, stacks, stackEditing, createStack, editStack, removeStack} = this.props;
     return stackEditing
-      ? <StackDetail formState={formState} stack={stackEditing} servers={servers} saveStack={this.saveStack} editStack={editStack}/>
+      ? <StackDetail stack={stackEditing} servers={servers} saveStack={this.saveStack} editStack={editStack}/>
       : <StackList createStack={createStack} stacks={stacks} editStack={editStack} removeStack={removeStack}/>;
   }
 

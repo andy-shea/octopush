@@ -3,7 +3,7 @@ import withHandlers from 'recompose/withHandlers';
 import {connect} from 'react-redux';
 import {actions} from './actions';
 import Groups from './Groups';
-import {getStackEditing, getGroupEditing, getGroupFormState} from '../stacks/selectors';
+import {getStackEditing, getGroupEditing} from '../stacks/selectors';
 import {getStackEditingServers} from '../servers/selectors';
 
 const handlers = withHandlers({
@@ -35,8 +35,7 @@ function mapStateToProps(state) {
   return {
     stack: getStackEditing(state),
     groupEditing: getGroupEditing(state),
-    servers: getStackEditingServers(state),
-    formState: getGroupFormState(state)
+    servers: getStackEditingServers(state)
   };
 }
 

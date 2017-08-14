@@ -15,6 +15,9 @@ export const types = createTypes([
   ...async('REMOVE_GROUP')
 ], 'STACKS');
 
+export const stackFormName = 'stack';
+export const groupFormName = 'group';
+
 export const actions = {
   createStack: actionCreator(types.CREATE_STACK),
   editStack: actionCreator(types.EDIT_STACK, 'stack'),
@@ -29,20 +32,24 @@ export const actions = {
   }),
   addStack: asyncActionCreator(types.ADD_STACK, {
     client: ({title, gitPath, serverIds, diff}) => post('/api/stacks', {title, gitPath, serverIds, diff}),
-    schema: Stack.normalizedSchema
+    schema: Stack.normalizedSchema,
+    formName: stackFormName
   }),
   updateStack: asyncActionCreator(types.UPDATE_STACK, {
     client: ({stack, title, gitPath, serverIds, diff}) => post(`/api/stacks/${stack.slug}`, {title, gitPath, serverIds, diff}),
-    schema: Stack.normalizedSchema
+    schema: Stack.normalizedSchema,
+    formName: stackFormName
   }),
   removeStack: asyncActionCreator(types.REMOVE_STACK, ({stack}) => del(`/api/stacks/${stack.slug}`)),
   addGroup: asyncActionCreator(types.ADD_GROUP, {
     client: ({stack, name, serverIds}) => post(`/api/stacks/${stack.slug}/groups`, {name, serverIds}),
-    schema: Stack.normalizedSchema
+    schema: Stack.normalizedSchema,
+    formName: groupFormName
   }),
   updateGroup: asyncActionCreator(types.UPDATE_GROUP, {
     client: ({stack, group, name, serverIds}) => post(`/api/stacks/${stack.slug}/groups/${group.id}`, {name, serverIds}),
-    schema: Stack.normalizedSchema
+    schema: Stack.normalizedSchema,
+    formName: groupFormName
   }),
   removeGroup: asyncActionCreator(types.REMOVE_GROUP, {
     client: ({stack, group}) => del(`/api/stacks/${stack.slug}/groups/${group.id}`),

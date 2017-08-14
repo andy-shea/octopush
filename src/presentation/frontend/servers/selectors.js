@@ -24,13 +24,3 @@ export const getCurrentStackServers = createSelector([getCurrentStack, getServer
 export const getStackEditingGroupedServers = createSelector([getStackEditing, getServers], ({servers: serverIds}, servers) => {
   return serverIds.map(id => servers[id.toString()]);
 });
-
-function getIsSaving(state) {
-  return state.servers.isSaving;
-}
-
-function getError(state) {
-  return state.servers.error;
-}
-
-export const getFormState = createSelector([getIsSaving, getError], (isSaving, error) => ({isSaving, error}));

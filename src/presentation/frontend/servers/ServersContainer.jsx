@@ -3,7 +3,7 @@ import withHandlers from 'recompose/withHandlers';
 import {connect} from 'react-redux';
 import {actions} from './actions';
 import Servers from './Servers';
-import {getServers, getServerEditing, getFormState} from './selectors';
+import {getServers, getServerEditing} from './selectors';
 
 const handlers = withHandlers({
   saveServer: props => (hostname) => {
@@ -19,8 +19,7 @@ const handlers = withHandlers({
 function mapStateToProps(state) {
   return {
     servers: getServers(state),
-    serverEditing: getServerEditing(state),
-    formState: getFormState(state)
+    serverEditing: getServerEditing(state)
   };
 }
 

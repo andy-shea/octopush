@@ -4,13 +4,15 @@ import deploysReducer from './deploys/reducer';
 import serversReducer from './servers/reducer';
 import stacksReducer from './stacks/reducer';
 import usersReducer from './users/reducer';
+import {formsReducerCreator} from 'redux-formalize';
 
 const reducers = {
   page: routerReducer,
   deploys: deploysReducer,
   servers: serversReducer,
   stacks: stacksReducer,
-  users: usersReducer
+  users: usersReducer,
+  forms: formsReducerCreator()
 };
 
 const configureStore = configureStoreCreator(reducers);

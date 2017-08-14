@@ -71,8 +71,8 @@ class StackRepository extends Repository {
   }
 
   findById(id) {
-    const getStack = baseFindQuery.clone().where({id}).first();
-    const getServersMap = this.serverRepository.findByStack({slug});
+    const getStack = baseFindQuery.clone().where({['stacks.id']: id}).first();
+    const getServersMap = this.serverRepository.findByStack({id});
     return Promise.all([getStack, getServersMap]).then(this.__restore);
   }
 

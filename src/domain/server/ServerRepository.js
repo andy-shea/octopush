@@ -39,7 +39,7 @@ class ServerRepository extends Repository {
 
   findByStack({id, slug}) {
     const query = baseFindQuery.clone().innerJoin('servers_stacks', 'servers.id', 'server_id');
-    if (id) query.where({stack_id: stack.id});
+    if (id) query.where({stack_id: id});
     else query.innerJoin('stacks', 'stack_id', 'stacks.id').where({slug});
     return query.map(this.__restore);
   }

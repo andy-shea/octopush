@@ -17,22 +17,10 @@ function reducer(state = {map: {}, loaded: false}, action) {
 
     case types.EDIT_STACK: return {...state, stackEditing: action.payload.stack ? action.payload.stack.slug : undefined};
 
-    case types.UPDATE_GROUP:
-    case types.ADD_GROUP: return {...state, groupIsSaving: true, groupError: undefined};
-
-    case types.UPDATE_STACK:
-    case types.ADD_STACK: return {...state, stackIsSaving: true, stackError: undefined};
-
-    case types.UPDATE_GROUP_FAIL:
-    case types.ADD_GROUP_FAIL: return {...state, groupIsSaving: false, groupError: action.error};
-
-    case types.UPDATE_STACK_FAIL:
-    case types.ADD_STACK_FAIL: return {...state, stackIsSaving: false, stackError: action.error};
-
-    case types.ADD_STACK_SUCCESS: return {...mergeStacks(state, action), stackIsSaving: false};
+    case types.ADD_STACK_SUCCESS: return {...mergeStacks(state, action)};
 
     case types.UPDATE_GROUP_SUCCESS:
-    case types.ADD_GROUP_SUCCESS: return {...mergeStacks(state, action), groupIsSaving: false};
+    case types.ADD_GROUP_SUCCESS: return {...mergeStacks(state, action)};
 
     case types.REMOVE_GROUP: {
       const {stack, group} = action.payload;
@@ -48,7 +36,7 @@ function reducer(state = {map: {}, loaded: false}, action) {
       const {entities: {stacks}, result} = action.response;
       const nextMap = {...state.map};
       delete nextMap[action.payload.stack.slug];
-      return {...state, map: Object.assign(nextMap, stacks), stackEditing: result, groupEditing: undefined, stackIsSaving: false};
+      return {...state, map: Object.assign(nextMap, stacks), stackEditing: result, groupEditing: undefined};
     }
 
     case types.REMOVE_STACK: {

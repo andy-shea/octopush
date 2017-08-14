@@ -86,7 +86,7 @@ class DeployRepository extends Repository {
   }
 
   findById(id) {
-    return baseFindQuery.clone().where({id}).first().then(this.__restore);
+    return baseFindQuery.clone().where({['deploys.id']: id}).first().then(this.__restore);
   }
 
 }

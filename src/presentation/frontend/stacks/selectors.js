@@ -28,22 +28,3 @@ export function getGroupEditing(state) {
 }
 
 export const shouldLoadStacks = createSelector([getIsAuthenticated, isLoaded], (authenticated, loaded) => authenticated && !loaded);
-
-function getStackIsSaving(state) {
-  return state.stacks.stackIsSaving;
-}
-
-function getStackError(state) {
-  return state.stacks.stackError;
-}
-
-function getGroupIsSaving(state) {
-  return state.stacks.groupIsSaving;
-}
-
-function getGroupError(state) {
-  return state.stacks.groupError;
-}
-
-export const getStackFormState = createSelector([getStackIsSaving, getStackError], (isSaving, error) => ({isSaving, error}));
-export const getGroupFormState = createSelector([getGroupIsSaving, getGroupError], (isSaving, error) => ({isSaving, error}));

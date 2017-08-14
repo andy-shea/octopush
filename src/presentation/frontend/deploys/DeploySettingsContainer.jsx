@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 import {actions} from './actions';
 import DeploySettings from './DeploySettings';
-import {getBranches, getFormState} from './selectors';
+import {getBranches} from './selectors';
 import {getCurrentStack, getStacks} from '../stacks/selectors';
 import {getCurrentStackServers} from '../servers/selectors';
 
@@ -10,8 +10,7 @@ function mapStateToProps(state) {
     stack: getCurrentStack(state),
     branches: getBranches(state),
     stacks: getStacks(state),
-    servers: getCurrentStackServers(state),
-    formState: getFormState(state)
+    servers: getCurrentStackServers(state)
   };
 }
 
