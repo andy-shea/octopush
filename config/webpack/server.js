@@ -17,7 +17,7 @@ const development = [
 ];
 
 const production = [
-  entryPoint({server: [path.resolve(ROOT_PATH, 'src')]}),
+  entryPoint([path.resolve(ROOT_PATH, 'src')]),
   setOutput({path: path.resolve(ROOT_PATH, 'dist')}),
   favicon('./web/'),
   sourceMaps('source-map')
