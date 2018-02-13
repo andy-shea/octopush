@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTransitionGroup from 'react-addons-transition-group';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
 import MenuButton from './MenuButton';
 import MenuContents from './MenuContents';
 import {menu} from './Menu.css';
@@ -8,12 +8,12 @@ import {menu} from './Menu.css';
 function Menu({toggleMenu, isExpanded, openPane, settingsPane}) {
   return (
     <div className={menu}>
-      <ReactTransitionGroup component="div">
+      <TransitionGroup component="div">
         {isExpanded
           ? <MenuContents key="menu-contents" toggleMenu={toggleMenu} settingsPane={settingsPane} openPane={openPane}/>
           : <MenuButton key="menu-btn" toggleMenu={toggleMenu}/>
         }
-      </ReactTransitionGroup>
+      </TransitionGroup>
     </div>
   );
 }
