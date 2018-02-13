@@ -61,7 +61,7 @@
     "react-paginate": "^5.0.0",
     "react-select": "^1.0.0-rc.5",
     "react-universal-component": "^1.4.1",
-    "recompose": "^0.24.0",
+    "recompose": "^0.26.0",
     "redux-action-creator": "^2.2.0",
     "redux-formalize": "^0.1.0",
     "reflect-metadata": "^0.1.10",
