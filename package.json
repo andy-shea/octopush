@@ -48,7 +48,7 @@
     "lodash.isfunction": "^3.0.8",
     "node-password-util": "^0.1.2",
     "normalize.css": "^7.0.0",
-    "passport": "^0.3.2",
+    "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pg": "^7.0.2",
     "prompt": "^1.0.0",
