@@ -44,7 +44,7 @@
     "junction-normalizr-decorator": "^0.2.3",
     "junction-orm": "^0.2.0",
     "junction-proptype-decorator": "^0.1.1",
-    "knex": "^0.13.0",
+    "knex": "^0.14.3",
     "lodash.isfunction": "^3.0.8",
     "node-password-util": "^0.1.2",
     "normalize.css": "^7.0.0",
