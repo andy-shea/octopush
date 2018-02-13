@@ -31,7 +31,7 @@ function createRoutesConfig(helpers) {
       }, helpers)
     },
     querySerializer,
-    onBeforeChange(dispatch, getState, action) {
+    onBeforeChange(dispatch, getState, {action}) {
       const state = getState();
       const {location: {routesMap, pathname, search}} = state;
       const routeIsSecure = isSecure(action.type, routesMap);
