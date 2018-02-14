@@ -18,23 +18,21 @@ function renderPaginationControl(deploys, {totalPages, page}, loadDeploys) {
 function DeployList({isLoading, pagination, deploys, users, toggleDeployDetails, stack, loadDeploys}) {
   if (stack) {
     return (
-      <div>
+      <React.Fragment>
         {isLoading
           ? <PageLoader className={pageLoader}/>
           : (
-            <div>
-              {deploys && deploys.sort((thisDeploy, thatDeploy) => thatDeploy.id - thisDeploy.id).map(deploy =>
-                <DeployRow key={deploy.id} deploy={deploy} user={users[deploy.id]} diff={stack.diff} toggleDeployDetails={toggleDeployDetails}/>
-              )}
-            </div>
+            deploys && deploys.sort((thisDeploy, thatDeploy) => thatDeploy.id - thisDeploy.id).map(deploy =>
+              <DeployRow key={deploy.id} deploy={deploy} user={users[deploy.id]} diff={stack.diff} toggleDeployDetails={toggleDeployDetails}/>
+            )
           )
         }
         {pagination && renderPaginationControl(deploys, pagination, loadDeploys)}
-      </div>
+      </React.Fragment>
     );
   }
   if (isLoading) return <PageLoader className={pageLoader}/>;
-  return <div/>;
+  return null;
 }
 
 DeployList.propTypes = {

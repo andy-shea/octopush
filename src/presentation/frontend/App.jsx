@@ -29,12 +29,12 @@ const enhance = compose(
 
 function App({children, toggleMenu, menu: {isExpanded, settingsPane}, openPane}) {
   return (
-    <div>
+    <React.Fragment>
       <div id="container" className={cx(container, {[pushed]: isExpanded})}>
         {children}
       </div>
       <Menu toggleMenu={toggleMenu} isExpanded={isExpanded} settingsPane={settingsPane} openPane={openPane}/>
-    </div>
+    </React.Fragment>
   );
 }
 
