@@ -2,20 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SaveGroupForm from './SaveGroupForm';
 import GroupRow from './GroupRow';
-import {settingsPaneContent} from '../ui/menu/Menu.css';
+import SettingsPaneContent from '../ui/menu/SettingsPaneContent';
 
 function Groups({servers, stack: {groups}, editGroup, removeGroup, saveGroup, groupEditing}) {
   return (
     <React.Fragment>
       <h3>Server Groups</h3>
-      <div className={settingsPaneContent}>
+      <SettingsPaneContent>
         <SaveGroupForm servers={servers} saveGroup={saveGroup} group={groupEditing || {name: ''}}/>
         <ul>
           {groups && groups.sort((thisGroup, thatGroup) => thisGroup.id - thatGroup.id).map(group => (
             <GroupRow key={group.id} servers={group.servers.map(id => servers[id])} editGroup={editGroup} removeGroup={removeGroup} group={group}/>
           ))}
         </ul>
-      </div>
+      </SettingsPaneContent>
     </React.Fragment>
   );
 }

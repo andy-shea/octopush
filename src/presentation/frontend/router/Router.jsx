@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getPage} from './selectors';
-import App from '../App';
+import Main from '../ui/Main';
 import {types} from './routes';
 import Deploy from '../deploys/Deploy';
 import LoginContainer from '../users/LoginContainer';
@@ -17,7 +17,7 @@ const pageComponents = {
 function Router({page, location: {type}}) {
   const Component = pageComponents[page];
   if (type === types.LOGIN) return <Component/>;
-  return <App><Component/></App>;
+  return <Main><Component/></Main>;
 }
 
 Router.propTypes = {

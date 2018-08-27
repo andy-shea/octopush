@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Select from 'react-select';
+import MenuSelect from '../ui/form/MenuSelect';
 import {connectForm} from 'redux-formalize';
-import Button from '../ui/Button';
-import {root, textField} from '../ui/SaveEntityForm.css';
+import Button from '../ui/form/Button';
+import FieldGroup from '../ui/form/FieldGroup';
+import TextField from '../ui/form/TextField';
 import {groupFormName} from './actions';
 
 export function SaveGroupForm({state, servers, group, fields, updateField, updateSelectedServers, submitForm}) {
@@ -11,12 +12,12 @@ export function SaveGroupForm({state, servers, group, fields, updateField, updat
   const options = servers ? Object.keys(servers).map(id => ({value: id.toString(), label: servers[id].hostname})) : [];
   return (
     <form onSubmit={submitForm} onChange={updateField}>
-      <Select name="servers" instanceId="servers" options={options} multi placeholder="Servers"
+      <MenuSelect name="servers" instanceId="servers" options={options} isMulti placeholder="Servers"
         simpleValue value={selectedServers} onChange={updateSelectedServers}/>
-      <div className={root}>
-        <input className={textField} placeholder="Name" name="name" value={name}/>
+      <FieldGroup>
+        <TextField placeholder="Name" name="name" value={name}/>
         <Button type="submit" isLoading={state.isSubmitting}>{group.id ? 'Save' : 'Add'}</Button>
-      </div>
+      </FieldGroup>
     </form>
   );
 }

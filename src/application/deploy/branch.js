@@ -1,4 +1,3 @@
-import Promise from 'bluebird';
 import git from 'gift';
 import GitHubApi from 'github';
 import logger from '~/infrastructure/logger';
@@ -9,7 +8,6 @@ const github = new GitHubApi({
   debug: (process.env.NODE_ENV === 'development'),
   protocol: 'https',
   host: 'api.github.com',
-  Promise,
   timeout: 5000
 });
 

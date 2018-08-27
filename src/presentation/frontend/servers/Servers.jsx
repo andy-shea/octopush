@@ -1,17 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import MenuScrollPane from '../ui/menu/MenuScrollPane';
 import ServerRow from './ServerRow';
 import SaveServerForm from './SaveServerForm';
-import {root} from './Servers.css';
-import {settingsPaneContent} from '../ui/menu/Menu.css';
+import SettingsPaneContent from '../ui/menu/SettingsPaneContent';
+
+const StyledServers = styled.div`
+  min-width: 530px;
+  height: 100%;
+`;
 
 function Servers({formState, servers, serverEditing, saveServer, editServer, removeServer}) {
   return (
-    <div className={root}>
+    <StyledServers>
       <h2>Servers</h2>
       <MenuScrollPane>
-        <div className={settingsPaneContent}>
+        <SettingsPaneContent>
           <SaveServerForm formState={formState} server={serverEditing} saveServer={saveServer}/>
           <ul>
             {servers && Object.keys(servers).map(id => {
@@ -19,9 +24,9 @@ function Servers({formState, servers, serverEditing, saveServer, editServer, rem
               return <ServerRow key={id} server={server} editServer={editServer} removeServer={removeServer}/>;
             })}
           </ul>
-        </div>
+        </SettingsPaneContent>
       </MenuScrollPane>
-    </div>
+    </StyledServers>
   );
 }
 

@@ -1,15 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connectForm} from 'redux-formalize';
-import Button from '../ui/Button';
-import {root, textField} from '../ui/SaveEntityForm.css';
+import Button from '../ui/form/Button';
+import FieldGroup from '../ui/form/FieldGroup';
+import TextField from '../ui/form/TextField';
 import {formName} from './actions';
 
 export function SaveServerForm({server, fields: {hostname}, updateField, submitForm, state: {isSubmitting}}) {
   return (
-    <form className={root} onSubmit={submitForm} onChange={updateField}>
-      <input className={textField} placeholder="Hostname" name="hostname" value={hostname} autoFocus/>
-      <Button type="submit" isLoading={isSubmitting}>{server ? 'Save' : 'Add'}</Button>
+    <form onSubmit={submitForm} onChange={updateField}>
+      <FieldGroup>
+        <TextField placeholder="Hostname" name="hostname" value={hostname} autoFocus/>
+        <Button type="submit" isLoading={isSubmitting}>{server ? 'Save' : 'Add'}</Button>
+      </FieldGroup>
     </form>
   );
 }

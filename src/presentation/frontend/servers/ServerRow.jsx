@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withHandlers from 'recompose/withHandlers';
-import cx from 'classnames';
 import Server from '~/domain/server/Server';
-import ActionRow from '../ui/ActionRow';
-import {root} from './ServerRow.css';
-import {iconEdit, iconRemove, middle} from '../ui/SimpleList.css';
-import {svgIcon, iconRemove as baseIconRemove} from '../ui/Icons.css';
+import ActionRow from '../ui/list/ActionRow';
+import EditButton from '../ui/list/EditButton';
+import RemoveButton from '../ui/list/RemoveButton';
 
 const handlers = withHandlers({
   editServer: props => () => {
@@ -20,10 +18,10 @@ const handlers = withHandlers({
 function ServerRow({server, editServer, removeServer}) {
   const {hostname, isDeleting} = server;
   const actions = [
-    <svg title="Edit" className={cx(svgIcon, iconEdit, middle)} dangerouslySetInnerHTML={{__html: '<use xlink:href="#edit"/>'}} onClick={editServer}/>,
-    <span title="Remove" className={cx(baseIconRemove, iconRemove, middle)} onClick={removeServer}>Remove server</span>
+    <EditButton onClick={editServer} middle/>,
+    <RemoveButton onClick={removeServer} middle>Remove server</RemoveButton>
   ];
-  return <ActionRow actions={actions} isLoading={isDeleting} className={root}>{hostname}</ActionRow>;
+  return <ActionRow actions={actions} isLoading={isDeleting} height={52}>{hostname}</ActionRow>;
 }
 
 ServerRow.propTypes = {

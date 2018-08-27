@@ -1,30 +1,64 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import {connectForm} from 'redux-formalize';
-import cx from 'classnames';
-import Button from '../ui/Button';
+import Button from '../ui/form/Button';
 import StackSelect from './StackSelect';
 import BranchSelect from './BranchSelect';
 import TargetsSelect from './TargetsSelect';
 import Header from '../ui/Header';
-import {button, large, cta} from '../ui/Form.css';
-import {content} from '../ui/Header.css';
-import {deployButton, stackSelectWrap, deploy} from './DeploySettings.css';
 import {formName} from './actions';
+
+const DeployButton = styled(Button).attrs({type: 'submit', cta: true, large: true})`
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+  transform: translateY(-1px);
+`;
+
+const StackSelectWrapper = styled.div`
+  width: 300px;
+  margin-left: 20%;
+`;
+
+const DeployForm = styled.form`
+  border-bottom: 1px solid var(--color-grey-10);
+  padding: 20px 20px 30px 20%;
+  margin-top: 1em;
+  position: relative;
+
+  &::before {
+    position: absolute;
+    color: var(--color-grey-30);
+    text-transform: uppercase;
+    font-size: 0.7em;
+    content: 'Deploy:';
+    top: 0;
+  }
+`;
+
+const FieldGroup = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 export function DeploySettings({state, fields, submitForm, updateBranch, updateTargets, stack, stacks, servers, branches, selectStack}) {
   const {branch, targets} = fields;
   return (
     <Header>
-      <div className={cx(content, stackSelectWrap)}>
+      <StackSelectWrapper>
         <StackSelect stacks={stacks} selected={stack} selectStack={selectStack}/>
-      </div>
-      {stack && <form className={deploy} onSubmit={submitForm}>
-        <BranchSelect branches={branches} selectBranch={updateBranch} selectedBranch={branch}/>
-        to
-        <TargetsSelect groups={stack.groups} servers={servers} selectTargets={updateTargets} selectedTargets={targets}/>
-        <Button type="submit" isLoading={state.isSubmitting} className={cx(button, large, cta, deployButton)}>Deploy!</Button>
-      </form>}
+      </StackSelectWrapper>
+      {
+        stack &&
+        <DeployForm onSubmit={submitForm}>
+          <FieldGroup>
+            <BranchSelect branches={branches} selectBranch={updateBranch} selectedBranch={branch}/>
+            to
+            <TargetsSelect groups={stack.groups} servers={servers} selectTargets={updateTargets} selectedTargets={targets}/>
+            <DeployButton isLoading={state.isSubmitting}>Deploy!</DeployButton>
+          </FieldGroup>
+        </DeployForm>
+      }
     </Header>
   );
 }

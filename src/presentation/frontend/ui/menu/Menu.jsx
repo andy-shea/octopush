@@ -1,27 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import MenuButton from './MenuButton';
 import MenuContents from './MenuContents';
-import {menu} from './Menu.css';
 
-function Menu({toggleMenu, isExpanded, openPane, settingsPane}) {
+const StyledMenu = styled.div`
+  display: block;
+  margin: 0 auto;
+`;
+
+function Menu({toggleMenu, expanded, openPane, settingsPane}) {
   return (
-    <div className={menu}>
-      <TransitionGroup component="div">
-        {isExpanded
+    <StyledMenu>
+      <TransitionGroup component={null}>
+        {expanded
           ? <MenuContents key="menu-contents" toggleMenu={toggleMenu} settingsPane={settingsPane} openPane={openPane}/>
           : <MenuButton key="menu-btn" toggleMenu={toggleMenu}/>
         }
       </TransitionGroup>
-    </div>
+    </StyledMenu>
   );
 }
 
 Menu.propTypes = {
   toggleMenu: PropTypes.func.isRequired,
   openPane: PropTypes.func.isRequired,
-  isExpanded: PropTypes.bool.isRequired,
+  expanded: PropTypes.bool.isRequired,
   settingsPane: PropTypes.element
 };
 

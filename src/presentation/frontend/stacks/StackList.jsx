@@ -1,29 +1,53 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import MenuScrollPane from '../ui/menu/MenuScrollPane';
 import StackRow from './StackRow';
-import {root} from './StackList.css';
-import {settingsPaneContent} from '../ui/menu/Menu.css';
-import {headerButton} from '../ui/Form.css';
+import SettingsPaneContent from '../ui/menu/SettingsPaneContent';
+
+const StyledStackList = styled.div`
+  min-width: 530px;
+  height: 100%;
+`
+
+const NewStackButton = styled.button`
+  outline: none;
+  text-transform: uppercase;
+  transition: all 0.1s;
+  padding: 6px 15px;
+  font-size: 0.9rem;
+  font-weight: normal;
+  border: 1px solid var(--color-red-10);
+  background-color: transparent;
+  color: var(--color-red-15);
+  vertical-align: middle;
+  margin-left: 1em;
+
+  &:hover,
+  &:focus {
+    background: var(--color-red-10);
+    color: var(--color-blue-10);
+  }
+`;
 
 function StackList({stacks, createStack, editStack, removeStack}) {
   return (
-    <div className={root}>
+    <StyledStackList>
       <h2>
         Stacks
-        {createStack && <button className={headerButton} onClick={createStack}>Add New Stack</button>}
+        {createStack && <NewStackButton onClick={createStack}>Add New Stack</NewStackButton>}
       </h2>
       <MenuScrollPane>
-        <div className={settingsPaneContent}>
+        <SettingsPaneContent>
           <ul>
             {stacks && Object.keys(stacks).sort().map(slug => {
               const stack = stacks[slug];
               return <StackRow key={stack.id} stack={stack} editStack={editStack} removeStack={removeStack}/>;
             })}
           </ul>
-        </div>
+        </SettingsPaneContent>
       </MenuScrollPane>
-    </div>
+    </StyledStackList>
   );
 }
 

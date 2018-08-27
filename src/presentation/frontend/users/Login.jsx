@@ -1,20 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connectForm} from 'redux-formalize';
-import cx from 'classnames';
+import styled from 'styled-components';
 import Header from '../ui/Header';
-import Button from '../ui/Button';
-import {centre, content} from '../ui/Header.css';
-import {header, button, root} from './Login.css';
-import {form as formStyles, button as baseButton, cta} from '../ui/Form.css';
-import errorStyles from '../ui/error.css';
+import Form from '../ui/form/Form';
+import Button from '../ui/form/Button';
+import Error from '../ui/form/Error';
 import {formName} from './actions';
+
+const StyledLogin = styled.div`
+  background: var(--color-grey);
+  width: 100%;
+  height: 100%;
+`;
+
+const LoginHeader = styled(Header)`
+  padding: 1% 2% 100px;
+`;
+
+const LoginForm = styled(Form)`
+  margin-left: 20%;
+`;
+
+const LoginButton = styled(Button)`
+  padding-top: 6px;
+  padding-bottom: 6px;
+`;
 
 export function Login({fields: {email, password}, updateField, submitForm, state: {error, isSubmitting}}) {
   return (
-    <div className={root}>
-      <Header className={cx(header, centre)}>
-        <form className={cx(formStyles, content)} onSubmit={submitForm} onChange={updateField}>
+    <StyledLogin>
+      <LoginHeader centred>
+        <LoginForm onSubmit={submitForm} onChange={updateField}>
           <p>
             <label htmlFor="username">Email</label>
             <input name="email" type="email" value={email} autoFocus/>
@@ -23,13 +40,13 @@ export function Login({fields: {email, password}, updateField, submitForm, state
             <label htmlFor="password">Password</label>
             <input name="password" type="password" value={password}/>
           </p>
-          {error && <p className={errorStyles.root}>{error.message}</p>}
+          {error && <Error>{error.message}</Error>}
           <p>
-            <Button type="submit" isLoading={isSubmitting} className={cx(baseButton, cta, button)}>Log in</Button>
+            <LoginButton type="submit" isLoading={isSubmitting} cta>Log in</LoginButton>
           </p>
-        </form>
-      </Header>
-    </div>
+        </LoginForm>
+      </LoginHeader>
+    </StyledLogin>
   );
 }
 

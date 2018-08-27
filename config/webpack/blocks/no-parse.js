@@ -1,9 +1,10 @@
-module.exports = noParse;
-
 function noParse(paths) {
-  return () => ({
-    module: {
-      noParse: paths
-    }
-  })
+  return (context, {merge}) =>
+    merge({
+      module: {
+        noParse: paths
+      }
+    });
 }
+
+module.exports = noParse;

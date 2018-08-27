@@ -1,5 +1,5 @@
-module.exports = name;
-
 function name(name) {
-  return () => ({name: name});
+  return (context, {merge}) => merge({name: name});
 }
+
+module.exports = name;

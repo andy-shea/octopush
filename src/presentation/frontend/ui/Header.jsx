@@ -1,21 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import cx from 'classnames';
-import styles from './Header.css';
+import styled from 'styled-components';
+import {clearFix, hideText} from 'polished';
 import logo from './octopus.png';
 
-function Header({children, className}) {
+const StyledHeader = styled.header`
+  ${clearFix()};
+  &::before {
+    content: " ";
+    display: table;
+  }
+  ${({centred}) => centred && `
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  `}
+`;
+
+const Title = styled.h1`
+  background: no-repeat 50% 50%;
+  background-size: 100%;
+  width: 150px;
+  height: 190px;
+  float: left;
+  margin: 0 0 0 5%;
+  position: relative;
+  z-index: 1;
+  background-image: url(${logo});
+  ${hideText()};
+`;
+
+function Header({children, centred = false}) {
   return (
-    <header className={cx(styles.root, 'clearfix', className)}>
-      <h1 className="ir" style={{backgroundImage: `url(${logo})`}}>Octopush</h1>
+    <StyledHeader centred={centred}>
+      <Title>Octopush</Title>
       {children}
-    </header>
+    </StyledHeader>
   );
 }
 
 Header.propTypes = {
   children: PropTypes.node.isRequired,
-  className: PropTypes.string
+  centred: PropTypes.bool
 };
 
 export default Header;

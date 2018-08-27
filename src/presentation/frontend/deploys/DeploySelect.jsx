@@ -1,0 +1,54 @@
+import React from 'react';
+import Select from '../ui/form/Select';
+
+function styles({name}) {
+  return baseStyles => {
+    return {
+      ...baseStyles,
+      container: base => ({
+        ...base,
+        ...(name === 'branch' && {
+          width: 200,
+          marginRight: '1em'
+        }),
+        ...(name === 'targets' && {
+          width: 460,
+          marginLeft: '1em',
+          marginRight: '1em'
+        })
+      }),
+      control: base => ({
+        ...baseStyles.control(base),
+        backgroundColor: 'var(--color-white)',
+        boxShadow: '0 1px 1px rgba(0, 0, 0, 0.1)',
+        fontWeight: 700,
+        lineHeight: name === 'stack' ? '28px' : '23px',
+        transform: 'translateY(-1px)',
+        ...((name === 'branch' || name === 'targets') && {
+          fontSize: '1em'
+        })
+      }),
+      placeholder: base => ({
+        ...base,
+        ...(name === 'stack' && {
+          color: 'var(--color-blue-20)'
+        }),
+        ...((name === 'branch' || name === 'targets') && {
+          color: 'var(--color-grey-15)'
+        })
+      }),
+      menu: base => ({
+        ...baseStyles.menu(base),
+        boxShadow: '0 1px 1px rgba(0, 0, 0, 0.1), 0 -1px 0 0 hsla(0, 0%, 0%, 0.1)',
+        marginTop: '-1px'
+      })
+    };
+  };
+}
+
+
+function MenuSelect({...props}) {
+  return <Select styles={styles(props)} {...props}/>;
+}
+
+export default MenuSelect;
