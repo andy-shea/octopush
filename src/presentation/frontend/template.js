@@ -28,7 +28,7 @@ if (process.env.NODE_ENV === 'production') {
   webpackLoader = fs.readFileSync(glob.sync('./dist/web/runtime.*.js').pop(), 'utf8');
 }
 
-function renderLayout(body, sheet) {
+function renderLayout(body, sheet, css) {
   return `
     <!doctype html>
     <html>
@@ -45,6 +45,7 @@ function renderLayout(body, sheet) {
       <meta name="theme-color" content="#ffffff">
       ${includeChunkManifest()}
       ${sheet && sheet.getStyleTags()}
+      <style>${css}</style>
     </head>
     <body>
       ${body}
@@ -53,7 +54,7 @@ function renderLayout(body, sheet) {
   `;
 }
 
-export function render(html, state, sheet) {
+export function render(html, state, sheet, ids, css) {
   return renderLayout(
     `
       ${icons}
@@ -61,12 +62,14 @@ export function render(html, state, sheet) {
       <script>
         ${webpackLoader}
         window.__INITIAL_STATE__ = ${serialize(state, {isJSON: true})};
+        window.__EMOTION_IDS__ = ${JSON.stringify(ids)};
       </script>
       <script src="/${includeAsset('vendor.js')}"></script>
       <script src="/socket.io/socket.io.js"></script>
       <script src="/${includeAsset('main.js')}"></script>
     `,
-    sheet
+    sheet,
+    css
   );
 }
 

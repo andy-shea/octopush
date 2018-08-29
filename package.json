@@ -37,6 +37,7 @@
     "connect-session-knex": "^1.4.0",
     "cookie-parser": "^1.4.3",
     "date-fns": "^1.29.0",
+    "emotion-server": "^9.2.8",
     "express": "^4.16.3",
     "express-passport-security": "^0.9.1",
     "express-session": "^1.15.6",

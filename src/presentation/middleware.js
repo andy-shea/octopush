@@ -1,6 +1,7 @@
 import React from 'react';
 import {renderToString} from 'react-dom/server';
 import {ServerStyleSheet} from 'styled-components';
+import {extractCritical} from 'emotion-server';
 import {Provider} from 'react-redux';
 import {NOT_FOUND} from 'redux-first-router';
 import {normalize} from 'normalizr';
@@ -62,14 +63,16 @@ async function middleware(req, res, next) {
     }
 
     const sheet = new ServerStyleSheet();
-    const html = renderToString(
-      sheet.collectStyles(
-        <Provider store={store}>
-          <App />
-        </Provider>
+    const {html, ids, css} = extractCritical(
+      renderToString(
+        sheet.collectStyles(
+          <Provider store={store}>
+            <App />
+          </Provider>
+        )
       )
     );
-    res.status(status).send(render(html, store.getState(), sheet));
+    res.status(status).send(render(html, store.getState(), sheet, ids, css));
   }
   catch (err) {
     next(err);
