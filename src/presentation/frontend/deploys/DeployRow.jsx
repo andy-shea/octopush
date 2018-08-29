@@ -23,12 +23,15 @@ const StyledDeployRow = styled.article`
   border-bottom: 1px solid var(--color-grey-10);
   transition: background 0.2s;
 
-  ${({expanded}) => !expanded && css`
-    &:hover {
-      cursor: pointer;
-      background: var(--color-white);
-    }
-  `}
+  // prettier-ignore
+  ${({expanded}) =>
+    !expanded &&
+    css`
+      &:hover {
+        cursor: pointer;
+        background: var(--color-white);
+      }
+    `};
 `;
 
 const Header = styled.header`
@@ -61,7 +64,7 @@ const meta = css`
   font-size: 1.1em;
   text-transform: none;
   color: var(--color-blue-10);
-  margin-left: 0.2em
+  margin-left: 0.2em;
 `;
 const Time = styled.b`
   ${meta};
@@ -81,9 +84,11 @@ const ToggleDeployButton = styled.span`
   cursor: pointer;
   user-select: none;
 
-  ${({expanded}) => expanded && css`
-    transform: scale(0.8);
-  `}
+  ${({expanded}) =>
+    expanded &&
+    css`
+      transform: scale(0.8);
+    `};
 `;
 
 const ToggleDeployIcon = styled.i`
@@ -97,7 +102,7 @@ const ToggleDeployIcon = styled.i`
   &::after,
   &::before {
     display: block;
-    content: "";
+    content: '';
     height: 1px;
     width: 3em;
     background: var(--color-blue);
@@ -105,20 +110,30 @@ const ToggleDeployIcon = styled.i`
     transition: ${transitionDuration} (${transitionDuration} / 2);
   }
 
-  &::after { top: -0.625em; }
-  &::before { top: 0.625em; }
+  &::after {
+    top: -0.625em;
+  }
+  &::before {
+    top: 0.625em;
+  }
 
-  ${({expanded}) => expanded && css`
-    background: transparent;
+  ${({expanded}) =>
+    expanded &&
+    css`
+      background: transparent;
 
-    &::after,
-    &::before {
-      top: 0 !important;
-      transition: ${transitionDuration};
-    }
-    &::after { transform: rotate(45deg); }
-    &::before { transform: rotate(-45deg); }
-  `}
+      &::after,
+      &::before {
+        top: 0 !important;
+        transition: ${transitionDuration};
+      }
+      &::after {
+        transform: rotate(45deg);
+      }
+      &::before {
+        transform: rotate(-45deg);
+      }
+    `};
 `;
 
 export function DeployRow({diff, deploy, user: {name}, toggleDeployDetails}) {
@@ -126,15 +141,22 @@ export function DeployRow({diff, deploy, user: {name}, toggleDeployDetails}) {
     <StyledDeployRow expanded={deploy.isExpanded} onClick={toggleDeployDetails}>
       <Header>
         <h1>{deploy.branch}</h1>
-        <Hosts hosts={deploy.hosts} diff={diff}/>
+        <Hosts hosts={deploy.hosts} diff={diff} />
       </Header>
-      <Terminal log={deploy.log} expanded={deploy.isExpanded}/>
+      <Terminal log={deploy.log} expanded={deploy.isExpanded} />
       <Footer>
-        <p>Deployed <Time title={format(deploy.createdAt)}>{distanceInWordsToNow(deploy.createdAt, {includeSeconds: true})} ago</Time></p>
-        <p>by <User>{name}</User></p>
+        <p>
+          Deployed{' '}
+          <Time title={format(deploy.createdAt)}>
+            {distanceInWordsToNow(deploy.createdAt, {includeSeconds: true})} ago
+          </Time>
+        </p>
+        <p>
+          by <User>{name}</User>
+        </p>
       </Footer>
       <ToggleDeployButton expanded={deploy.isExpanded} data-toggle-deploy>
-        <ToggleDeployIcon expanded={deploy.isExpanded} data-toggle-deploy/>
+        <ToggleDeployIcon expanded={deploy.isExpanded} data-toggle-deploy />
       </ToggleDeployButton>
     </StyledDeployRow>
   );

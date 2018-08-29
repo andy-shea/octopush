@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 // prettier-ignore
 const TextField = styled.input`
@@ -10,7 +10,7 @@ const TextField = styled.input`
   width: 100%;
   background-color: var(--color-light-red);
 
-  ${({first}) => first && `
+  ${({first}) => first && css`
     border-bottom: none;
   `}
 `;

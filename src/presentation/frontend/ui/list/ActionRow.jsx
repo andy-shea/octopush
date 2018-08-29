@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import Icon from '../icon/Icon';
 
 const StyledActionRow = styled.li`
@@ -13,11 +13,11 @@ const StyledActionRow = styled.li`
 
   ${({isMultiline}) =>
     isMultiline &&
-    `
-    padding: 16px 100px 16px 15px;
-    line-height: 18px;
-    position: relative;
-  `};
+    css`
+      padding: 16px 100px 16px 15px;
+      line-height: 18px;
+      position: relative;
+    `};
 `;
 
 const ActionList = styled.ul`

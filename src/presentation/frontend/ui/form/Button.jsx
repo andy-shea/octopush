@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import Icon from '../icon/Icon';
 
 const StyledButton = styled.button`
@@ -20,24 +20,26 @@ const StyledButton = styled.button`
   line-height: 34px;
   margin: 1px;
   margin-left: 0;
-  padding: ${({large}) => large ? '10px 30px' : '0 30px'};
+  padding: ${({large}) => (large ? '10px 30px' : '0 30px')};
   white-space: nowrap;
 
-  ${({cta}) => cta && `
-    background: var(--color-green);
-    color: #fff;
-  `}
-
-  &:hover,
+  ${({cta}) =>
+    cta &&
+    css`
+      background: var(--color-green);
+      color: #fff;
+    `} &:hover,
   &:focus {
     background: #fff;
     color: var(--color-blue-10);
 
-    ${({cta}) => cta && `
-      background: #fff;
-      color: var(--color-green);
-      box-shadow: 0 1px 1px var(--color-grey-5);
-    `}
+    ${({cta}) =>
+    cta &&
+      css`
+        background: #fff;
+        color: var(--color-green);
+        box-shadow: 0 1px 1px var(--color-grey-5);
+      `};
   }
 `;
 
@@ -50,17 +52,19 @@ const Loader = styled(Icon).attrs({type: 'loader'})`
   stroke: none;
   transition: all 0.1s;
 
-  ${({isLoading}) => isLoading && `
-    margin-left: 6px;
-    width: 20px;
-  `}
+  ${({isLoading}) =>
+    isLoading &&
+    css`
+      margin-left: 6px;
+      width: 20px;
+    `};
 `;
 
 function Button({children, isLoading, ...props}) {
   return (
     <StyledButton {...props}>
       {children}
-      <Loader isLoading={isLoading}/>
+      <Loader isLoading={isLoading} />
     </StyledButton>
   );
 }

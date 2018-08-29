@@ -1,21 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {clearFix, hideText} from 'polished';
 import logo from './octopus.png';
 
 const StyledHeader = styled.header`
   ${clearFix()};
   &::before {
-    content: " ";
+    content: ' ';
     display: table;
   }
-  ${({centred}) => centred && `
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-  `}
+  ${({centred}) =>
+    centred &&
+    css`
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+    `};
 `;
 
 const Title = styled.h1`

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import Menu from './menu/Menu';
 
 const handlers = {
@@ -28,17 +28,24 @@ const Container = styled.div`
   background: var(--color-grey);
   position: absolute;
   transition: transform 0.5s cubic-bezier(0.7, 0, 0.3, 1);
-  ${({expanded}) => expanded && `
-    transition-duration: 0.5s;
-    transform: translateX(300px);
-  `}
+  ${({expanded}) =>
+    expanded &&
+    css`
+      transition-duration: 0.5s;
+      transform: translateX(300px);
+    `};
 `;
 
 function Main({children, toggleMenu, menu: {expanded, settingsPane}, openPane}) {
   return (
     <>
       <Container expanded={expanded}>{children}</Container>
-      <Menu toggleMenu={toggleMenu} expanded={expanded} settingsPane={settingsPane} openPane={openPane}/>
+      <Menu
+        toggleMenu={toggleMenu}
+        expanded={expanded}
+        settingsPane={settingsPane}
+        openPane={openPane}
+      />
     </>
   );
 }
