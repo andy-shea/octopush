@@ -28,6 +28,14 @@ function styles({name}) {
           fontSize: '1em'
         })
       }),
+      option: (base, {isSelected, isFocused}) => ({
+        ...base,
+        backgroundColor: isSelected // eslint-disable-line no-nested-ternary
+          ? 'var(--color-red-highlight)'
+          : isFocused
+            ? '#DEEBFF'
+            : 'transparent'
+      }),
       multiValue: base => ({
         ...base,
         backgroundColor: '#ebf5ff',
@@ -58,9 +66,8 @@ function styles({name}) {
   };
 }
 
-
 function MenuSelect({...props}) {
-  return <Select styles={styles(props)} {...props}/>;
+  return <Select styles={styles(props)} {...props} />;
 }
 
 export default MenuSelect;

@@ -18,16 +18,23 @@ const StyledStackSelect = styled.div`
 `;
 
 function StackSelect({stacks, selectStack, selected}) {
-  const stackOptions = stacks ? Object.keys(stacks).reduce((carry, slug) => {
-    const stack = stacks[slug];
-    carry[slug] = {value: slug, label: stack.title};
-    return carry;
-  }, {}) : {};
+  const stackOptions = stacks
+    ? Object.keys(stacks).reduce((carry, slug) => {
+      const stack = stacks[slug];
+      carry[slug] = {value: slug, label: stack.title};
+      return carry;
+    }, {})
+    : {};
 
   return (
     <StyledStackSelect>
-      <DeploySelect name="stack" instanceId="stack" clearable={false} options={Object.values(stackOptions)}
-        value={stackOptions[selected && selected.slug]} onChange={selectStack}/>
+      <DeploySelect
+        name="stack"
+        instanceId="stack"
+        options={Object.values(stackOptions)}
+        value={stackOptions[selected && selected.slug]}
+        onChange={selectStack}
+      />
     </StyledStackSelect>
   );
 }
