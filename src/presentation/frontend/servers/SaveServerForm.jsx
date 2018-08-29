@@ -1,42 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connectForm} from 'redux-formalize';
+import Reform, {Form} from 'reformist';
 import Button from '../ui/form/Button';
 import FieldGroup from '../ui/form/FieldGroup';
 import TextField from '../ui/form/TextField';
-import {formName} from './actions';
+import Error from '../ui/form/Error';
 
-export function SaveServerForm({server, fields: {hostname}, updateField, submitForm, state: {isSubmitting}}) {
+function submitForm({saveServer, resetForm, setErrors, values}) {
+  const hostname = values.hostname.trim();
+  if (hostname) saveServer({hostname}, {resetForm, setErrors});
+}
+
+export function SaveServerForm({server, saveServer}) {
+  const initialState = {hostname: server ? server.hostname : ''};
   return (
-    <form onSubmit={submitForm} onChange={updateField}>
-      <FieldGroup>
-        <TextField placeholder="Hostname" name="hostname" value={hostname} autoFocus/>
-        <Button type="submit" isLoading={isSubmitting}>{server ? 'Save' : 'Add'}</Button>
-      </FieldGroup>
-    </form>
+    <Reform key={initialState.hostname} initialState={initialState} saveServer={saveServer}
+      submitForm={submitForm}>
+      {({values, errors, onChange, isSubmitting}) => (
+        <Form>
+          <FieldGroup>
+            <TextField placeholder="Hostname" name="hostname" value={values.hostname} onChange={onChange} autoFocus/>
+            <Button type="submit" isLoading={isSubmitting}>{server ? 'Save' : 'Add'}</Button>
+          </FieldGroup>
+          {errors.hostname && <Error>{errors.hostname}</Error>}
+          {errors._other && <Error>{errors._other}</Error>}
+        </Form>
+      )}
+    </Reform>
   );
 }
 
 SaveServerForm.propTypes = {
-  fields: PropTypes.shape({
-    hostname: PropTypes.string.isRequired
-  }).isRequired,
-  submitForm: PropTypes.func.isRequired,
-  updateField: PropTypes.func.isRequired,
   saveServer: PropTypes.func.isRequired,
-  state: PropTypes.object,
   server: PropTypes.object
 };
 
-function onSubmit({saveServer, fields}) {
-  const hostname = fields.hostname.trim();
-  if (hostname) saveServer(hostname);
-}
-
-const config = {
-  initialState({server}) {
-    return {hostname: server ? server.hostname : ''};
-  }
-};
-
-export default connectForm(formName, ['hostname'], onSubmit, config)(SaveServerForm);
+export default SaveServerForm;

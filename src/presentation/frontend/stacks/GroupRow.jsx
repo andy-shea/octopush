@@ -9,21 +9,26 @@ import RemoveButton from '../ui/list/RemoveButton';
 
 const handlers = withHandlers({
   editGroup: props => () => {
-    props.editGroup(props.group);
+    props.editGroup({group: props.group});
   },
   removeGroup: props => () => {
     props.removeGroup(props.group);
   }
 });
 
-const Name = styled.b`display: block;`;
-const Hostnames = styled.span`font-size: 0.8em;`;
+const Name = styled.b`
+  display: block;
+`;
+const Hostnames = styled.span`
+  font-size: 0.8em;
+`;
 
 function GroupRow({group, servers, editGroup, removeGroup}) {
   const {name, isDeleting} = group;
+  // prettier-ignore
   const actions = [
-    <EditButton onClick={editGroup} middle/>,
-    <RemoveButton onClick={removeGroup} middle>Remove group</RemoveButton>
+    <EditButton onClick={editGroup} middle />, // eslint-disable-line react/jsx-key
+    <RemoveButton onClick={removeGroup} middle>Remove group</RemoveButton> // eslint-disable-line react/jsx-key
   ];
 
   return (

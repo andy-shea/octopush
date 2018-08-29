@@ -36,10 +36,10 @@ const Container = styled.div`
 
 function Main({children, toggleMenu, menu: {expanded, settingsPane}, openPane}) {
   return (
-    <React.Fragment>
+    <>
       <Container expanded={expanded}>{children}</Container>
       <Menu toggleMenu={toggleMenu} expanded={expanded} settingsPane={settingsPane} openPane={openPane}/>
-    </React.Fragment>
+    </>
   );
 }
 

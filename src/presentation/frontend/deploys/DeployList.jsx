@@ -61,7 +61,7 @@ function renderPaginationControl(deploys, {totalPages, page}, loadDeploys) {
 function DeployList({isLoading, pagination, deploys, users, toggleDeployDetails, stack, loadDeploys}) {
   if (stack) {
     return (
-      <React.Fragment>
+      <>
         {isLoading
           ? <DeployPageLoader/>
           : (
@@ -71,7 +71,7 @@ function DeployList({isLoading, pagination, deploys, users, toggleDeployDetails,
           )
         }
         {pagination && renderPaginationControl(deploys, pagination, loadDeploys)}
-      </React.Fragment>
+      </>
     );
   }
   if (isLoading) return <DeployPageLoader/>;

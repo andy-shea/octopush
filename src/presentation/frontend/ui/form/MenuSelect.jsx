@@ -4,6 +4,12 @@ import Select from './Select';
 function styles(baseStyles) {
   return {
     ...baseStyles,
+    multiValue: base => ({
+      ...base,
+      backgroundColor: 'var(--color-white)',
+      border: '1px solid #c2e0ff',
+      color: '#08c'
+    }),
     control: base => ({
       ...baseStyles.control(base),
       boxShadow: 'none',

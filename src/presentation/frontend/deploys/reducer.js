@@ -1,10 +1,9 @@
 import {types} from './actions';
 import {types as routerTypes} from '../router/routes';
 
-function updateDeploy(state, action, prop, value) {
-  const {deploy} = action.payload;
+function updateDeploy(state, deployId, prop, value) {
   const nextDeploys = {...state.map};
-  nextDeploys[deploy.id] = {...nextDeploys[deploy.id], [prop]: value};
+  nextDeploys[deployId] = {...nextDeploys[deployId], [prop]: value};
   return {...state, map: nextDeploys};
 }
 
@@ -12,19 +11,38 @@ function reducer(state = {map: {}}, action) {
   switch (action.type) {
     case routerTypes.STACK: {
       if (state.currentStackSlug !== action.payload.stack) {
-        return {map: {}, pagination: undefined, branches: [], currentStackSlug: action.payload.stack, isLoading: true};
+        return {
+          map: {},
+          pagination: undefined,
+          branches: [],
+          currentStackSlug: action.payload.stack,
+          isLoading: true
+        };
       }
       return {...state, map: {}, pagination: {...state.pagination, deploys: []}, isLoading: true};
     }
 
     case routerTypes.STACK_SUCCESS: {
-      const {result: {pagination, branches, slug}, entities: {deploys}} = action.response;
-      return {...state, map: deploys, pagination, branches, currentStackSlug: slug, isLoading: false};
+      const {
+        result: {pagination, branches, slug},
+        entities: {deploys}
+      } = action.response;
+      return {
+        ...state,
+        map: deploys,
+        pagination,
+        branches,
+        currentStackSlug: slug,
+        isLoading: false
+      };
     }
 
-    case routerTypes.STACK_FAIL: return {...state, isLoading: false};
+    case routerTypes.STACK_FAIL:
+      return {...state, isLoading: false};
 
-    case types.TOGGLE_DEPLOY_DETAILS: return updateDeploy(state, action, 'isExpanded', !action.payload.deploy.isExpanded);
+    case types.TOGGLE_DEPLOY_DETAILS:
+      const {deploy} = action.payload;
+      return updateDeploy(state, deploy.id, 'isExpanded', !deploy.isExpanded);
 
     case types.ADD_LOG_LINE: {
       const {deployId, line} = action.payload;
@@ -35,7 +53,10 @@ function reducer(state = {map: {}}, action) {
     }
 
     case types.START_DEPLOY_SUCCESS: {
-      const {result, entities: {deploys}} = action.response;
+      const {
+        result,
+        entities: {deploys}
+      } = action.response;
       const deploy = deploys[result];
       deploy.isExpanded = true;
       deploy.log = '';
@@ -56,9 +77,11 @@ function reducer(state = {map: {}}, action) {
       return {...state, map: nextMap, pagination: nextPagination};
     }
 
-    case types.LOAD_LOG_SUCCESS: return updateDeploy(state, action, 'log', action.response);
+    case types.LOAD_LOG_SUCCESS:
+      return updateDeploy(state, action.payload.deployId, 'log', action.response);
 
-    default: return state;
+    default:
+      return state;
   }
 }
 

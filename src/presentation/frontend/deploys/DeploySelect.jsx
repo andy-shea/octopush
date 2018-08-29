@@ -28,6 +28,18 @@ function styles({name}) {
           fontSize: '1em'
         })
       }),
+      multiValue: base => ({
+        ...base,
+        backgroundColor: '#ebf5ff',
+        boxShadow: '0 1px 1px rgba(0, 0, 0, 0.1)',
+        color: '#08c',
+        borderRadius: 0,
+        margin: '2px 3px'
+      }),
+      multiValueLabel: base => ({
+        ...baseStyles.multiValueLabel(base),
+        padding: 0
+      }),
       placeholder: base => ({
         ...base,
         ...(name === 'stack' && {

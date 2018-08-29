@@ -2,21 +2,21 @@ import {get, post, del} from '../utils/fetch';
 import Stack from '~/domain/stack/Stack';
 import {actionCreator, asyncActionCreator, async, createTypes} from 'redux-action-creator';
 
-export const types = createTypes([
-  'CREATE_STACK',
-  'EDIT_STACK',
-  'EDIT_GROUP',
-  ...async('LOAD_STACKS'),
-  ...async('ADD_STACK'),
-  ...async('UPDATE_STACK'),
-  ...async('REMOVE_STACK'),
-  ...async('ADD_GROUP'),
-  ...async('UPDATE_GROUP'),
-  ...async('REMOVE_GROUP')
-], 'STACKS');
-
-export const stackFormName = 'stack';
-export const groupFormName = 'group';
+export const types = createTypes(
+  [
+    'CREATE_STACK',
+    'EDIT_STACK',
+    'EDIT_GROUP',
+    ...async('LOAD_STACKS'),
+    ...async('ADD_STACK'),
+    ...async('UPDATE_STACK'),
+    ...async('REMOVE_STACK'),
+    ...async('ADD_GROUP'),
+    ...async('UPDATE_GROUP'),
+    ...async('REMOVE_GROUP')
+  ],
+  'STACKS'
+);
 
 export const actions = {
   createStack: actionCreator(types.CREATE_STACK),
@@ -30,29 +30,67 @@ export const actions = {
     },
     schema: [Stack.normalizedSchema]
   }),
-  addStack: asyncActionCreator(types.ADD_STACK, {
-    client: ({title, gitPath, serverIds, diff}) => post('/api/stacks', {title, gitPath, serverIds, diff}),
-    schema: Stack.normalizedSchema,
-    formName: stackFormName
+  addStack: asyncActionCreator(types.ADD_STACK, 'title', 'gitPath', 'serverIds', 'diff', {
+    client: (payload, {setSubmitting, setErrors}) => {
+      return post('/api/stacks', payload).then(
+        response => {
+          setSubmitting();
+          return response;
+        },
+        err => setErrors(err.response.data)
+      );
+    },
+    schema: Stack.normalizedSchema
   }),
-  updateStack: asyncActionCreator(types.UPDATE_STACK, {
-    client: ({stack, title, gitPath, serverIds, diff}) => post(`/api/stacks/${stack.slug}`, {title, gitPath, serverIds, diff}),
-    schema: Stack.normalizedSchema,
-    formName: stackFormName
+  updateStack: asyncActionCreator(
+    types.UPDATE_STACK,
+    'slug',
+    'title',
+    'gitPath',
+    'serverIds',
+    'diff',
+    {
+      client: ({slug, ...payload}, {setSubmitting, setErrors}) => {
+        return post(`/api/stacks/${slug}`, payload).then(
+          response => {
+            setSubmitting();
+            return response;
+          },
+          err => setErrors(err.response.data)
+        );
+      },
+      schema: Stack.normalizedSchema
+    }
+  ),
+  removeStack: asyncActionCreator(types.REMOVE_STACK, 'slug', ({slug}) =>
+    del(`/api/stacks/${slug}`)
+  ),
+  addGroup: asyncActionCreator(types.ADD_GROUP, 'slug', 'name', 'serverIds', {
+    client: ({slug, ...payload}, {resetForm, setErrors}) => {
+      return post(`/api/stacks/${slug}/groups`, payload).then(
+        response => {
+          resetForm();
+          return response;
+        },
+        err => setErrors(err.response.data)
+      );
+    },
+    schema: Stack.normalizedSchema
   }),
-  removeStack: asyncActionCreator(types.REMOVE_STACK, ({stack}) => del(`/api/stacks/${stack.slug}`)),
-  addGroup: asyncActionCreator(types.ADD_GROUP, {
-    client: ({stack, name, serverIds}) => post(`/api/stacks/${stack.slug}/groups`, {name, serverIds}),
-    schema: Stack.normalizedSchema,
-    formName: groupFormName
+  updateGroup: asyncActionCreator(types.UPDATE_GROUP, 'slug', 'groupId', 'name', 'serverIds', {
+    client: ({slug, groupId, ...payload}, {resetForm, setErrors}) => {
+      return post(`/api/stacks/${slug}/groups/${groupId}`, payload).then(
+        response => {
+          resetForm();
+          return response;
+        },
+        err => setErrors(err.response.data)
+      );
+    },
+    schema: Stack.normalizedSchema
   }),
-  updateGroup: asyncActionCreator(types.UPDATE_GROUP, {
-    client: ({stack, group, name, serverIds}) => post(`/api/stacks/${stack.slug}/groups/${group.id}`, {name, serverIds}),
-    schema: Stack.normalizedSchema,
-    formName: groupFormName
-  }),
-  removeGroup: asyncActionCreator(types.REMOVE_GROUP, {
-    client: ({stack, group}) => del(`/api/stacks/${stack.slug}/groups/${group.id}`),
+  removeGroup: asyncActionCreator(types.REMOVE_GROUP, 'slug', 'group', {
+    client: ({slug, group}) => del(`/api/stacks/${slug}/groups/${group.id}`),
     schema: Stack.normalizedSchema
   })
 };

@@ -8,7 +8,7 @@ import SettingsPaneContent from '../ui/menu/SettingsPaneContent';
 const StyledStackList = styled.div`
   min-width: 530px;
   height: 100%;
-`
+`;
 
 const NewStackButton = styled.button`
   outline: none;

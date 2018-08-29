@@ -4,10 +4,10 @@ import DeployListContainer from './DeployListContainer';
 
 function Deploy() {
   return (
-    <React.Fragment>
+    <>
       <DeploySettingsContainer/>
       <DeployListContainer/>
-    </React.Fragment>
+    </>
   );
 }
 

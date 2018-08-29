@@ -14,21 +14,26 @@ function reducer(state = {map: {}, loaded: false}, action) {
 
     case types.ADD_SERVER_SUCCESS:
     case types.UPDATE_SERVER_SUCCESS:
-      return {...state, map: {...state.map, ...action.response.entities.servers}, serverEditing: undefined};
+      return {
+        ...state,
+        map: {...state.map, ...action.response.entities.servers},
+        serverEditing: undefined
+      };
 
     case types.REMOVE_SERVER: {
-      const {server} = action.payload;
+      const {serverId} = action.payload;
       const nextMap = {...state.map};
-      nextMap[server.id] = {...server, isDeleting: true};
+      nextMap[serverId] = {...state.map[serverId], isDeleting: true};
       return {...state, map: nextMap};
     }
 
     case types.REMOVE_SERVER_SUCCESS:
       const nextMap = {...state.map};
-      delete nextMap[action.payload.server.id];
+      delete nextMap[action.payload.serverId];
       return {...state, map: nextMap};
 
-    default: return state;
+    default:
+      return state;
   }
 }
 

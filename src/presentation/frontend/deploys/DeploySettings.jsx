@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {connectForm} from 'redux-formalize';
+import {withHandlers} from 'recompose';
+import Reform, {Form} from 'reformist';
 import Button from '../ui/form/Button';
 import StackSelect from './StackSelect';
 import BranchSelect from './BranchSelect';
 import TargetsSelect from './TargetsSelect';
 import Header from '../ui/Header';
-import {formName} from './actions';
+import Error from '../ui/form/Error';
 
 const DeployButton = styled(Button).attrs({type: 'submit', cta: true, large: true})`
   padding-top: 7px !important;
@@ -20,7 +21,7 @@ const StackSelectWrapper = styled.div`
   margin-left: 20%;
 `;
 
-const DeployForm = styled.form`
+const DeployForm = styled(Form)`
   border-bottom: 1px solid var(--color-grey-10);
   padding: 20px 20px 30px 20%;
   margin-top: 1em;
@@ -41,73 +42,69 @@ const FieldGroup = styled.div`
   align-items: center;
 `;
 
-export function DeploySettings({state, fields, submitForm, updateBranch, updateTargets, stack, stacks, servers, branches, selectStack}) {
-  const {branch, targets} = fields;
+const enhance = withHandlers({
+  selectStack({loadDeploys}) {
+    return ({value}) => loadDeploys(value);
+  }
+});
+
+function submitForm({stack, startDeploy, resetForm, setErrors, values}) {
+  const branch = values.branch && values.branch.value;
+  const targets = values.targets.map(({value}) => value);
+  if (branch && targets.length) {
+    startDeploy({slug: stack.slug, branch, targets}, {resetForm, setErrors});
+  }
+}
+
+export function DeploySettings({startDeploy, stack, stacks, servers, branches, selectStack}) {
   return (
     <Header>
       <StackSelectWrapper>
-        <StackSelect stacks={stacks} selected={stack} selectStack={selectStack}/>
+        <StackSelect stacks={stacks} selected={stack} selectStack={selectStack} />
       </StackSelectWrapper>
-      {
-        stack &&
-        <DeployForm onSubmit={submitForm}>
-          <FieldGroup>
-            <BranchSelect branches={branches} selectBranch={updateBranch} selectedBranch={branch}/>
-            to
-            <TargetsSelect groups={stack.groups} servers={servers} selectTargets={updateTargets} selectedTargets={targets}/>
-            <DeployButton isLoading={state.isSubmitting}>Deploy!</DeployButton>
-          </FieldGroup>
-        </DeployForm>
-      }
+      {stack && (
+        <Reform
+          key={stack.slug}
+          initialState={{branch: null, targets: null}}
+          startDeploy={startDeploy}
+          stack={stack}
+          submitForm={submitForm}
+        >
+          {({values, errors, updateValue, isSubmitting}) => (
+            <DeployForm>
+              <FieldGroup>
+                <BranchSelect
+                  branches={branches}
+                  selectedBranch={values.branch}
+                  updateValue={updateValue}
+                />
+                to
+                <TargetsSelect
+                  groups={stack.groups}
+                  servers={servers}
+                  selectedTargets={values.targets}
+                  updateValue={updateValue}
+                />
+                <DeployButton isLoading={isSubmitting}>Deploy!</DeployButton>
+              </FieldGroup>
+              {errors.branches && <label htmlFor="branches">{errors.branches}</label>}
+              {errors.targets && <label htmlFor="targets">{errors.targets}</label>}
+              {errors._other && <Error>{errors._other}</Error>}
+            </DeployForm>
+          )}
+        </Reform>
+      )}
     </Header>
   );
 }
 
 DeploySettings.propTypes = {
-  fields: PropTypes.shape({
-    branch: PropTypes.string,
-    targets: PropTypes.array
-  }).isRequired,
-  submitForm: PropTypes.func.isRequired,
-  updateField: PropTypes.func.isRequired,
   startDeploy: PropTypes.func.isRequired,
   selectStack: PropTypes.func.isRequired,
-  updateBranch: PropTypes.func.isRequired,
-  updateTargets: PropTypes.func.isRequired,
   branches: PropTypes.array,
   stack: PropTypes.object,
   stacks: PropTypes.object,
-  servers: PropTypes.object,
-  state: PropTypes.object
+  servers: PropTypes.object
 };
 
-function onSubmit({fields, stack, startDeploy}) {
-  const {branch, targets} = fields;
-  if (branch && targets) startDeploy({stack, branch, targets});
-}
-
-const config = {
-  initialState: {branch: undefined, targets: undefined},
-  shouldResetFormOnProps: ({stack}, nextProps) => {
-    if (nextProps.stack !== stack) return true;
-    if (nextProps.state.isSubmitting) return false;
-    return true;
-  },
-  handlers: {
-    selectStack({loadDeploys}) {
-      return ({value}) => loadDeploys(value);
-    },
-    updateBranch({updateForm}) {
-      return ({value}) => {
-        updateForm(state => ({...state, branch: value}));
-      };
-    },
-    updateTargets({updateForm}) {
-      return targets => {
-        updateForm(state => ({...state, targets: targets.map(target => target.value)}));
-      };
-    }
-  }
-};
-
-export default connectForm(formName, ['branch', 'targets'], onSubmit, config)(DeploySettings);
+export default enhance(DeploySettings);

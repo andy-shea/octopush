@@ -6,13 +6,15 @@ import Servers from './Servers';
 import {getServers, getServerEditing} from './selectors';
 
 const handlers = withHandlers({
-  saveServer: props => (hostname) => {
+  saveServer: props => ({hostname}, {resetForm, setErrors}) => {
     const {serverEditing, editServer, updateServer, addServer} = props;
     if (serverEditing) {
-      if (hostname !== serverEditing.hostname) updateServer({server: serverEditing, newHostname: hostname});
-      else editServer(null);
+      if (hostname !== serverEditing.hostname) {
+        updateServer({serverId: serverEditing.id, newHostname: hostname}, {resetForm, setErrors});
+      }
+      else editServer({server: null});
     }
-    else addServer({hostname});
+    else addServer({hostname}, {resetForm, setErrors});
   }
 });
 
@@ -23,6 +25,12 @@ function mapStateToProps(state) {
   };
 }
 
-const ServersContainer = compose(connect(mapStateToProps, actions), handlers)(Servers);
+const ServersContainer = compose(
+  connect(
+    mapStateToProps,
+    actions
+  ),
+  handlers
+)(Servers);
 
 export default ServersContainer;

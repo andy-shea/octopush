@@ -6,7 +6,7 @@ import SettingsPaneContent from '../ui/menu/SettingsPaneContent';
 
 function Groups({servers, stack: {groups}, editGroup, removeGroup, saveGroup, groupEditing}) {
   return (
-    <React.Fragment>
+    <>
       <h3>Server Groups</h3>
       <SettingsPaneContent>
         <SaveGroupForm servers={servers} saveGroup={saveGroup} group={groupEditing || {name: ''}}/>
@@ -16,7 +16,7 @@ function Groups({servers, stack: {groups}, editGroup, removeGroup, saveGroup, gr
           ))}
         </ul>
       </SettingsPaneContent>
-    </React.Fragment>
+    </>
   );
 }
 

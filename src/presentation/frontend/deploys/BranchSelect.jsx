@@ -2,18 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DeploySelect from './DeploySelect';
 
-function BranchSelect({branches, selectBranch, selectedBranch}) {
-  const branchOptions = branches && branches.map(branch => ({value: branch, label: branch}));
+function BranchSelect({branches, selectedBranch, updateValue}) {
+  const branchOptions = branches
+    ? branches.reduce((carry, branch) => {
+      carry[branch] = {value: branch, label: branch};
+      return carry;
+    }, {})
+    : {};
+
   return (
-    <DeploySelect name="branch" instanceId="branch" clearable={false} options={branchOptions} placeholder="branch"
-      value={selectedBranch} onChange={selectBranch}/>
+    <DeploySelect
+      name="branch"
+      instanceId="branch"
+      options={Object.values(branchOptions)}
+      placeholder="branch"
+      value={selectedBranch}
+      updateValue={updateValue}
+    />
   );
 }
 
 BranchSelect.propTypes = {
   branches: PropTypes.array.isRequired,
-  selectBranch: PropTypes.func.isRequired,
-  selectedBranch: PropTypes.string
+  updateValue: PropTypes.func.isRequired,
+  selectedBranch: PropTypes.object
 };
 
 export default BranchSelect;

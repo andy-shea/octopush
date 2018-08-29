@@ -7,20 +7,23 @@ import {getStackEditing, getGroupEditing} from '../stacks/selectors';
 import {getStackEditingServers} from '../servers/selectors';
 
 const handlers = withHandlers({
-  saveGroup: props => (group, name, selectedServers) => {
+  saveGroup: props => ({group, name, servers}, {resetForm, setErrors}) => {
     const {stack, updateGroup, editGroup, addGroup} = props;
     if (group.id) {
       const currentServers = group.serverIds ? group.serverIds.join(',') : null;
-      if (name !== group.name || selectedServers !== currentServers) {
-        updateGroup({stack, group, name, serverIds: selectedServers});
+      if (name !== group.name || servers.join(',') !== currentServers) {
+        updateGroup(
+          {slug: stack.slug, groupId: group.id, name, serverIds: servers},
+          {resetForm, setErrors}
+        );
       }
-      else editGroup(null);
+      else editGroup({group: null});
     }
-    else addGroup({stack, name, serverIds: selectedServers});
+    else addGroup({slug: stack.slug, name, serverIds: servers}, {resetForm, setErrors});
   },
 
   removeGroup: ({removeGroup, stack}) => group => {
-    removeGroup({stack, group});
+    removeGroup({slug: stack.slug, group});
   }
 });
 
@@ -39,6 +42,12 @@ function mapStateToProps(state) {
   };
 }
 
-const GroupsContainer = compose(connect(mapStateToProps, mapDispatchToProps), handlers)(Groups);
+const GroupsContainer = compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  handlers
+)(Groups);
 
 export default GroupsContainer;

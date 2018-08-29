@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import {withHandlers} from 'recompose';
 import MenuSelect from '../ui/form/MenuSelect';
-import {connectForm} from 'redux-formalize';
+import Reform, {Form} from 'reformist';
 import Button from '../ui/form/Button';
 import MenuScrollPane from '../ui/menu/MenuScrollPane';
 import GroupsContainer from './GroupsContainer';
@@ -10,78 +11,110 @@ import SettingsPaneContent from '../ui/menu/SettingsPaneContent';
 import FieldGroup from '../ui/form/FieldGroup';
 import TextField from '../ui/form/TextField';
 import CloseIcon from '../ui/icon/CloseIcon';
-import {stackFormName} from './actions';
+import Error from '../ui/form/Error';
 
 const StyledStackDetail = styled.div`
   height: 100%;
 `;
 
-export function StackDetail({state, stack, servers, editStack, fields, updateField, submitForm, updateSelectedServers}) {
-  const {title, gitPath, selectedServers, diff} = fields;
-  const options = Object.keys(servers).map(id => ({value: id.toString(), label: servers[id].hostname}));
+const enhance = withHandlers({
+  editStack: props => () => props.editStack({stack: null})
+});
+
+function submitForm({stack, saveStack, setSubmitting, setErrors, values}) {
+  const title = values.title.trim();
+  const gitPath = values.gitPath.trim();
+  const servers = values.servers.map(option => parseInt(option.value, 10));
+  if (title && gitPath && servers.length) {
+    const payload = {stack, title, gitPath, servers, diff: values.diff && values.diff.trim()};
+    saveStack(payload, {setSubmitting, setErrors});
+  }
+}
+
+export function StackDetail({stack, servers, saveStack, editStack}) {
+  const options = Object.keys(servers).reduce((carry, id) => {
+    carry[id] = {value: id.toString(), label: servers[id].hostname};
+    return carry;
+  }, {});
+  const initialState = {
+    title: stack ? stack.title : '',
+    gitPath: stack ? stack.gitPath : '',
+    diff: stack ? stack.diff : '',
+    servers: stack && stack.servers.map(value => options[value])
+  };
   return (
     <StyledStackDetail>
-      <CloseIcon title="Close settings" onClick={editStack}>Close settings</CloseIcon>
+      <CloseIcon title="Close settings" onClick={editStack}>
+        Close settings
+      </CloseIcon>
       <h2>{stack.title || 'New Stack'}</h2>
       <MenuScrollPane width={600}>
         <SettingsPaneContent>
-          <form onSubmit={submitForm} onChange={updateField}>
-            <TextField first placeholder="Title" name="title" value={title} autoFocus/>
-            <TextField first placeholder="Git Path" name="gitPath" value={gitPath}/>
-            <MenuSelect name="servers" instanceId="whitelist" options={options} isMulti placeholder="Server Whitelist" simpleValue
-              value={selectedServers} onChange={updateSelectedServers}/>
-            <FieldGroup>
-              <TextField placeholder="Diff URL" name="diff" value={diff}/>
-              <Button type="submit" isLoading={state.isSubmitting}>{stack.id ? 'Save' : 'Add'}</Button>
-            </FieldGroup>
-          </form>
+          <Reform
+            initialState={initialState}
+            stack={stack}
+            saveStack={saveStack}
+            submitForm={submitForm}
+          >
+            {({values, errors, onChange, updateValue, isSubmitting}) => (
+              <Form>
+                <TextField
+                  first
+                  placeholder="Title"
+                  id="title"
+                  name="title"
+                  value={values.title}
+                  onChange={onChange}
+                  autoFocus
+                />
+                {errors.title && <label htmlFor="title">{errors.title}</label>}
+                <TextField
+                  first
+                  placeholder="Git Path"
+                  id="git-path"
+                  name="gitPath"
+                  value={values.gitPath}
+                  onChange={onChange}
+                />
+                {errors.gitPath && <label htmlFor="git-path">{errors.gitPath}</label>}
+                <MenuSelect
+                  name="servers"
+                  instanceId="whitelist"
+                  options={Object.values(options)}
+                  isMulti
+                  placeholder="Server Whitelist"
+                  value={values.servers}
+                  updateValue={updateValue}
+                />
+                {errors.servers && <label htmlFor="servers">{errors.servers}</label>}
+                <FieldGroup>
+                  <TextField
+                    placeholder="Diff URL"
+                    name="diff"
+                    value={values.diff}
+                    onChange={onChange}
+                  />
+                  <Button type="submit" isLoading={isSubmitting}>
+                    {stack.id ? 'Save' : 'Add'}
+                  </Button>
+                </FieldGroup>
+                {errors.diff && <label htmlFor="diff">{errors.diff}</label>}
+                {errors._other && <Error>{errors._other}</Error>}
+              </Form>
+            )}
+          </Reform>
         </SettingsPaneContent>
-
-        {stack.id && <GroupsContainer/>}
+        {stack.id && <GroupsContainer />}
       </MenuScrollPane>
     </StyledStackDetail>
   );
 }
 
 StackDetail.propTypes = {
-  fields: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    gitPath: PropTypes.string.isRequired,
-    selectedServers: PropTypes.string,
-    diff: PropTypes.string
-  }).isRequired,
-  submitForm: PropTypes.func.isRequired,
-  updateSelectedServers: PropTypes.func.isRequired,
-  updateField: PropTypes.func.isRequired,
   servers: PropTypes.object.isRequired,
   editStack: PropTypes.func.isRequired,
   saveStack: PropTypes.func.isRequired,
-  stack: PropTypes.object,
-  state: PropTypes.object
+  stack: PropTypes.object
 };
 
-function onSubmit({fields, stack, saveStack}) {
-  const title = fields.title.trim();
-  const gitPath = fields.gitPath.trim();
-  const diff = fields.diff && fields.diff.trim();
-  const selectedServers = fields.selectedServers.split(',');
-  if (title && gitPath && selectedServers) saveStack(stack, title, gitPath, selectedServers, diff);
-}
-
-const config = {
-  initialState({stack}) {
-    if (stack) {
-      const {title, gitPath, diff, servers: serverIds} = stack;
-      return {title, gitPath, diff, selectedServers: serverIds ? serverIds.join(',') : null};
-    }
-    return {title: '', gitPath: '', diff: '', selectedServers: null};
-  },
-  handlers: {
-    editStack: props => () => props.editStack(null),
-    updateSelectedServers({updateForm}) {
-      return selectedServers => updateForm(state => ({...state, selectedServers}));
-    }
-  }
-};
-
-export default connectForm(stackFormName, ['title', 'gitPath', 'selectedServers', 'diff'], onSubmit, config)(StackDetail);
+export default enhance(StackDetail);

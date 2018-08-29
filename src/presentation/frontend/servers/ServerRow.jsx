@@ -8,20 +8,25 @@ import RemoveButton from '../ui/list/RemoveButton';
 
 const handlers = withHandlers({
   editServer: props => () => {
-    props.editServer(props.server);
+    props.editServer({server: props.server});
   },
   removeServer: props => () => {
-    props.removeServer({server: props.server});
+    props.removeServer({serverId: props.server.id});
   }
 });
 
 function ServerRow({server, editServer, removeServer}) {
   const {hostname, isDeleting} = server;
+  // prettier-ignore
   const actions = [
-    <EditButton onClick={editServer} middle/>,
-    <RemoveButton onClick={removeServer} middle>Remove server</RemoveButton>
+    <EditButton onClick={editServer} middle />, // eslint-disable-line react/jsx-key
+    <RemoveButton onClick={removeServer} middle>Remove server</RemoveButton> // eslint-disable-line react/jsx-key
   ];
-  return <ActionRow actions={actions} isLoading={isDeleting} height={52}>{hostname}</ActionRow>;
+  return (
+    <ActionRow actions={actions} isLoading={isDeleting} height={52}>
+      {hostname}
+    </ActionRow>
+  );
 }
 
 ServerRow.propTypes = {

@@ -16,7 +16,10 @@ function mapStateToProps(state) {
   };
 }
 
-@connect(mapStateToProps, actions)
+@connect(
+  mapStateToProps,
+  actions
+)
 class StacksContainer extends Component {
 
   static propTypes = {
@@ -28,29 +31,46 @@ class StacksContainer extends Component {
     stacks: PropTypes.object,
     stackEditing: PropTypes.object,
     servers: PropTypes.object
-  }
+  };
 
   @autobind
-  saveStack(stack, title, gitPath, selectedServers, diff) {
+  saveStack({stack, title, gitPath, servers, diff}, {setSubmitting, setErrors}) {
     const {updateStack, editStack, addStack} = this.props;
     if (stack.id) {
       const currentServers = stack.servers ? stack.servers.join(',') : null;
-      if (title !== stack.title
-          || gitPath !== stack.gitPath
-          || diff !== stack.diff
-          || selectedServers !== currentServers) {
-        updateStack({stack, title, gitPath, serverIds: selectedServers, diff});
+      if (
+        title !== stack.title ||
+        gitPath !== stack.gitPath ||
+        diff !== stack.diff ||
+        servers.join(',') !== currentServers
+      ) {
+        updateStack(
+          {slug: stack.slug, title, gitPath, serverIds: servers, diff},
+          {setSubmitting, setErrors}
+        );
       }
-      else editStack(null);
+      else editStack({stack: null});
     }
-    else addStack({title, gitPath, serverIds: selectedServers, diff});
+    else addStack({title, gitPath, serverIds: servers, diff}, {setSubmitting, setErrors});
   }
 
   render() {
     const {servers, stacks, stackEditing, createStack, editStack, removeStack} = this.props;
-    return stackEditing
-      ? <StackDetail stack={stackEditing} servers={servers} saveStack={this.saveStack} editStack={editStack}/>
-      : <StackList createStack={createStack} stacks={stacks} editStack={editStack} removeStack={removeStack}/>;
+    return stackEditing ? (
+      <StackDetail
+        stack={stackEditing}
+        servers={servers}
+        saveStack={this.saveStack}
+        editStack={editStack}
+      />
+    ) : (
+      <StackList
+        createStack={createStack}
+        stacks={stacks}
+        editStack={editStack}
+        removeStack={removeStack}
+      />
+    );
   }
 
 }

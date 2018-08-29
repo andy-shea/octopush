@@ -8,17 +8,16 @@ import {types as routerTypes} from '../router/routes';
 
 export const types = createTypes([...async('LOGIN')], 'USERS');
 
-export const formName = 'users';
-
 export const actions = {
-  login: asyncActionCreator(types.LOGIN, {
-    client: ({username, password}) => post('/login', {username, password}),
+  login: asyncActionCreator(types.LOGIN, 'username', 'password', {
+    client: (payload, {setErrors}) => {
+      return post('/login', payload).catch(err => setErrors(err.response.data));
+    },
     schema: {
       stacks: [Stack.normalizedSchema],
       servers: [Server.normalizedSchema],
       user: User.normalizedSchema
-    },
-    formName
+    }
   }),
   redirectAfterLogin: (path, routeMap) => {
     const action = pathToAction(path, routeMap);

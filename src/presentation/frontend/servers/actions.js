@@ -3,15 +3,16 @@ import Server from '~/domain/server/Server';
 import Stack from '~/domain/stack/Stack';
 import {actionCreator, asyncActionCreator, async, createTypes} from 'redux-action-creator';
 
-export const types = createTypes([
-  'EDIT_SERVER',
-  ...async('LOAD_SERVERS'),
-  ...async('ADD_SERVER'),
-  ...async('UPDATE_SERVER'),
-  ...async('REMOVE_SERVER')
-], 'SERVERS');
-
-export const formName = 'servers';
+export const types = createTypes(
+  [
+    'EDIT_SERVER',
+    ...async('LOAD_SERVERS'),
+    ...async('ADD_SERVER'),
+    ...async('UPDATE_SERVER'),
+    ...async('REMOVE_SERVER')
+  ],
+  'SERVERS'
+);
 
 export const actions = {
   editServer: actionCreator(types.EDIT_SERVER, 'server'),
@@ -23,18 +24,32 @@ export const actions = {
     },
     schema: [Server.normalizedSchema]
   }),
-  addServer: asyncActionCreator(types.ADD_SERVER, {
-    client: ({hostname}) => post('/api/servers', {hostname}),
-    schema: Server.normalizedSchema,
-    formName
+  addServer: asyncActionCreator(types.ADD_SERVER, 'hostname', {
+    client: (payload, {resetForm, setErrors}) => {
+      return post('/api/servers', payload).then(
+        response => {
+          resetForm();
+          return response;
+        },
+        err => setErrors(err.response.data)
+      );
+    },
+    schema: Server.normalizedSchema
   }),
-  updateServer: asyncActionCreator(types.UPDATE_SERVER, {
-    client: ({server, newHostname}) => post(`/api/servers/${server.id}`, {newHostname}),
-    schema: Server.normalizedSchema,
-    formName
+  updateServer: asyncActionCreator(types.UPDATE_SERVER, 'serverId', 'newHostname', {
+    client: ({serverId, ...payload}, {resetForm, setErrors}) => {
+      return post(`/api/servers/${serverId}`, payload).then(
+        response => {
+          resetForm();
+          return response;
+        },
+        err => setErrors(err.response.data)
+      );
+    },
+    schema: Server.normalizedSchema
   }),
-  removeServer: asyncActionCreator(types.REMOVE_SERVER, {
-    client: ({server}) => del(`/api/servers/${server.id}`),
+  removeServer: asyncActionCreator(types.REMOVE_SERVER, 'serverId', {
+    client: ({serverId}) => del(`/api/servers/${serverId}`),
     schema: [Stack.normalizedSchema]
   })
 };

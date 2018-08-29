@@ -1,60 +1,52 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MenuSelect from '../ui/form/MenuSelect';
-import {connectForm} from 'redux-formalize';
+import Reform, {Form} from 'reformist';
 import Button from '../ui/form/Button';
 import FieldGroup from '../ui/form/FieldGroup';
 import TextField from '../ui/form/TextField';
-import {groupFormName} from './actions';
+import Error from '../ui/form/Error';
 
-export function SaveGroupForm({state, servers, group, fields, updateField, updateSelectedServers, submitForm}) {
-  const {selectedServers, name} = fields;
-  const options = servers ? Object.keys(servers).map(id => ({value: id.toString(), label: servers[id].hostname})) : [];
+function submitForm({group, saveGroup, resetForm, setErrors, values}) {
+  const name = values.name.trim();
+  const servers = values.servers.map(option => parseInt(option.value, 10));
+  if (name && servers.length) saveGroup({group, name, servers}, {resetForm, setErrors});
+}
+
+export function SaveGroupForm({servers, group, saveGroup}) {
+  const options = servers ? Object.keys(servers).reduce((carry, id) => {
+    carry[id] = {value: id.toString(), label: servers[id].hostname};
+    return carry;
+  }, {}) : {};
+  const initialState = {
+    name: group ? group.name : '',
+    servers: (group && group.servers) ? group.servers.map(value => options[value]) : []
+  };
   return (
-    <form onSubmit={submitForm} onChange={updateField}>
-      <MenuSelect name="servers" instanceId="servers" options={options} isMulti placeholder="Servers"
-        simpleValue value={selectedServers} onChange={updateSelectedServers}/>
-      <FieldGroup>
-        <TextField placeholder="Name" name="name" value={name}/>
-        <Button type="submit" isLoading={state.isSubmitting}>{group.id ? 'Save' : 'Add'}</Button>
-      </FieldGroup>
-    </form>
+    <Reform key={initialState.name} initialState={initialState} group={group}
+      saveGroup={saveGroup} submitForm={submitForm}>
+      {({values, errors, onChange, updateValue, isSubmitting}) => (
+        <Form>
+          <MenuSelect id="servers" name="servers" instanceId="servers" options={Object.values(options)}
+            isMulti placeholder="Servers" value={values.servers} updateValue={updateValue}/>
+          {errors.servers && <label htmlFor="servers">{errors.servers}</label>}
+          <FieldGroup>
+            <TextField placeholder="Name" id="name" name="name" value={values.name}
+              onChange={onChange}/>
+            <Button type="submit" isLoading={isSubmitting}>{group.id ? 'Save' : 'Add'}</Button>
+          </FieldGroup>
+          {errors.name && <label htmlFor="name">{errors.name}</label>}
+          {errors._other && <Error>{errors._other}</Error>}
+        </Form>
+      )}
+    </Reform>
   );
 }
 
 SaveGroupForm.propTypes = {
-  fields: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    selectedServers: PropTypes.string
-  }).isRequired,
   saveGroup: PropTypes.func.isRequired,
-  updateSelectedServers: PropTypes.func.isRequired,
-  updateField: PropTypes.func.isRequired,
-  submitForm: PropTypes.func.isRequired,
   group: PropTypes.object,
-  servers: PropTypes.object,
-  state: PropTypes.object
+  servers: PropTypes.object
 };
 
-function onSubmit({fields, group, saveGroup}) {
-  const name = fields.name.trim();
-  const selectedServers = fields.selectedServers.split(',');
-  if (name && selectedServers) saveGroup(group, name, selectedServers);
-}
-
-const config = {
-  initialState({group}) {
-    if (group) {
-      const {name, servers: serverIds} = group;
-      return {name, selectedServers: serverIds ? serverIds.join(',') : null};
-    }
-    return {name: '', selectedServers: null};
-  },
-  handlers: {
-    updateSelectedServers({updateForm}) {
-      return selectedServers => updateForm(state => ({...state, selectedServers}));
-    }
-  }
-};
-
-export default connectForm(groupFormName, ['selectedServers', 'name'], onSubmit, config)(SaveGroupForm);
+export default SaveGroupForm;

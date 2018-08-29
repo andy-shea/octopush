@@ -1,17 +1,13 @@
 import {get, post} from '../utils/fetch';
 import Deploy from '~/domain/deploy/Deploy';
-import {actionCreator, asyncActionCreator, async, createTypes} from 'redux-action-creator';
+import {asyncActionCreator, async, createTypes} from 'redux-action-creator';
 import {getDeploys} from './selectors';
 import {types as routerTypes} from '../router/routes';
 
-export const types = createTypes([
-  'TOGGLE_DEPLOY_DETAILS',
-  'ADD_LOG_LINE',
-  ...async('START_DEPLOY'),
-  ...async('LOAD_LOG')
-], 'DEPLOYS');
-
-export const formName = 'deploys';
+export const types = createTypes(
+  ['TOGGLE_DEPLOY_DETAILS', 'ADD_LOG_LINE', ...async('START_DEPLOY'), ...async('LOAD_LOG')],
+  'DEPLOYS'
+);
 
 export const actions = {
   toggleDeployDetails: deploy => (dispatch, getState) => {
@@ -19,7 +15,11 @@ export const actions = {
     if (!deploy.log) {
       // TOGGLE_DEPLOY_DETAILS will change deploy so need instance in new state
       const deploys = getDeploys(getState());
-      dispatch(actions.loadLog({deploy: deploys[Object.keys(deploys).find(index => deploys[index].id === deploy.id)]}));
+      dispatch(
+        actions.loadLog({
+          deployId: deploys[Object.keys(deploys).find(index => deploys[index].id === deploy.id)].id
+        })
+      );
     }
   },
   loadDeploys: (stack, page = 1) => {
@@ -27,11 +27,19 @@ export const actions = {
     if (page > 1) action.payload.query = {page};
     return action;
   },
-  addLogLine: actionCreator(types.ADD_LOG_LINE, 'deploy', 'line'),
-  startDeploy: asyncActionCreator(types.START_DEPLOY, {
-    client: ({stack, branch, targets}) => post('/api/deploys', {slug: stack.slug, branch, targets}),
-    schema: Deploy.normalizedSchema,
-    formName
+  startDeploy: asyncActionCreator(types.START_DEPLOY, 'slug', 'branch', 'targets', {
+    client: (payload, {resetForm, setErrors}) => {
+      return post('/api/deploys', payload).then(
+        response => {
+          resetForm();
+          return response;
+        },
+        err => setErrors(err.response.data)
+      );
+    },
+    schema: Deploy.normalizedSchema
   }),
-  loadLog: asyncActionCreator(types.LOAD_LOG, ({deploy}) => get(`/api/deploys/${deploy.id}/log`))
+  loadLog: asyncActionCreator(types.LOAD_LOG, 'deployId', ({deployId}) => {
+    return get(`/api/deploys/${deployId}/log`);
+  })
 };
