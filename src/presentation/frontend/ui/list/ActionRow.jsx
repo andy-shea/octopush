@@ -11,11 +11,13 @@ const StyledActionRow = styled.li`
   font-size: 1.2em;
   position: relative;
 
-  ${({isMultiline}) => isMultiline && `
+  ${({isMultiline}) =>
+    isMultiline &&
+    `
     padding: 16px 100px 16px 15px;
     line-height: 18px;
     position: relative;
-  `}
+  `};
 `;
 
 const ActionList = styled.ul`
@@ -57,15 +59,24 @@ const Loader = styled(Icon).attrs({type: 'loader'})`
   position: absolute;
   right: 15px;
   fill: var(--color-red-25);
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
 `;
 
 function ActionRow({children, actions, isLoading, height, isMultiline}) {
   return (
     <StyledActionRow isMultiline={isMultiline}>
       {children}
-      {isLoading ? <Loader/> : <ActionList height={height}>
-        {actions.map((action, index) => <li key={index}>{action}</li>)}
-      </ActionList>}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <ActionList height={height}>
+          {actions.map((action, index) => (
+            <li key={index}>{action}</li>
+          ))}
+        </ActionList>
+      )}
     </StyledActionRow>
   );
 }
