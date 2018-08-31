@@ -29,6 +29,7 @@ function submitForm({stack, saveStack, setSubmitting, setErrors, values}) {
     const payload = {stack, title, gitPath, servers, diff: values.diff && values.diff.trim()};
     saveStack(payload, {setSubmitting, setErrors});
   }
+  else setSubmitting(false);
 }
 
 export function StackDetail({stack, servers, saveStack, editStack}) {

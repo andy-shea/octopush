@@ -7,33 +7,56 @@ import FieldGroup from '../ui/form/FieldGroup';
 import TextField from '../ui/form/TextField';
 import Error from '../ui/form/Error';
 
-function submitForm({group, saveGroup, resetForm, setErrors, values}) {
+function submitForm({group, saveGroup, setSubmitting, resetForm, setErrors, values}) {
   const name = values.name.trim();
   const servers = values.servers.map(option => parseInt(option.value, 10));
   if (name && servers.length) saveGroup({group, name, servers}, {resetForm, setErrors});
+  else setSubmitting(false);
 }
 
 export function SaveGroupForm({servers, group, saveGroup}) {
-  const options = servers ? Object.keys(servers).reduce((carry, id) => {
-    carry[id] = {value: id.toString(), label: servers[id].hostname};
-    return carry;
-  }, {}) : {};
+  const options = servers
+    ? Object.keys(servers).reduce((carry, id) => {
+      carry[id] = {value: id.toString(), label: servers[id].hostname};
+      return carry;
+    }, {})
+    : {};
   const initialState = {
     name: group ? group.name : '',
-    servers: (group && group.servers) ? group.servers.map(value => options[value]) : []
+    servers: group && group.servers ? group.servers.map(value => options[value]) : []
   };
   return (
-    <Reform key={initialState.name} initialState={initialState} group={group}
-      saveGroup={saveGroup} submitForm={submitForm}>
+    <Reform
+      key={initialState.name}
+      initialState={initialState}
+      group={group}
+      saveGroup={saveGroup}
+      submitForm={submitForm}
+    >
       {({values, errors, onChange, updateValue, isSubmitting}) => (
         <Form>
-          <MenuSelect id="servers" name="servers" instanceId="servers" options={Object.values(options)}
-            isMulti placeholder="Servers" value={values.servers} updateValue={updateValue}/>
+          <MenuSelect
+            id="servers"
+            name="servers"
+            instanceId="servers"
+            options={Object.values(options)}
+            isMulti
+            placeholder="Servers"
+            value={values.servers}
+            updateValue={updateValue}
+          />
           {errors.servers && <label htmlFor="servers">{errors.servers}</label>}
           <FieldGroup>
-            <TextField placeholder="Name" id="name" name="name" value={values.name}
-              onChange={onChange}/>
-            <Button type="submit" isLoading={isSubmitting}>{group.id ? 'Save' : 'Add'}</Button>
+            <TextField
+              placeholder="Name"
+              id="name"
+              name="name"
+              value={values.name}
+              onChange={onChange}
+            />
+            <Button type="submit" isLoading={isSubmitting}>
+              {group.id ? 'Save' : 'Add'}
+            </Button>
           </FieldGroup>
           {errors.name && <label htmlFor="name">{errors.name}</label>}
           {errors._other && <Error>{errors._other}</Error>}

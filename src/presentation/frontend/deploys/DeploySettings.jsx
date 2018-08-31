@@ -48,12 +48,13 @@ const enhance = withHandlers({
   }
 });
 
-function submitForm({stack, startDeploy, resetForm, setErrors, values}) {
+function submitForm({stack, startDeploy, setSubmitting, resetForm, setErrors, values}) {
   const branch = values.branch && values.branch.value;
-  const targets = values.targets.map(({value}) => value);
+  const targets = values.targets && values.targets.map(({value}) => value);
   if (branch && targets.length) {
     startDeploy({slug: stack.slug, branch, targets}, {resetForm, setErrors});
   }
+  else setSubmitting(false);
 }
 
 export function DeploySettings({startDeploy, stack, stacks, servers, branches, selectStack}) {
