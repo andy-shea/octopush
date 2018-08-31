@@ -1,12 +1,13 @@
-import Promise from 'bluebird';
 import s from 'string';
 import db from '~/persistence';
 import Deploy from '~/domain/deploy/Deploy';
 
-const {schema: {timestampable, props: schemaProps}} = Deploy;
+const {
+  schema: {timestampable, props: schemaProps}
+} = Deploy;
 
 const mapper = {
-  insert(trx, deploys) {
+  async insert(trx, deploys) {
     const allValues = deploys.map(({branch, logFile, hosts, user, stack}) => {
       const values = {
         branch,
@@ -21,31 +22,41 @@ const mapper = {
       }
       return values;
     });
-    return db('deploys').transacting(trx).insert(allValues, 'id').then(ids => {
-      ids.map((id, index) => {
-        deploys[index].id = id;
-      });
+    const ids = db('deploys')
+      .transacting(trx)
+      .insert(allValues, 'id');
+    ids.map((id, index) => {
+      deploys[index].id = id;
     });
   },
 
   updateDeploy(trx, deploy, props) {
     const values = props.reduce((map, prop) => {
-      map[schemaProps[prop].column || s(prop).underscore().s] = (schemaProps[prop].type === 'json') ? JSON.stringify(deploy[prop]) : deploy[prop];
+      map[schemaProps[prop].column || s(prop).underscore().s] =
+        schemaProps[prop].type === 'json' ? JSON.stringify(deploy[prop]) : deploy[prop];
       return map;
     }, {});
     if (timestampable) values.updated_at = db.fn.now();
-    return db('deploys').transacting(trx).where({id: deploy.id}).update(values);
+    return db('deploys')
+      .transacting(trx)
+      .where({id: deploy.id})
+      .update(values);
   },
 
   update(trx, observers) {
-    return Promise.all(observers.reduce((mods, observer) => {
-      mods.push(this.updateDeploy(trx, observer.entity, observer.changed().props));
-      return mods;
-    }, []));
+    return Promise.all(
+      observers.reduce((mods, observer) => {
+        mods.push(this.updateDeploy(trx, observer.entity, observer.changed().props));
+        return mods;
+      }, [])
+    );
   },
 
   delete(trx, deploys) {
-    return db('deploys').transacting(trx).whereIn('id', deploys.map(deploy => deploy.id)).del();
+    return db('deploys')
+      .transacting(trx)
+      .whereIn('id', deploys.map(deploy => deploy.id))
+      .del();
   }
 };
 

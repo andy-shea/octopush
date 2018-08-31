@@ -6,26 +6,27 @@ process.on('message', data => {
   const {expandedTargets} = JSON.parse(data);
   let i = 0;
 
-  function dummy() {
+  async function dummy() {
     i++;
     if (i === 9) {
-      process.send(JSON.stringify({
-        key: '{{{octopush}}}',
-        data: expandedTargets.map(name => ({
-          name,
-          revisionFrom: 'z99hfa5',
-          revisionTo: 'v631y05'
-        }))
-      }));
+      process.send(
+        JSON.stringify({
+          key: '{{{octopush}}}',
+          data: expandedTargets.map(name => ({
+            name,
+            revisionFrom: 'z99hfa5',
+            revisionTo: 'v631y05'
+          }))
+        })
+      );
       setTimeout(dummy, 1000);
     }
     else if (i === 10) process.exit();
     else {
-      fetch('//baconipsum.com/api/?type=meat-and-filler').then(response => response.json()).then(lines => {
-        process.send(`${lines.join('\n')}\n\n`);
-        setTimeout(dummy, 1000);
-        return null;
-      });
+      const response = await fetch('//baconipsum.com/api/?type=meat-and-filler');
+      const lines = await response.json();
+      process.send(`${lines.join('\n')}\n\n`);
+      setTimeout(dummy, 1000);
     }
   }
 

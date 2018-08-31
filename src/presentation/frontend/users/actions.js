@@ -10,8 +10,13 @@ export const types = createTypes([...async('LOGIN')], 'USERS');
 
 export const actions = {
   login: asyncActionCreator(types.LOGIN, 'username', 'password', {
-    client: (payload, {setErrors}) => {
-      return post('/login', payload).catch(err => setErrors(err.response.data));
+    client: async (payload, {setErrors}) => {
+      try {
+        return await post('/login', payload);
+      }
+      catch (error) {
+        setErrors(error.response.data);
+      }
     },
     schema: {
       stacks: [Stack.normalizedSchema],

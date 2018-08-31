@@ -25,26 +25,28 @@ export const actions = {
     schema: [Server.normalizedSchema]
   }),
   addServer: asyncActionCreator(types.ADD_SERVER, 'hostname', {
-    client: (payload, {resetForm, setErrors}) => {
-      return post('/api/servers', payload).then(
-        response => {
-          resetForm();
-          return response;
-        },
-        err => setErrors(err.response.data)
-      );
+    client: async (payload, {resetForm, setErrors}) => {
+      try {
+        const response = await post('/api/servers', payload);
+        resetForm();
+        return response;
+      }
+      catch (error) {
+        setErrors(error.response.data);
+      }
     },
     schema: Server.normalizedSchema
   }),
   updateServer: asyncActionCreator(types.UPDATE_SERVER, 'serverId', 'newHostname', {
-    client: ({serverId, ...payload}, {resetForm, setErrors}) => {
-      return post(`/api/servers/${serverId}`, payload).then(
-        response => {
-          resetForm();
-          return response;
-        },
-        err => setErrors(err.response.data)
-      );
+    client: async ({serverId, ...payload}, {resetForm, setErrors}) => {
+      try {
+        const response = await post(`/api/servers/${serverId}`, payload);
+        resetForm();
+        return response;
+      }
+      catch (error) {
+        setErrors(error.response.data);
+      }
     },
     schema: Server.normalizedSchema
   }),

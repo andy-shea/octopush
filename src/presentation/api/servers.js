@@ -6,30 +6,58 @@ import StackRepository from '~/domain/stack/StackRepository';
 
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
+router.get('/', async (req, res, next) => {
   const service = req.injector.get(ServerService);
-  service.loadServers().then(setData(res, next)).catch(next);
+  try {
+    const data = await service.loadServers();
+    setData(res, next)(data);
+  }
+  catch (error) {
+    next(error);
+  }
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
   const service = req.injector.get(ServerService);
-  const {body: {hostname}} = req;
+  const {
+    body: {hostname}
+  } = req;
   if (!hostname) return next(HttpError.badRequest('Missing server hostname'));
-  service.addServer(hostname).then(setData(res, next, 201)).catch(next);
+
+  try {
+    const data = await service.addServer(hostname);
+    setData(res, next, 201)(data);
+  }
+  catch (error) {
+    next(error);
+  }
 });
 
-router.post('/:id', (req, res, next) => {
+router.post('/:id', async (req, res, next) => {
   const service = req.injector.get(ServerService);
-  const {body: {newHostname}} = req;
+  const {
+    body: {newHostname}
+  } = req;
   if (!newHostname) return next(HttpError.badRequest('Missing server hostname'));
-  service.updateServer(req.params.id, newHostname).then(setData(res, next)).catch(next);
+
+  try {
+    const data = await service.updateServer(req.params.id, newHostname);
+    setData(res, next)(data);
+  }
+  catch (error) {
+    next(error);
+  }
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
   const service = req.injector.get(ServerService);
-  service.removeServer(req.params.id).then(stackIds => {
+  try {
+    const stackIds = await service.removeServer(req.params.id);
     setData(res, next)(() => req.injector.get(StackRepository).findByIds(stackIds));
-  }).catch(next);
+  }
+  catch (error) {
+    next(error);
+  }
 });
 
 export default router;

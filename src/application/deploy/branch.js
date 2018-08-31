@@ -5,7 +5,7 @@ import logger from '~/infrastructure/logger';
 const githubPrefix = 'https://github.com/';
 
 const github = new GitHubApi({
-  debug: (process.env.NODE_ENV === 'development'),
+  debug: process.env.NODE_ENV === 'development',
   protocol: 'https',
   host: 'api.github.com',
   timeout: 5000
@@ -21,7 +21,10 @@ function getLocalBranches(gitPath) {
 }
 
 function getGithubBranches(gitPath) {
-  const [owner, repo] = gitPath.replace(githubPrefix, '').replace('.git', '').split('/');
+  const [owner, repo] = gitPath
+    .replace(githubPrefix, '')
+    .replace('.git', '')
+    .split('/');
   return new Promise((resolve, reject) => {
     github.repos.getBranches({owner, repo}, (err, res) => {
       if (err) reject(err);
@@ -30,13 +33,14 @@ function getGithubBranches(gitPath) {
   });
 }
 
-export function getBranches({gitPath}) {
+export async function getBranches({gitPath}) {
   if (process.env.NODE_ENV === 'development' && !gitPath.startsWith(githubPrefix)) {
     return Promise.resolve(['Test', 'Prod']);
   }
 
   const getBranchesMeta = gitPath.startsWith(githubPrefix) ? getGithubBranches : getLocalBranches;
-  return getBranchesMeta(gitPath).then(branches => {
+  try {
+    const branches = await getBranchesMeta(gitPath);
     let branchNames = branches.map(({name}) => name);
     branchNames.sort();
     const masterIndex = branchNames.indexOf('master');
@@ -45,7 +49,8 @@ export function getBranches({gitPath}) {
       branchNames.unshift('Test', 'Prod');
     }
     return branchNames;
-  }).catch(err => {
-    logger.error(err);
-  });
+  }
+  catch (error) {
+    logger.error(error);
+  }
 }

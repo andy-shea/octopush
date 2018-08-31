@@ -5,6 +5,7 @@ import {extractCritical} from 'emotion-server';
 import {Provider} from 'react-redux';
 import {NOT_FOUND} from 'redux-first-router';
 import {normalize} from 'normalizr';
+import {all} from 'awaity/esm';
 import configureStore from './frontend/store';
 import createRoutesConfig from './frontend/router/routes';
 import {render} from './frontend/template';
@@ -15,11 +16,13 @@ import Stack from '~/domain/stack/Stack';
 import StackService from '~/application/StackService';
 
 async function loadStacksAndServers(injector) {
-  const stacks = injector.get(StackService).loadStacks();
-  const servers = injector.get(ServerService).loadServers();
+  const [stacks, servers] = await all([
+    injector.get(StackService).loadStacks(),
+    injector.get(ServerService).loadServers()
+  ]);
   return {
-    stacks: {map: normalize(await stacks, [Stack.normalizedSchema]).entities.stacks},
-    servers: {map: normalize(await servers, [Server.normalizedSchema]).entities.servers}
+    stacks: {map: normalize(stacks, [Stack.normalizedSchema]).entities.stacks},
+    servers: {map: normalize(servers, [Server.normalizedSchema]).entities.servers}
   };
 }
 

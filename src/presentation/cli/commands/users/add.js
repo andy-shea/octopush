@@ -23,19 +23,30 @@ module.exports = (() => {
       };
     }
 
-    run({args: [name, email]}, callback) {
-      if (!name || !email) return callback(Error('Name and email are required\noctopush users:add <name> <email>'));
+    run(
+        {
+          args: [name, email]
+        },
+        callback
+    ) {
+      if (!name || !email) {
+        return callback(Error('Name and email are required\noctopush users:add <name> <email>'));
+      }
       prompt.start();
       prompt.message = '';
       prompt.delimiter = '';
-      prompt.get({properties: {password: {hidden: true, description: 'User password:'}}}, (err, {password}) => {
-        if (err) return callback(err);
-        if (!password) return callback(Error('No password provided'));
-        service.addUser(name, email, password)
+      prompt.get(
+        {properties: {password: {hidden: true, description: 'User password:'}}},
+        (err, {password}) => {
+          if (err) return callback(err);
+          if (!password) return callback(Error('No password provided'));
+          service
+            .addUser(name, email, password)
             .then(session.flush.bind(session))
             .then(callback.bind(undefined, null, 'User added successfully'))
             .catch(callback);
-      });
+        }
+      );
     }
 
   }

@@ -1,4 +1,3 @@
-import Promise from 'bluebird';
 import db from '~/persistence';
 import serverMapper from './servers';
 import stackMapper from './stacks';
@@ -48,20 +47,17 @@ const mapper = {
     return Promise.all(promises);
   },
 
-  postFlush(err) {
+  async postFlush(err) {
     if (err) {
       // TODO: issue if rollback throws error?
       // returning this promise and rethrowing the error in the then-block will
       // cause a "promise was rejected with a non-error" warning
-      this.trx.rollback().then(() => {
-        delete this.trx;
-      });
+      await this.trx.rollback();
+      delete this.trx;
       throw err;
     }
-    return this.trx.commit().then(() => {
-      delete this.trx;
-      return null;
-    });
+    await this.trx.commit();
+    delete this.trx;
   }
 };
 

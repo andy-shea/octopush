@@ -150,7 +150,6 @@ const rules = {
   ],
   'space-infix-ops': 2,
   'spaced-comment': [2, 'always'],
-  'compat/compat': 'error',
   'react/prop-types': 0
 };
 
@@ -166,7 +165,6 @@ module.exports = {
     jquery: true
   },
   extends: ['plugin:react/recommended'],
-  plugins: ['compat'],
   parserOptions: {
     sourceType: 'module',
     ecmaFeatures: {

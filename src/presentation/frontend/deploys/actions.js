@@ -28,14 +28,15 @@ export const actions = {
     return action;
   },
   startDeploy: asyncActionCreator(types.START_DEPLOY, 'slug', 'branch', 'targets', {
-    client: (payload, {resetForm, setErrors}) => {
-      return post('/api/deploys', payload).then(
-        response => {
-          resetForm();
-          return response;
-        },
-        err => setErrors(err.response.data)
-      );
+    client: async (payload, {resetForm, setErrors}) => {
+      try {
+        const response = await post('/api/deploys', payload);
+        resetForm();
+        return response;
+      }
+      catch (error) {
+        setErrors(error.response.data);
+      }
     },
     schema: Deploy.normalizedSchema
   }),

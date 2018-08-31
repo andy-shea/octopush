@@ -25,19 +25,31 @@ class UserRepository extends Repository {
     return this.session ? this.session.track(user) : user;
   }
 
-  findById(id) {
-    return baseFindQuery.clone().where({id}).first().then(this.__restore);
+  async findById(id) {
+    const userData = await baseFindQuery
+      .clone()
+      .where({id})
+      .first();
+    return this.__restore(userData);
   }
 
   findByIds(ids) {
-    return baseFindQuery.clone().where('id', 'in', ids).reduce((map, userData) => {
-      map[userData.id] = this.__restore(userData);
-      return map;
-    }, {});
+    return baseFindQuery
+      .clone()
+      .where('id', 'in', ids)
+      .reduce((map, userData) => {
+        map[userData.id] = this.__restore(userData);
+        return map;
+      }, {});
   }
 
-  findByEmail(email) {
-    return baseFindQuery.clone().select('password').where({email}).first().then(this.__restore);
+  async findByEmail(email) {
+    const userData = await baseFindQuery
+      .clone()
+      .select('password')
+      .where({email})
+      .first();
+    return this.__restore(userData);
   }
 
 }

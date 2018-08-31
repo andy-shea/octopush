@@ -10,10 +10,12 @@ class UserService {
     this.userRepo = userRepo;
   }
 
-  addUser(name, email, password) {
+  async addUser(name, email, password) {
     const user = new User(name, email);
     user.password = password;
-    return hash(user).then(() => this.userRepo.add(user)).then(() => user);
+    await hash(user);
+    await this.userRepo.add(user);
+    return user;
   }
 
 }

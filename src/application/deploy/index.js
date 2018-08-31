@@ -11,24 +11,33 @@ import mapper from '~/persistence/mapper/deploys';
 export function startDeploy(deploy, expandedTargets, emitLine) {
   const {stack, branch, user} = deploy;
   const slugPath = s(stack.slug).underscore().s;
-  const branchPath = s(branch).slugify().underscore().s;
+  const branchPath = s(branch)
+    .slugify()
+    .underscore().s;
   const logPath = path.join(__dirname, '../../..', config.log.deploy_path, slugPath);
-  const logFilename = [new Date().toISOString(), branchPath, s(user.name).slugify().underscore().s].join('_');
+  const logFilename = [
+    new Date().toISOString(),
+    branchPath,
+    s(user.name)
+      .slugify()
+      .underscore().s
+  ].join('_');
   mkdirp.sync(logPath);
   deploy.logFile = path.join(slugPath, logFilename);
   const stream = fs.createWriteStream(path.join(logPath, logFilename));
 
   stream.once('open', function openStream() {
     const child = cp.fork(path.join(__dirname, 'deploy'));
-    child.on('message', line => {
+    child.on('message', async line => {
       if (line.indexOf('{{{octopush}}}') !== -1) {
         deploy.hosts = JSON.parse(line).data;
-        db.transaction(trx => mapper.updateDeploy(trx, deploy, ['hosts'])).then(() => {
+        try {
+          await db.transaction(trx => mapper.updateDeploy(trx, deploy, ['hosts']));
           eventEmitter.emit('octopush:deploy', {stack, deploy, hosts: expandedTargets});
-          return null;
-        }).catch(err => {
+        }
+        catch (error) {
           emitLine(stack, deploy, `\u001b[97;41m${err}\u001b[0m`);
-        });
+        }
       }
       else {
         stream.write(line);

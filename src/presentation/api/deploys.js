@@ -10,21 +10,41 @@ import {types} from '../frontend/deploys/actions';
 const convert = new Ansi({newline: true});
 const router = express.Router();
 
-const handleError = (req, res, next) => err => {
-  next(new HttpError(err instanceof NotFoundError ? 404 : 500, err.message));
+const handleError = (next, error) => {
+  next(new HttpError(error instanceof NotFoundError ? 404 : 500, error.message));
 };
 
-router.get('/:id/log', (req, res, next) => {
-  const {params: {id}, injector} = req;
+router.get('/:id/log', async (req, res, next) => {
+  const {
+    params: {id},
+    injector
+  } = req;
   const service = injector.get(DeployService);
-  service.loadLog(id).then(setData(res, next)).catch(handleError(req, res, next));
+
+  try {
+    const data = await service.loadLog(id);
+    setData(res, next)(data);
+  }
+  catch (error) {
+    handleError(next, error);
+  }
 });
 
-router.get('/:slug?', (req, res, next) => {
-  const {params: {slug}, injector} = req;
+router.get('/:slug?', async (req, res, next) => {
+  const {
+    params: {slug},
+    injector
+  } = req;
   const service = injector.get(DeployService);
   const page = req.query.page || 1;
-  service.loadDeploysAndBranches(slug, page).then(setData(res, next)).catch(handleError(req, res, next));
+
+  try {
+    const data = await service.loadDeploysAndBranches(slug, page);
+    setData(res, next)(data);
+  }
+  catch (error) {
+    handleError(next, error);
+  }
 });
 
 function emitLine(socket) {
@@ -39,16 +59,30 @@ function emitLine(socket) {
   };
 }
 
-router.post('/', (req, res, next) => {
-  const {user, body: {slug, branch, targets}, injector} = req;
+router.post('/', async (req, res, next) => {
+  const {
+    user,
+    body: {slug, branch, targets},
+    injector
+  } = req;
   const service = injector.get(DeployService);
   if (!slug) return next(HttpError.badRequest('Missing stack slug'));
   if (!branch) return next(HttpError.badRequest('Missing deploy branch'));
   if (!targets) return next(HttpError.badRequest('Missing deploy targets'));
 
-  service.createAndStartDeploy(slug, branch, targets, user, emitLine(req.app.get('socket')))
-      .then(setData(res, next, 201))
-      .catch(handleError(req, res, next));
+  try {
+    const data = await service.createAndStartDeploy(
+      slug,
+      branch,
+      targets,
+      user,
+      emitLine(req.app.get('socket'))
+    );
+    setData(res, next, 201)(data);
+  }
+  catch (error) {
+    handleError(next, error);
+  }
 });
 
 export default router;
