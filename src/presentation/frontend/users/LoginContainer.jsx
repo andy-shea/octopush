@@ -18,7 +18,10 @@ function componentWillReceiveProps({isAuthenticated, redirectAfterLogin, redirec
 }
 
 const enhance = compose(
-  connect(mapStateToProps, actions),
+  connect(
+    mapStateToProps,
+    actions
+  ),
   lifecycle({componentWillReceiveProps})
 );
 

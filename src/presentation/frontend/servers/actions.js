@@ -1,4 +1,5 @@
 import {get, post, del} from '../utils/fetch';
+import action from '../utils/action';
 import Server from '~/domain/server/Server';
 import Stack from '~/domain/stack/Stack';
 import {actionCreator, asyncActionCreator, async, createTypes} from 'redux-action-creator';
@@ -25,29 +26,11 @@ export const actions = {
     schema: [Server.normalizedSchema]
   }),
   addServer: asyncActionCreator(types.ADD_SERVER, 'hostname', {
-    client: async (payload, {resetForm, setErrors}) => {
-      try {
-        const response = await post('/api/servers', payload);
-        resetForm();
-        return response;
-      }
-      catch (error) {
-        setErrors(error.response.data);
-      }
-    },
+    client: action(payload => post('/api/servers', payload), true),
     schema: Server.normalizedSchema
   }),
   updateServer: asyncActionCreator(types.UPDATE_SERVER, 'serverId', 'newHostname', {
-    client: async ({serverId, ...payload}, {resetForm, setErrors}) => {
-      try {
-        const response = await post(`/api/servers/${serverId}`, payload);
-        resetForm();
-        return response;
-      }
-      catch (error) {
-        setErrors(error.response.data);
-      }
-    },
+    client: action(({serverId, ...payload}) => post(`/api/servers/${serverId}`, payload), true),
     schema: Server.normalizedSchema
   }),
   removeServer: asyncActionCreator(types.REMOVE_SERVER, 'serverId', {

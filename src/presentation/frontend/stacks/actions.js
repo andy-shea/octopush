@@ -1,4 +1,5 @@
 import {get, post, del} from '../utils/fetch';
+import action from '../utils/action';
 import Stack from '~/domain/stack/Stack';
 import {actionCreator, asyncActionCreator, async, createTypes} from 'redux-action-creator';
 
@@ -31,16 +32,7 @@ export const actions = {
     schema: [Stack.normalizedSchema]
   }),
   addStack: asyncActionCreator(types.ADD_STACK, 'title', 'gitPath', 'serverIds', 'diff', {
-    client: async (payload, {setSubmitting, setErrors}) => {
-      try {
-        const response = await post('/api/stacks', payload);
-        setSubmitting(false);
-        return response;
-      }
-      catch (error) {
-        setErrors(error.response.data);
-      }
-    },
+    client: action(payload => post('/api/stacks', payload), false),
     schema: Stack.normalizedSchema
   }),
   updateStack: asyncActionCreator(
@@ -51,16 +43,7 @@ export const actions = {
     'serverIds',
     'diff',
     {
-      client: async ({slug, ...payload}, {setSubmitting, setErrors}) => {
-        try {
-          const response = await post(`/api/stacks/${slug}`, payload);
-          setSubmitting(false);
-          return response;
-        }
-        catch (error) {
-          setErrors(error.response.data);
-        }
-      },
+      client: action(({slug, ...payload}) => post(`/api/stacks/${slug}`, payload), false),
       schema: Stack.normalizedSchema
     }
   ),
@@ -68,29 +51,14 @@ export const actions = {
     del(`/api/stacks/${slug}`)
   ),
   addGroup: asyncActionCreator(types.ADD_GROUP, 'slug', 'name', 'serverIds', {
-    client: async ({slug, ...payload}, {resetForm, setErrors}) => {
-      try {
-        const response = await post(`/api/stacks/${slug}/groups`, payload);
-        resetForm();
-        return response;
-      }
-      catch (error) {
-        setErrors(error.response.data);
-      }
-    },
+    client: action(({slug, ...payload}) => post(`/api/stacks/${slug}/groups`, payload), true),
     schema: Stack.normalizedSchema
   }),
   updateGroup: asyncActionCreator(types.UPDATE_GROUP, 'slug', 'groupId', 'name', 'serverIds', {
-    client: async ({slug, groupId, ...payload}, {resetForm, setErrors}) => {
-      try {
-        const response = await post(`/api/stacks/${slug}/groups/${groupId}`, payload);
-        resetForm();
-        return response;
-      }
-      catch (error) {
-        setErrors(error.response.data);
-      }
-    },
+    client: action(
+      ({slug, groupId, ...payload}) => post(`/api/stacks/${slug}/groups/${groupId}`, payload),
+      true
+    ),
     schema: Stack.normalizedSchema
   }),
   removeGroup: asyncActionCreator(types.REMOVE_GROUP, 'slug', 'group', {

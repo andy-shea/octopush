@@ -1,4 +1,5 @@
 import {get, post} from '../utils/fetch';
+import action from '../utils/action';
 import Deploy from '~/domain/deploy/Deploy';
 import {asyncActionCreator, async, createTypes} from 'redux-action-creator';
 import {getDeploys} from './selectors';
@@ -23,21 +24,12 @@ export const actions = {
     }
   },
   loadDeploys: (stack, page = 1) => {
-    const action = {type: routerTypes.STACK, payload: {stack}};
-    if (page > 1) action.payload.query = {page};
-    return action;
+    const loadDeploysAction = {type: routerTypes.STACK, payload: {stack}};
+    if (page > 1) loadDeploysAction.payload.query = {page};
+    return loadDeploysAction;
   },
   startDeploy: asyncActionCreator(types.START_DEPLOY, 'slug', 'branch', 'targets', {
-    client: async (payload, {resetForm, setErrors}) => {
-      try {
-        const response = await post('/api/deploys', payload);
-        resetForm();
-        return response;
-      }
-      catch (error) {
-        setErrors(error.response.data);
-      }
-    },
+    client: action(payload => post('/api/deploys', payload), true),
     schema: Deploy.normalizedSchema
   }),
   loadLog: asyncActionCreator(types.LOAD_LOG, 'deployId', ({deployId}) => {
