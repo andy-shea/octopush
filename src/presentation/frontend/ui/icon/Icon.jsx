@@ -6,13 +6,20 @@ const StyledIcon = styled.svg`
   width: 40px;
   height: 40px;
   stroke: #fff;
+  background-color: var(--color-red);
   stroke-width: 1px;
   fill: transparent;
   margin: 5px;
 `;
 
 function Icon({className, type, ...props}) {
-  return <StyledIcon className={className} dangerouslySetInnerHTML={{__html: `<use xlink:href="#${type}"/>`}} {...props}/>
+  return (
+    <StyledIcon
+      className={className}
+      dangerouslySetInnerHTML={{__html: `<use xlink:href="#${type}"/>`}}
+      {...props}
+    />
+  );
 }
 
 Icon.propTypes = {

@@ -1,5 +1,12 @@
 const path = require('path');
-const {group, env, setOutput, resolve, optimization} = require('@webpack-blocks/webpack');
+const {
+  group,
+  env,
+  customConfig,
+  setOutput,
+  resolve,
+  optimization
+} = require('@webpack-blocks/webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const noParse = require('./no-parse');
 const ROOT_PATH = path.resolve(__dirname, '..', '..', '..');
@@ -18,6 +25,11 @@ exports.common = group([
     }
   }),
   noParse([/socket.io-client/]),
+  customConfig({
+    module: {
+      rules: [{test: /\.svg$/, exclude: [/node_modules/, /ui\/favicons/], loader: 'raw-loader'}]
+    }
+  }),
 
   env('development', [setOutput({pathinfo: true})]),
 

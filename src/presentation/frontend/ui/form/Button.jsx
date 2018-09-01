@@ -46,11 +46,12 @@ const StyledButton = styled.button`
 const Loader = styled(Icon).attrs({type: 'loader'})`
   height: 20px;
   fill: currentColor;
+  background: inherit;
   transform: translateY(4px);
   width: 0;
   margin: 0;
   stroke: none;
-  transition: all 0.1s;
+  transition: all 0.1s, background: 0s none;
 
   ${({isLoading}) =>
     isLoading &&
@@ -71,7 +72,9 @@ function Button({children, isLoading, ...props}) {
 
 Button.propTypes = {
   children: PropTypes.node.isRequired,
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
+  large: PropTypes.bool,
+  cta: PropTypes.bool
 };
 
 export default Button;

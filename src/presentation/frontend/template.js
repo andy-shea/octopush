@@ -4,9 +4,6 @@ import serialize from 'serialize-javascript';
 import {HttpError} from 'react-cornerstone';
 import cx from 'classnames';
 import {includeChunkManifest, includeAsset} from './assets';
-import icons from './ui/icon/icons.svg';
-// import styles from './ui/Header.css';
-// import loginStyles from './users/Login.css';
 import logo from './ui/octopus.png';
 import appleTouchIcon from './ui/favicons/apple-touch-icon.png';
 import favicon16 from './ui/favicons/favicon-16x16.png';
@@ -57,7 +54,6 @@ function renderLayout(body, sheet, css) {
 export function render(html, state, sheet, ids, css) {
   return renderLayout(
     `
-      ${icons}
       <div id="app">${html}</div>
       <script>
         ${webpackLoader}
@@ -75,20 +71,6 @@ export function render(html, state, sheet, ids, css) {
 
 const styles = {};
 const loginStyles = {};
-
-// .ir {
-//   background-color: transparent;
-//   border: 0;
-//   overflow: hidden;
-// }
-
-// .ir::before {
-//   content: "";
-//   display: block;
-//   width: 0;
-//   height: 150%;
-// }
-
 export function renderError(code, err) {
   const title =
     code === HttpError.NOT_FOUND

@@ -1,5 +1,7 @@
+import React from 'react';
 import styledNormalize from 'styled-normalize';
 import {injectGlobal} from 'styled-components';
+import Icons from './icon/Icons';
 
 // https://0p06jr8rql.codesandbox.io/
 function reset() {
@@ -89,4 +91,14 @@ function reset() {
   `;
 }
 
-export default reset;
+function Reset({children}) {
+  reset();
+  return (
+    <>
+      <Icons />
+      {children}
+    </>
+  );
+}
+
+export default Reset;

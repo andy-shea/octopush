@@ -1,10 +1,14 @@
 import React from 'react';
 import Router from './router/Router';
-import reset from './ui/reset';
+import Reset from './ui/Reset';
 
 function App() {
-  reset();
-  return <Router />;
+  return (
+    <>
+      <Reset />
+      <Router />
+    </>
+  );
 }
 
 export default App;

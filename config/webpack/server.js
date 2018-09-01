@@ -40,10 +40,7 @@ module.exports = createConfig([
   image(false),
   customConfig({
     module: {
-      rules: [
-        {test: /\.css$/, include: /node_modules/, loader: 'css-loader'},
-        {test: /\.svg$/, exclude: [/node_modules/, /ui\/favicons/], loader: 'raw-loader'}
-      ]
+      rules: [{test: /\.css$/, include: /node_modules/, loader: 'css-loader'}]
     }
   }),
   env('development', development),
