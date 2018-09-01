@@ -22,7 +22,7 @@ const mapper = {
       }
       return values;
     });
-    const ids = db('deploys')
+    const ids = await db('deploys')
       .transacting(trx)
       .insert(allValues, 'id');
     ids.map((id, index) => {

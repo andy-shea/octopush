@@ -24,15 +24,11 @@ export const actions = {
   editStack: actionCreator(types.EDIT_STACK, 'stack'),
   editGroup: actionCreator(types.EDIT_GROUP, 'group'),
   loadStacks: asyncActionCreator(types.LOAD_STACKS, {
-    client: () => get('/api/stacks'),
-    server: ({injector}) => {
-      const StackService = require('~/application/StackService').default;
-      return injector.get(StackService).loadStacks();
-    },
+    action: () => get('/api/stacks'),
     schema: [Stack.normalizedSchema]
   }),
   addStack: asyncActionCreator(types.ADD_STACK, 'title', 'gitPath', 'serverIds', 'diff', {
-    client: action(payload => post('/api/stacks', payload), false),
+    action: action(payload => post('/api/stacks', payload), false),
     schema: Stack.normalizedSchema
   }),
   updateStack: asyncActionCreator(
@@ -43,7 +39,7 @@ export const actions = {
     'serverIds',
     'diff',
     {
-      client: action(({slug, ...payload}) => post(`/api/stacks/${slug}`, payload), false),
+      action: action(({slug, ...payload}) => post(`/api/stacks/${slug}`, payload), false),
       schema: Stack.normalizedSchema
     }
   ),
@@ -51,18 +47,18 @@ export const actions = {
     del(`/api/stacks/${slug}`)
   ),
   addGroup: asyncActionCreator(types.ADD_GROUP, 'slug', 'name', 'serverIds', {
-    client: action(({slug, ...payload}) => post(`/api/stacks/${slug}/groups`, payload), true),
+    action: action(({slug, ...payload}) => post(`/api/stacks/${slug}/groups`, payload), true),
     schema: Stack.normalizedSchema
   }),
   updateGroup: asyncActionCreator(types.UPDATE_GROUP, 'slug', 'groupId', 'name', 'serverIds', {
-    client: action(
+    action: action(
       ({slug, groupId, ...payload}) => post(`/api/stacks/${slug}/groups/${groupId}`, payload),
       true
     ),
     schema: Stack.normalizedSchema
   }),
   removeGroup: asyncActionCreator(types.REMOVE_GROUP, 'slug', 'group', {
-    client: ({slug, group}) => del(`/api/stacks/${slug}/groups/${group.id}`),
+    action: ({slug, group}) => del(`/api/stacks/${slug}/groups/${group.id}`),
     schema: Stack.normalizedSchema
   })
 };

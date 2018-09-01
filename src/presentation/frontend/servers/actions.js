@@ -18,23 +18,19 @@ export const types = createTypes(
 export const actions = {
   editServer: actionCreator(types.EDIT_SERVER, 'server'),
   loadServers: asyncActionCreator(types.LOAD_SERVERS, {
-    client: () => get('/api/servers'),
-    server: ({injector}) => {
-      const ServerService = require('~/application/ServerService').default;
-      return injector.get(ServerService).loadServers();
-    },
+    action: () => get('/api/servers'),
     schema: [Server.normalizedSchema]
   }),
   addServer: asyncActionCreator(types.ADD_SERVER, 'hostname', {
-    client: action(payload => post('/api/servers', payload), true),
+    action: action(payload => post('/api/servers', payload), true),
     schema: Server.normalizedSchema
   }),
   updateServer: asyncActionCreator(types.UPDATE_SERVER, 'serverId', 'newHostname', {
-    client: action(({serverId, ...payload}) => post(`/api/servers/${serverId}`, payload), true),
+    action: action(({serverId, ...payload}) => post(`/api/servers/${serverId}`, payload), true),
     schema: Server.normalizedSchema
   }),
   removeServer: asyncActionCreator(types.REMOVE_SERVER, 'serverId', {
-    client: ({serverId}) => del(`/api/servers/${serverId}`),
+    action: ({serverId}) => del(`/api/servers/${serverId}`),
     schema: [Stack.normalizedSchema]
   })
 };
