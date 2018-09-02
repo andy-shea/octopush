@@ -1,3 +1,5 @@
+import LogRocket from 'logrocket';
+import thunkMiddleware from 'redux-thunk';
 import {configureStoreCreator} from 'react-cornerstone';
 import routerReducer from './router/reducer';
 import deploysReducer from './deploys/reducer';
@@ -13,6 +15,10 @@ const reducers = {
   users: usersReducer
 };
 
-const configureStore = configureStoreCreator(reducers);
+function configureStore(forClient) {
+  return forClient
+    ? configureStoreCreator(reducers, () => [thunkMiddleware, LogRocket.reduxMiddleware()])
+    : configureStoreCreator(reducers);
+}
 
 export default configureStore;

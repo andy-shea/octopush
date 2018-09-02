@@ -55,7 +55,7 @@ async function middleware(req, res, next) {
       ...createRoutesConfig(helpers),
       initialEntries: [req.url]
     };
-    const {store, thunk} = configureStore(false, routesConfig, initialState, req);
+    const {store, thunk} = configureStore(false)(false, routesConfig, initialState, req);
     await thunk(store);
 
     const {type, kind, pathname, search} = store.getState().location;
