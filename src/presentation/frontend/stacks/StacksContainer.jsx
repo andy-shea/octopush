@@ -35,7 +35,7 @@ class StacksContainer extends Component {
 
   @autobind
   saveStack({stack, title, gitPath, servers, diff}, {setSubmitting, setErrors}) {
-    const {updateStack, editStack, addStack} = this.props;
+    const {updateStack, addStack} = this.props;
     if (stack.id) {
       const currentServers = stack.servers ? stack.servers.join(',') : null;
       if (
@@ -49,7 +49,7 @@ class StacksContainer extends Component {
           {setSubmitting, setErrors}
         );
       }
-      else editStack({stack: null});
+      else setSubmitting(false);
     }
     else addStack({title, gitPath, serverIds: servers, diff}, {setSubmitting, setErrors});
   }
