@@ -1,13 +1,11 @@
 import git from 'gift';
-import GitHubApi from 'github';
+import Octokit from '@octokit/rest';
 import logger from '~/infrastructure/logger';
 
 const githubPrefix = 'https://github.com/';
 
-const github = new GitHubApi({
+const github = new Octokit({
   debug: process.env.NODE_ENV === 'development',
-  protocol: 'https',
-  host: 'api.github.com',
   timeout: 5000
 });
 
