@@ -144,11 +144,13 @@ const Sidebar = styled.div`
 `;
 
 const StackIcon = styled(Icon).attrs({type: 'stacks'})`
+  background: transparent;
   width: 36px;
   margin-left: 1.7vw !important;
 `;
 
 const MenuServerIcon = styled(ServerIcon)`
+  background: transparent;
   border-color: var(--color-red-20);
   width: 24px;
   height: 24px;
@@ -157,6 +159,7 @@ const MenuServerIcon = styled(ServerIcon)`
 `;
 
 const LogoutIcon = styled(Icon).attrs({type: 'logout'})`
+  background: transparent;
   width: 32px;
   margin-left: 1.9vw !important;
 `;

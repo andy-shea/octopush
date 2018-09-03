@@ -34,11 +34,10 @@ const StyledMenuButton = styled.button`
     transition: opacity 0.1s;
     z-index: 2000;
   }
-  &.${transitionName}-exit-active,
-  &.${transitionName}-exit-done {
+  &.${transitionName}-exit-active, &.${transitionName}-exit-done {
     opacity: 0;
   }
-  
+
   &.${transitionName}-enter {
     opacity: 0.01;
     transition: opacity 0.1s 0.4s;
@@ -54,13 +53,9 @@ const StyledMenuButton = styled.button`
 
 function MenuButton({toggleMenu, in: transitionIn}) {
   return (
-    <CSSTransition
-      in={transitionIn}
-      classNames={transitionName}
-      timeout={{enter: 500, exit: 100}}
-    >
+    <CSSTransition in={transitionIn} classNames={transitionName} timeout={{enter: 500, exit: 100}}>
       <StyledMenuButton type="button" onClick={toggleMenu}>
-        <Icon type="settings"/>
+        <Icon type="settings" />
         <span>Settings Menu</span>
       </StyledMenuButton>
     </CSSTransition>
