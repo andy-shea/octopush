@@ -2,6 +2,11 @@ import {types} from './actions';
 import {types as userActionTypes} from '../users/actions';
 import {types as serverActionTypes} from '../servers/actions';
 
+export const initialState = {
+  map: {},
+  loaded: false
+};
+
 function mergeStacks(state, action) {
   const {
     entities: {stacks},
@@ -10,7 +15,7 @@ function mergeStacks(state, action) {
   return {...state, map: {...state.map, ...stacks}, stackEditing: result, groupEditing: undefined};
 }
 
-function reducer(state = {map: {}, loaded: false}, action) {
+function reducer(state = initialState, action) {
   switch (action.type) {
     case userActionTypes.LOGIN_SUCCESS: {
       return {...state, map: {...state.map, ...action.response.entities.stacks}, loaded: true};
@@ -27,8 +32,7 @@ function reducer(state = {map: {}, loaded: false}, action) {
       };
 
     case types.ADD_STACK_SUCCESS:
-      return {...mergeStacks(state, action)};
-
+    case types.REMOVE_GROUP_SUCCESS:
     case types.UPDATE_GROUP_SUCCESS:
     case types.ADD_GROUP_SUCCESS:
       return {...mergeStacks(state, action)};
@@ -41,9 +45,6 @@ function reducer(state = {map: {}, loaded: false}, action) {
       nextGroups[groupIndex] = {...group, isDeleting: true};
       return {...state, map: {...state.map, [slug]: {...stack, groups: nextGroups}}};
     }
-
-    case types.REMOVE_GROUP_SUCCESS:
-      return mergeStacks(state, action);
 
     case types.UPDATE_STACK_SUCCESS: {
       const {

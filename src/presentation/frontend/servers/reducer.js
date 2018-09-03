@@ -1,7 +1,12 @@
 import {types} from './actions';
 import {types as userActionTypes} from '../users/actions';
 
-function reducer(state = {map: {}, loaded: false}, action) {
+export const initialState = {
+  map: {},
+  loaded: false
+};
+
+function reducer(state = initialState, action) {
   switch (action.type) {
     case userActionTypes.LOGIN_SUCCESS: {
       return {...state, map: {...state.map, ...action.response.entities.servers}, loaded: true};

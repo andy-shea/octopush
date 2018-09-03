@@ -40,9 +40,10 @@ function reducer(state = {map: {}}, action) {
     case routerTypes.STACK_FAIL:
       return {...state, isLoading: false};
 
-    case types.TOGGLE_DEPLOY_DETAILS:
+    case types.TOGGLE_DEPLOY_DETAILS: {
       const {deploy} = action.payload;
       return updateDeploy(state, deploy.id, 'isExpanded', !deploy.isExpanded);
+    }
 
     case types.ADD_LOG_LINE: {
       const {deployId, line} = action.payload;

@@ -18,7 +18,9 @@
     "lint": "eslint src/ --ext '.js,.jsx' && stylelint src/**/*.css",
     "dev": "NODE_ENV=development node ./src",
     "prebuild": "rimraf dist && mkdir -p dist/web",
-    "build": "NODE_ENV=production webpack"
+    "build": "NODE_ENV=production webpack",
+    "test": "jest --verbose",
+    "test:watch": "yarn test --watch"
   },
   "bin": {
     "octopush": "./src/presentation/cli/index.js"
@@ -96,7 +98,9 @@
     "@webpack-blocks/postcss": "^2.0.0-alpha",
     "@webpack-blocks/webpack": "^2.0.0-alpha",
     "autoprefixer": "^9.1.2",
+    "babel-core": "^7.0.0-0",
     "babel-eslint": "^9.0.0",
+    "babel-jest": "^23.4.2",
     "babel-loader": "^8.0.0",
     "babel-plugin-add-react-displayname": "^0.0.5",
     "babel-plugin-angular2-annotations": "^5.1.0",
@@ -110,6 +114,7 @@
     "eslint-plugin-react": "^7.11.1",
     "file-loader": "^2.0.0",
     "image-webpack-loader": "^4.3.1",
+    "jest": "^23.5.0",
     "mkdirp": "^0.5.1",
     "node-loader": "^0.6.0",
     "postcss-calc": "^6.0.1",
