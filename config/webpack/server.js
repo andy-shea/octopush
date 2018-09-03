@@ -38,11 +38,6 @@ module.exports = createConfig([
   node(),
   babel(),
   image(false),
-  customConfig({
-    module: {
-      rules: [{test: /\.css$/, include: /node_modules/, loader: 'css-loader'}]
-    }
-  }),
   env('development', development),
   env('production', production)
 ]);
