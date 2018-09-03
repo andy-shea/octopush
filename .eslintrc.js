@@ -35,7 +35,7 @@ const rules = {
   'quote-props': [2, 'as-needed'],
   'block-scoped-var': 2,
   curly: [2, 'multi-line'],
-  'default-case': 2,
+  'default-case': 0,
   'dot-notation': [2, {allowKeywords: true}],
   eqeqeq: 2,
   'guard-for-in': 2,

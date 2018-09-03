@@ -1,16 +1,15 @@
+import produce from 'immer';
 import {types} from './actions';
 import {types as routerTypes} from '../router/routes';
 
-function updateDeploy(state, deployId, prop, value) {
-  const nextDeploys = {...state.map};
-  nextDeploys[deployId] = {...nextDeploys[deployId], [prop]: value};
-  return {...state, map: nextDeploys};
-}
+export const initialState = {
+  map: {}
+};
 
-function reducer(state = {map: {}}, action) {
+const reducer = produce((draft, action) => {
   switch (action.type) {
     case routerTypes.STACK: {
-      if (state.currentStackSlug !== action.payload.stack) {
+      if (draft.currentStackSlug !== action.payload.stack) {
         return {
           map: {},
           pagination: undefined,
@@ -19,7 +18,10 @@ function reducer(state = {map: {}}, action) {
           isLoading: true
         };
       }
-      return {...state, map: {}, pagination: {...state.pagination, deploys: []}, isLoading: true};
+      draft.map = {};
+      if (draft.pagination) draft.pagination.deploys = [];
+      draft.isLoading = true;
+      break;
     }
 
     case routerTypes.STACK_SUCCESS: {
@@ -27,63 +29,56 @@ function reducer(state = {map: {}}, action) {
         result: {pagination, branches, slug},
         entities: {deploys}
       } = action.response;
-      return {
-        ...state,
-        map: deploys,
-        pagination,
-        branches,
-        currentStackSlug: slug,
-        isLoading: false
-      };
+      draft.map = deploys;
+      draft.pagination = pagination;
+      draft.branches = branches;
+      draft.currentStackSlug = slug;
+      draft.isLoading = false;
+      break;
     }
 
     case routerTypes.STACK_FAIL:
-      return {...state, isLoading: false};
+      draft.isLoading = false;
+      break;
 
     case types.TOGGLE_DEPLOY_DETAILS: {
       const {deploy} = action.payload;
-      return updateDeploy(state, deploy.id, 'isExpanded', !deploy.isExpanded);
+      draft.map[deploy.id].isExpanded = !deploy.isExpanded;
+      break;
     }
 
     case types.ADD_LOG_LINE: {
       const {deployId, line} = action.payload;
-      const nextDeploys = {...state.map};
-      nextDeploys[deployId] = {...nextDeploys[deployId]};
-      nextDeploys[deployId].log += line;
-      return {...state, map: nextDeploys};
+      draft.map[deployId].log += line;
+      break;
     }
 
     case types.START_DEPLOY_SUCCESS: {
-      const {
-        result,
-        entities: {deploys}
-      } = action.response;
-      const deploy = deploys[result];
+      const {result, entities} = action.response;
+      const deploy = entities.deploys[result];
       deploy.isExpanded = true;
       deploy.log = '';
-      const nextMap = {...state.map, [deploy.id]: deploy};
-      const nextPagination = {...state.pagination};
+      draft.map[deploy.id] = deploy;
+      const {pagination} = draft;
+      const {deploys} = pagination;
 
-      const ids = Object.keys(nextMap);
+      const ids = Object.keys(draft.map);
       if (ids.length > 9) {
         const removedId = ids.sort().shift();
-        delete nextMap[removedId];
-        const removedIndex = nextPagination.deploys.indexOf(parseInt(removedId, 10));
-        if (removedIndex !== -1) nextPagination.deploys.splice(removedIndex, 1);
+        delete draft.map[removedId];
+        const removedIndex = deploys.indexOf(parseInt(removedId, 10));
+        if (removedIndex !== -1) deploys.splice(removedIndex, 1);
       }
 
-      nextPagination.deploys.unshift(deploy.id);
-      nextPagination.total++;
-      nextPagination.totalPages = Math.ceil(nextPagination.total / nextPagination.limit);
-      return {...state, map: nextMap, pagination: nextPagination};
+      deploys.unshift(deploy.id);
+      pagination.total++;
+      pagination.totalPages = Math.ceil(pagination.total / pagination.limit);
+      break;
     }
 
     case types.LOAD_LOG_SUCCESS:
-      return updateDeploy(state, action.payload.deployId, 'log', action.response);
-
-    default:
-      return state;
+      draft.map[action.payload.deployId].log = action.response;
   }
-}
+}, initialState);
 
 export default reducer;

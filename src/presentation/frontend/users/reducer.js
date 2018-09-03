@@ -1,3 +1,4 @@
+import produce from 'immer';
 import {types} from './actions';
 import {types as routerTypes} from '../router/routes';
 
@@ -5,20 +6,16 @@ export const initialState = {
   map: {}
 };
 
-function reducer(state = initialState, action) {
+const reducer = produce((draft, action) => {
   switch (action.type) {
     case routerTypes.STACK_SUCCESS:
-      return {...state, map: {...state.map, ...action.response.entities.users}};
+      Object.assign(draft.map, action.response.entities.users);
+      break;
 
     case types.LOGIN_SUCCESS:
-      return {
-        map: {...state.map, ...action.response.entities.users},
-        authenticatedUser: action.response.result.user
-      };
-
-    default:
-      return state;
+      Object.assign(draft.map, action.response.entities.users);
+      draft.authenticatedUser = action.response.result.user;
   }
-}
+}, initialState);
 
 export default reducer;

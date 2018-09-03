@@ -1,3 +1,4 @@
+import produce from 'immer';
 import {types} from './actions';
 import {types as userActionTypes} from '../users/actions';
 
@@ -6,40 +7,35 @@ export const initialState = {
   loaded: false
 };
 
-function reducer(state = initialState, action) {
+const reducer = produce((draft, action) => {
   switch (action.type) {
     case userActionTypes.LOGIN_SUCCESS: {
-      return {...state, map: {...state.map, ...action.response.entities.servers}, loaded: true};
+      Object.assign(draft.map, action.response.entities.servers);
+      draft.loaded = true;
+      break;
     }
 
     case types.EDIT_SERVER: {
       const {server} = action.payload;
-      return {...state, serverEditing: server && server.id.toString()};
+      draft.serverEditing = server && server.id.toString();
+      break;
     }
 
     case types.ADD_SERVER_SUCCESS:
     case types.UPDATE_SERVER_SUCCESS:
-      return {
-        ...state,
-        map: {...state.map, ...action.response.entities.servers},
-        serverEditing: undefined
-      };
+      Object.assign(draft.map, action.response.entities.servers);
+      draft.serverEditing = undefined;
+      break;
 
     case types.REMOVE_SERVER: {
-      const {serverId} = action.payload;
-      const nextMap = {...state.map};
-      nextMap[serverId] = {...state.map[serverId], isDeleting: true};
-      return {...state, map: nextMap};
+      draft.map[action.payload.serverId].isDeleting = true;
+      break;
     }
 
     case types.REMOVE_SERVER_SUCCESS:
-      const nextMap = {...state.map};
-      delete nextMap[action.payload.serverId];
-      return {...state, map: nextMap};
-
-    default:
-      return state;
+      delete draft.map[action.payload.serverId];
+      break;
   }
-}
+}, initialState);
 
 export default reducer;
