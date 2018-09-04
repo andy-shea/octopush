@@ -17,10 +17,19 @@ function mapStackServers({servers: serverIds}, servers) {
   }, {});
 }
 
-export const getStackEditingServers = createSelector([getStackEditing, getServers], mapStackServers);
+export const getStackEditingServers = createSelector(
+  [getStackEditing, getServers],
+  mapStackServers
+);
 
-export const getCurrentStackServers = createSelector([getCurrentStack, getServers], (stack, servers) => stack && mapStackServers(stack, servers));
+export const getCurrentStackServers = createSelector(
+  [getCurrentStack, getServers],
+  (stack, servers) => stack && mapStackServers(stack, servers)
+);
 
-export const getStackEditingGroupedServers = createSelector([getStackEditing, getServers], ({servers: serverIds}, servers) => {
-  return serverIds.map(id => servers[id.toString()]);
-});
+export const getStackEditingGroupedServers = createSelector(
+  [getStackEditing, getServers],
+  ({servers: serverIds}, servers) => {
+    return serverIds.map(id => servers[id.toString()]);
+  }
+);

@@ -22,7 +22,7 @@ export function SaveServerForm({server, saveServer}) {
       submitForm={submitForm}
     >
       {({values, errors, onChange, isSubmitting}) => (
-        <Form>
+        <Form data-testid="server-form">
           <FieldGroup>
             <TextField
               placeholder="Hostname"

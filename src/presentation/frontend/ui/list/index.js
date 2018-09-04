@@ -1,6 +1,8 @@
+import {css} from 'styled-components';
+
 export function middleable({middle}) {
   if (middle) {
-    return `
+    return css`
       position: relative;
       top: 50%;
       transform: translateY(-50%);
@@ -11,7 +13,7 @@ export function middleable({middle}) {
 // TODO: is this necessary?
 export function newlineable({newline}) {
   if (newline) {
-    return `
+    return css`
       display: block;
     `;
   }

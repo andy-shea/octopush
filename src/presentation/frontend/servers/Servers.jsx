@@ -17,12 +17,20 @@ function Servers({formState, servers, serverEditing, saveServer, editServer, rem
       <h2>Servers</h2>
       <MenuScrollPane>
         <SettingsPaneContent>
-          <SaveServerForm formState={formState} server={serverEditing} saveServer={saveServer}/>
-          <ul>
-            {servers && Object.keys(servers).map(id => {
-              const server = servers[id];
-              return <ServerRow key={id} server={server} editServer={editServer} removeServer={removeServer}/>;
-            })}
+          <SaveServerForm formState={formState} server={serverEditing} saveServer={saveServer} />
+          <ul data-testid="servers">
+            {servers &&
+              Object.keys(servers).map(id => {
+                const server = servers[id];
+                return (
+                  <ServerRow
+                    key={id}
+                    server={server}
+                    editServer={editServer}
+                    removeServer={removeServer}
+                  />
+                );
+              })}
           </ul>
         </SettingsPaneContent>
       </MenuScrollPane>

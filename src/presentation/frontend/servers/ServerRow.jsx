@@ -19,8 +19,8 @@ function ServerRow({server, editServer, removeServer}) {
   const {hostname, isDeleting} = server;
   // prettier-ignore
   const actions = [
-    <EditButton onClick={editServer} middle />, // eslint-disable-line react/jsx-key
-    <RemoveButton onClick={removeServer} middle>Remove server</RemoveButton> // eslint-disable-line react/jsx-key
+    <EditButton onClick={editServer} title="Edit server" middle>Edit server</EditButton>, // eslint-disable-line react/jsx-key
+    <RemoveButton onClick={removeServer} title="Remove server" middle>Remove server</RemoveButton> // eslint-disable-line react/jsx-key
   ];
   return (
     <ActionRow actions={actions} isLoading={isDeleting} height={52}>

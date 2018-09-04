@@ -1,7 +1,7 @@
 import styled, {css} from 'styled-components';
 
 // prettier-ignore
-const TextField = styled.input`
+const TextField = styled.input.attrs({type: 'text'})`
   padding: 6px 15px;
   display: block;
   line-height: 34px;
