@@ -22,20 +22,20 @@ function mapStateToProps(state) {
 )
 class StacksContainer extends Component {
 
+  state = {};
+
   static propTypes = {
-    createStack: PropTypes.func.isRequired,
     editStack: PropTypes.func.isRequired,
     updateStack: PropTypes.func.isRequired,
     removeStack: PropTypes.func.isRequired,
     addStack: PropTypes.func.isRequired,
     stacks: PropTypes.object,
-    stackEditing: PropTypes.object,
     servers: PropTypes.object
   };
 
   @autobind
   saveStack({stack, title, gitPath, servers, diff}, {setSubmitting, setErrors}) {
-    const {updateStack, addStack} = this.props;
+    const {editStack, updateStack, addStack} = this.props;
     if (stack.id) {
       const currentServers = stack.servers ? stack.servers.join(',') : null;
       if (
@@ -46,12 +46,23 @@ class StacksContainer extends Component {
       ) {
         updateStack(
           {slug: stack.slug, title, gitPath, serverIds: servers, diff},
-          {setSubmitting, setErrors}
+          {onSuccess: setSubmitting.bind(undefined, false), setErrors}
         );
       }
       else setSubmitting(false);
     }
-    else addStack({title, gitPath, serverIds: servers, diff}, {setSubmitting, setErrors});
+    else {
+      addStack(
+        {title, gitPath, serverIds: servers, diff},
+        {
+          onSuccess: ({slug}) => {
+            setSubmitting(false);
+            editStack(slug);
+          },
+          setErrors
+        }
+      );
+    }
   }
 
   render() {

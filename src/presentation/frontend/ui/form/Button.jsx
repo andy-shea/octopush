@@ -50,7 +50,6 @@ const Loader = styled(Icon).attrs({type: 'loader'})`
   transform: translateY(4px);
   width: 0;
   margin: 0;
-  stroke: none;
   transition: all 0.1s, background: 0s none;
 
   ${({isLoading}) =>

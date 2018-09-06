@@ -28,8 +28,8 @@ export function StackRow({stack, editStack, removeStack}) {
   const {title, gitPath, isDeleting} = stack;
   // prettier-ignore
   const actions = [
-    <EditButton onClick={editStack} middle />, // eslint-disable-line react/jsx-key
-    <RemoveButton onClick={removeStack} middle>Remove stack</RemoveButton> // eslint-disable-line react/jsx-key
+    <EditButton onClick={editStack} title="Edit stack" middle>Edit stack</EditButton>, // eslint-disable-line react/jsx-key
+    <RemoveButton onClick={removeStack} title="Remove stack" middle>Remove stack</RemoveButton> // eslint-disable-line react/jsx-key
   ];
 
   return (

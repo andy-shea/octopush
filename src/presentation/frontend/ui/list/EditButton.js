@@ -24,7 +24,7 @@ const EditIcon = styled(Icon).attrs({type: 'edit'})`
   height: 32px !important;
   stroke: var(--color-red-25) !important;
   cursor: pointer;
-  margin: 3px 0 0;
+  margin: 5px 0 0;
 
   &:hover {
     stroke: var(--color-red-35) !important;

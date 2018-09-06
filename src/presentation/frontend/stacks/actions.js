@@ -1,13 +1,12 @@
+import {actionCreator, asyncActionCreator, async, createTypes} from 'redux-action-creator';
 import {get, post, del} from '../utils/fetch';
 import action from '../utils/action';
 import Stack from '~/domain/stack/Stack';
-import {actionCreator, asyncActionCreator, async, createTypes} from 'redux-action-creator';
 
 export const types = createTypes(
   [
     'CREATE_STACK',
     'EDIT_STACK',
-    'EDIT_GROUP',
     ...async('LOAD_STACKS'),
     ...async('ADD_STACK'),
     ...async('UPDATE_STACK'),
@@ -22,13 +21,12 @@ export const types = createTypes(
 export const actions = {
   createStack: actionCreator(types.CREATE_STACK),
   editStack: actionCreator(types.EDIT_STACK, 'stack'),
-  editGroup: actionCreator(types.EDIT_GROUP, 'group'),
   loadStacks: asyncActionCreator(types.LOAD_STACKS, {
     action: () => get('/api/stacks'),
     schema: [Stack.normalizedSchema]
   }),
   addStack: asyncActionCreator(types.ADD_STACK, 'title', 'gitPath', 'serverIds', 'diff', {
-    action: action(payload => post('/api/stacks', payload), false),
+    action: action(payload => post('/api/stacks', payload)),
     schema: Stack.normalizedSchema
   }),
   updateStack: asyncActionCreator(
@@ -39,7 +37,7 @@ export const actions = {
     'serverIds',
     'diff',
     {
-      action: action(({slug, ...payload}) => post(`/api/stacks/${slug}`, payload), false),
+      action: action(({slug, ...payload}) => post(`/api/stacks/${slug}`, payload)),
       schema: Stack.normalizedSchema
     }
   ),
@@ -47,13 +45,12 @@ export const actions = {
     del(`/api/stacks/${slug}`)
   ),
   addGroup: asyncActionCreator(types.ADD_GROUP, 'slug', 'name', 'serverIds', {
-    action: action(({slug, ...payload}) => post(`/api/stacks/${slug}/groups`, payload), true),
+    action: action(({slug, ...payload}) => post(`/api/stacks/${slug}/groups`, payload)),
     schema: Stack.normalizedSchema
   }),
   updateGroup: asyncActionCreator(types.UPDATE_GROUP, 'slug', 'groupId', 'name', 'serverIds', {
-    action: action(
-      ({slug, groupId, ...payload}) => post(`/api/stacks/${slug}/groups/${groupId}`, payload),
-      true
+    action: action(({slug, groupId, ...payload}) =>
+      post(`/api/stacks/${slug}/groups/${groupId}`, payload)
     ),
     schema: Stack.normalizedSchema
   }),

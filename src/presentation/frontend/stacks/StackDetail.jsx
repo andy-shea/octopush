@@ -58,7 +58,7 @@ export function StackDetail({stack, servers, saveStack, editStack}) {
             submitForm={submitForm}
           >
             {({values, errors, onChange, updateValue, isSubmitting}) => (
-              <Form>
+              <Form data-testid="stack-form">
                 <TextField
                   first
                   placeholder="Title"

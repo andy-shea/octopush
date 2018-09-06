@@ -2,11 +2,10 @@ import {get, post, del} from '../utils/fetch';
 import action from '../utils/action';
 import Server from '~/domain/server/Server';
 import Stack from '~/domain/stack/Stack';
-import {actionCreator, asyncActionCreator, async, createTypes} from 'redux-action-creator';
+import {asyncActionCreator, async, createTypes} from 'redux-action-creator';
 
 export const types = createTypes(
   [
-    'EDIT_SERVER',
     ...async('LOAD_SERVERS'),
     ...async('ADD_SERVER'),
     ...async('UPDATE_SERVER'),
@@ -16,17 +15,16 @@ export const types = createTypes(
 );
 
 export const actions = {
-  editServer: actionCreator(types.EDIT_SERVER, 'server'),
   loadServers: asyncActionCreator(types.LOAD_SERVERS, {
     action: () => get('/api/servers'),
     schema: [Server.normalizedSchema]
   }),
   addServer: asyncActionCreator(types.ADD_SERVER, 'hostname', {
-    action: action(payload => post('/api/servers', payload), true),
+    action: action(payload => post('/api/servers', payload)),
     schema: Server.normalizedSchema
   }),
   updateServer: asyncActionCreator(types.UPDATE_SERVER, 'serverId', 'newHostname', {
-    action: action(({serverId, ...payload}) => post(`/api/servers/${serverId}`, payload), true),
+    action: action(({serverId, ...payload}) => post(`/api/servers/${serverId}`, payload)),
     schema: Server.normalizedSchema
   }),
   removeServer: asyncActionCreator(types.REMOVE_SERVER, 'serverId', {

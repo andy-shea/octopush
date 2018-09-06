@@ -1,9 +1,8 @@
-function action(fetch, reset) {
-  return async (payload, {setSubmitting, resetForm, setErrors}) => {
+function action(fetch) {
+  return async (payload, {onSuccess, setErrors}) => {
     try {
       const response = await fetch(payload);
-      if (reset === true) resetForm();
-      else if (reset === false) setSubmitting(false);
+      if (onSuccess) onSuccess(response);
       return response;
     }
     catch (error) {

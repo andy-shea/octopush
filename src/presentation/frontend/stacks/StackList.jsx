@@ -39,11 +39,21 @@ function StackList({stacks, createStack, editStack, removeStack}) {
       </h2>
       <MenuScrollPane>
         <SettingsPaneContent>
-          <ul>
-            {stacks && Object.keys(stacks).sort().map(slug => {
-              const stack = stacks[slug];
-              return <StackRow key={stack.id} stack={stack} editStack={editStack} removeStack={removeStack}/>;
-            })}
+          <ul data-testid="stacks">
+            {stacks &&
+              Object.keys(stacks)
+                .sort()
+                .map(slug => {
+                  const stack = stacks[slug];
+                  return (
+                    <StackRow
+                      key={stack.id}
+                      stack={stack}
+                      editStack={editStack}
+                      removeStack={removeStack}
+                    />
+                  );
+                })}
           </ul>
         </SettingsPaneContent>
       </MenuScrollPane>

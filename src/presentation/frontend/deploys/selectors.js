@@ -18,10 +18,13 @@ export const getDeploys = createSelector([getDeploysMap, getPagination], (deploy
 });
 
 export const getDeployUsers = createSelector([getDeploys, getUsers], (deploys, users) => {
-  return deploys && deploys.reduce((map, deploy) => {
-    map[deploy.id] = users[deploy.user];
-    return map;
-  }, {});
+  return (
+    deploys &&
+    deploys.reduce((map, deploy) => {
+      map[deploy.id] = users[deploy.user];
+      return map;
+    }, {})
+  );
 });
 
 export function getBranches(state) {

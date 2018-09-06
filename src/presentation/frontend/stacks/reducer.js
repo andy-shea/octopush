@@ -30,25 +30,22 @@ const reducer = produce((draft, action) => {
     case types.UPDATE_GROUP_SUCCESS:
     case types.ADD_GROUP_SUCCESS: {
       const {entities, result} = action.response;
-      Object.assign(draft.map, entities.stacks);
       draft.stackEditing = result;
-      draft.groupEditing = undefined;
+      Object.assign(draft.map, entities.stacks);
       break;
     }
 
     case types.REMOVE_GROUP: {
       const {slug, group} = action.payload;
-      const index = state.map[slug].groups.indexOf(group);
-      draft.map[slug].groups[index].isDeleting = true;
+      draft.map[slug].groups.find(({id}) => id === group.id).isDeleting = true;
       break;
     }
 
     case types.UPDATE_STACK_SUCCESS: {
       const {entities, result} = action.response;
       delete draft.map[action.payload.slug];
-      Object.assign(draft.map, entities.stacks);
       draft.stackEditing = result;
-      draft.groupEditing = undefined;
+      Object.assign(draft.map, entities.stacks);
       break;
     }
 
@@ -60,17 +57,13 @@ const reducer = produce((draft, action) => {
     case types.REMOVE_STACK_SUCCESS: {
       delete draft.map[action.payload.slug];
       draft.stackEditing = undefined;
-      draft.groupEditing = undefined;
       break;
     }
 
-    case types.EDIT_GROUP: {
-      draft.groupEditing = action.payload.group;
-      break;
-    }
-
-    case serverActionTypes.REMOVE_SERVER_SUCCESS:
+    case serverActionTypes.REMOVE_SERVER_SUCCESS: {
       Object.assign(draft.map, action.response.entities.stacks);
+      break;
+    }
   }
 }, initialState);
 

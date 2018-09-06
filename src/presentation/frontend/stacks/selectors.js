@@ -12,19 +12,25 @@ export function getStacks(state) {
 }
 
 export function getStackEditing(state) {
-  const {stacks: {map, stackEditing}} = state;
-  return (stackEditing !== true) ? map[stackEditing] : {
-    title: '',
-    gitPath: '',
-    servers: [],
-    diff: ''
-  };
+  const {
+    stacks: {map, stackEditing}
+  } = state;
+  return stackEditing !== true
+    ? map[stackEditing]
+    : {
+      title: '',
+      gitPath: '',
+      servers: [],
+      diff: ''
+    };
 }
 
-export const getCurrentStack = createSelector([getCurrentStackSlug, getStacks], (slug, stacks) => stacks && stacks[slug]);
+export const getCurrentStack = createSelector(
+  [getCurrentStackSlug, getStacks],
+  (slug, stacks) => stacks && stacks[slug]
+);
 
-export function getGroupEditing(state) {
-  return state.stacks.groupEditing;
-}
-
-export const shouldLoadStacks = createSelector([getIsAuthenticated, isLoaded], (authenticated, loaded) => authenticated && !loaded);
+export const shouldLoadStacks = createSelector(
+  [getIsAuthenticated, isLoaded],
+  (authenticated, loaded) => authenticated && !loaded
+);

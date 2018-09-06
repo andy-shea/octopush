@@ -5,7 +5,6 @@ import styled from 'styled-components';
 const StyledIcon = styled.svg`
   width: 40px;
   height: 40px;
-  stroke: #fff;
   background-color: var(--color-red);
   stroke-width: 1px;
   fill: transparent;

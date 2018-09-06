@@ -1,34 +1,12 @@
-import compose from 'recompose/compose';
-import withHandlers from 'recompose/withHandlers';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import autobind from 'autobind-decorator';
 import {actions} from './actions';
 import Groups from './Groups';
-import {getStackEditing, getGroupEditing} from '../stacks/selectors';
+import {getStackEditing} from '../stacks/selectors';
 import {getStackEditingServers} from '../servers/selectors';
 
-const handlers = withHandlers({
-  saveGroup: props => ({group, name, servers}, {resetForm, setErrors}) => {
-    const {stack, updateGroup, editGroup, addGroup} = props;
-    if (group.id) {
-      const currentServers = group.serverIds ? group.serverIds.join(',') : null;
-      if (name !== group.name || servers.join(',') !== currentServers) {
-        updateGroup(
-          {slug: stack.slug, groupId: group.id, name, serverIds: servers},
-          {resetForm, setErrors}
-        );
-      }
-      else editGroup({group: null});
-    }
-    else addGroup({slug: stack.slug, name, serverIds: servers}, {resetForm, setErrors});
-  },
-
-  removeGroup: ({removeGroup, stack}) => group => {
-    removeGroup({slug: stack.slug, group});
-  }
-});
-
 const mapDispatchToProps = {
-  editGroup: actions.editGroup,
   updateGroup: actions.updateGroup,
   removeGroup: actions.removeGroup,
   addGroup: actions.addGroup
@@ -37,17 +15,55 @@ const mapDispatchToProps = {
 function mapStateToProps(state) {
   return {
     stack: getStackEditing(state),
-    groupEditing: getGroupEditing(state),
     servers: getStackEditingServers(state)
   };
 }
 
-const GroupsContainer = compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  handlers
-)(Groups);
+@connect(
+  mapStateToProps,
+  mapDispatchToProps
+)
+class GroupsContainer extends Component {
+
+  state = {};
+
+  @autobind
+  editGroup(group) {
+    this.setState({groupEditing: group});
+  }
+
+  @autobind
+  saveGroup({group, name, servers}, {resetForm, setErrors}) {
+    const {stack, updateGroup, addGroup} = this.props;
+    if (group.id) {
+      const currentServers = group.serverIds ? group.serverIds.join(',') : null;
+      if (name !== group.name || servers.join(',') !== currentServers) {
+        updateGroup(
+          {slug: stack.slug, groupId: group.id, name, serverIds: servers},
+          {onSuccess: this.editGroup, setErrors}
+        );
+      }
+      else this.editGroup(null);
+    }
+    else {
+      addGroup({slug: stack.slug, name, serverIds: servers}, {onSuccess: resetForm, setErrors});
+    }
+  }
+
+  render() {
+    const {stack, removeGroup, servers} = this.props;
+    return (
+      <Groups
+        saveGroup={this.saveGroup}
+        editGroup={this.editGroup}
+        removeGroup={removeGroup}
+        stack={stack}
+        servers={servers}
+        groupEditing={this.state.groupEditing}
+      />
+    );
+  }
+
+}
 
 export default GroupsContainer;

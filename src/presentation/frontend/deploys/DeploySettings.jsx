@@ -52,7 +52,7 @@ function submitForm({stack, startDeploy, setSubmitting, resetForm, setErrors, va
   const branch = values.branch && values.branch.value;
   const targets = values.targets && values.targets.map(({value}) => value);
   if (branch && targets.length) {
-    startDeploy({slug: stack.slug, branch, targets}, {resetForm, setErrors});
+    startDeploy({slug: stack.slug, branch, targets}, {onSuccess: resetForm, setErrors});
   }
   else setSubmitting(false);
 }

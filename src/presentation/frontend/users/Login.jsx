@@ -67,17 +67,32 @@ export function Login({login}) {
             <LoginForm>
               <p>
                 <label htmlFor="email">Email</label>
-                <input id="email" name="email" type="email" value={values.email} onChange={onChange} autoFocus/>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={values.email}
+                  onChange={onChange}
+                  autoFocus
+                />
                 {errors.email && <label htmlFor="email">{errors.email}</label>}
               </p>
               <p>
                 <label htmlFor="password">Password</label>
-                <input id="password" name="password" type="password" value={values.password} onChange={onChange}/>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={values.password}
+                  onChange={onChange}
+                />
                 {errors.password && <label htmlFor="password">{errors.password}</label>}
               </p>
               {errors._other && <Error>{errors._other}</Error>}
               <p>
-                <LoginButton type="submit" isLoading={isSubmitting} cta>Log in</LoginButton>
+                <LoginButton type="submit" isLoading={isSubmitting} cta>
+                  Log in
+                </LoginButton>
               </p>
             </LoginForm>
           )}

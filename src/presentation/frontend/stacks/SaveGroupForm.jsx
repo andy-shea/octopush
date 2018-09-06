@@ -34,7 +34,7 @@ export function SaveGroupForm({servers, group, saveGroup}) {
       submitForm={submitForm}
     >
       {({values, errors, onChange, updateValue, isSubmitting}) => (
-        <Form>
+        <Form data-testid="group-form">
           <MenuSelect
             id="servers"
             name="servers"

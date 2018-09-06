@@ -1,36 +1,52 @@
-import compose from 'recompose/compose';
-import withHandlers from 'recompose/withHandlers';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import autobind from 'autobind-decorator';
 import {actions} from './actions';
 import Servers from './Servers';
-import {getServers, getServerEditing} from './selectors';
+import {getServers} from './selectors';
 
-const handlers = withHandlers({
-  saveServer: props => ({hostname}, {resetForm, setErrors}) => {
-    const {serverEditing, editServer, updateServer, addServer} = props;
+@connect(
+  state => ({servers: getServers(state)}),
+  actions
+)
+class ServersContainer extends Component {
+
+  state = {};
+
+  @autobind
+  editServer(server) {
+    this.setState({serverEditing: server});
+  }
+
+  @autobind
+  saveServer({hostname}, {resetForm, setErrors}) {
+    const {updateServer, addServer} = this.props;
+    const {serverEditing} = this.state;
     if (serverEditing) {
       if (hostname !== serverEditing.hostname) {
-        updateServer({serverId: serverEditing.id, newHostname: hostname}, {resetForm, setErrors});
+        updateServer(
+          {serverId: serverEditing.id, newHostname: hostname},
+          {onSuccess: this.editServer, setErrors}
+        );
       }
-      else editServer({server: null});
+      else this.editServer();
     }
-    else addServer({hostname}, {resetForm, setErrors});
+    else addServer({hostname}, {onSuccess: resetForm, setErrors});
   }
-});
 
-function mapStateToProps(state) {
-  return {
-    servers: getServers(state),
-    serverEditing: getServerEditing(state)
-  };
+  render() {
+    const {removeServer, servers} = this.props;
+    return (
+      <Servers
+        serverEditing={this.state.serverEditing}
+        saveServer={this.saveServer}
+        editServer={this.editServer}
+        removeServer={removeServer}
+        servers={servers}
+      />
+    );
+  }
+
 }
-
-const ServersContainer = compose(
-  connect(
-    mapStateToProps,
-    actions
-  ),
-  handlers
-)(Servers);
 
 export default ServersContainer;

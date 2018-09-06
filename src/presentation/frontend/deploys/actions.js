@@ -29,7 +29,7 @@ export const actions = {
     return loadDeploysAction;
   },
   startDeploy: asyncActionCreator(types.START_DEPLOY, 'slug', 'branch', 'targets', {
-    client: action(payload => post('/api/deploys', payload), true),
+    client: action(payload => post('/api/deploys', payload)),
     schema: Deploy.normalizedSchema
   }),
   loadLog: asyncActionCreator(types.LOAD_LOG, 'deployId', ({deployId}) => {

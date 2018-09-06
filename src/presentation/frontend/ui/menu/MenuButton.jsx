@@ -51,11 +51,15 @@ const StyledMenuButton = styled.button`
   }
 `;
 
+const StyledIcon = styled(Icon)`
+  stroke: #fff;
+`;
+
 function MenuButton({toggleMenu, in: transitionIn}) {
   return (
     <CSSTransition in={transitionIn} classNames={transitionName} timeout={{enter: 500, exit: 100}}>
       <StyledMenuButton type="button" onClick={toggleMenu}>
-        <Icon type="settings" />
+        <StyledIcon type="settings" />
         <span>Settings Menu</span>
       </StyledMenuButton>
     </CSSTransition>
