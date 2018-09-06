@@ -1,12 +1,7 @@
 {
-  "extends": "stylelint-config-standard",
-  "ignoreFiles": [
-    "**/*.js",
-    "**/*.jsx"
-  ],
-  "rules": {
-    "selector-pseudo-class-no-unknown": [true, {
-      "ignorePseudoClasses": ["global"]
-    }],
-  }
+  "processors": ["stylelint-processor-styled-components"],
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-styled-components"
+  ]
 }

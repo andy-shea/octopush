@@ -7,6 +7,12 @@ function babel(options) {
       module: {
         rules: [
           {
+            enforce: 'pre',
+            test: /\.ts?$/,
+            exclude: /node_modules/,
+            loader: 'tslint-loader'
+          },
+          {
             test: /\.(j|t)sx?$/,
             exclude: /node_modules/,
             loader: 'babel-loader',
