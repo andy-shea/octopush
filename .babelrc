@@ -1,5 +1,6 @@
 {
   "presets": [
+    ["@babel/typescript"],
     ["@babel/preset-env", {"modules": false}]
   ],
   "ignore": ["src/presentation/cli"],
@@ -11,7 +12,7 @@
       ]
     },
     "test": {
-      "presets": ["@babel/preset-env"]
+      "presets": ["@babel/typescript", "@babel/preset-env"]
     }
   },
   "plugins": [
