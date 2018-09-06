@@ -10,7 +10,7 @@ router.get('/', async (req, res, next) => {
   const service = req.injector.get(ServerService);
   try {
     const data = await service.loadServers();
-    setData(res, next)(data);
+    setData(res, next, data);
   }
   catch (error) {
     next(error);
@@ -26,7 +26,7 @@ router.post('/', async (req, res, next) => {
 
   try {
     const data = await service.addServer(hostname);
-    setData(res, next, 201)(data);
+    setData(res, next, data, 201);
   }
   catch (error) {
     next(error);
@@ -42,7 +42,7 @@ router.post('/:id', async (req, res, next) => {
 
   try {
     const data = await service.updateServer(req.params.id, newHostname);
-    setData(res, next)(data);
+    setData(res, next, data);
   }
   catch (error) {
     next(error);
@@ -53,7 +53,7 @@ router.delete('/:id', async (req, res, next) => {
   const service = req.injector.get(ServerService);
   try {
     const stackIds = await service.removeServer(req.params.id);
-    setData(res, next)(() => req.injector.get(StackRepository).findByIds(stackIds));
+    setData(res, next, () => req.injector.get(StackRepository).findByIds(stackIds));
   }
   catch (error) {
     next(error);

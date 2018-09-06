@@ -2,7 +2,7 @@ function action(fetch) {
   return async (payload, {onSuccess, setErrors}) => {
     try {
       const response = await fetch(payload);
-      if (onSuccess) onSuccess(response);
+      if (onSuccess) onSuccess();
       return response;
     }
     catch (error) {

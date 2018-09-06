@@ -9,7 +9,7 @@ router.get('/', async (req, res, next) => {
   const service = req.injector.get(StackService);
   try {
     const data = await service.loadStacks();
-    setData(res, next)(data);
+    setData(res, next, data);
   }
   catch (error) {
     next(error);
@@ -27,7 +27,7 @@ router.post('/', async (req, res, next) => {
 
   try {
     const data = await service.addStack(title, gitPath, serverIds, diff || null);
-    setData(res, next, 201)(data);
+    setData(res, next, data, 201);
   }
   catch (error) {
     next(error);
@@ -46,7 +46,7 @@ router.post('/:slug', async (req, res, next) => {
 
   try {
     const data = await service.updateStack(slug, title, gitPath, serverIds, diff || null);
-    setData(res, next)(data);
+    setData(res, next, data);
   }
   catch (error) {
     next(error);
@@ -56,8 +56,8 @@ router.post('/:slug', async (req, res, next) => {
 router.delete('/:slug', async (req, res, next) => {
   const service = req.injector.get(StackService);
   try {
-    const data = await service.removeStack(req.params.slug);
-    setStatus(res, next)(data);
+    await service.removeStack(req.params.slug);
+    setStatus(res, next);
   }
   catch (error) {
     next(error);
@@ -75,7 +75,7 @@ router.post('/:slug/groups', async (req, res, next) => {
 
   try {
     const data = await service.addGroup(slug, name, serverIds);
-    setData(res, next)(data);
+    setData(res, next, data);
   }
   catch (error) {
     next(error);
@@ -93,7 +93,7 @@ router.post('/:slug/groups/:groupId', async (req, res, next) => {
 
   try {
     const data = await service.updateGroup(slug, groupId, name, serverIds);
-    setData(res, next)(data);
+    setData(res, next, data);
   }
   catch (error) {
     next(error);
@@ -108,7 +108,7 @@ router.delete('/:slug/groups/:groupId', async (req, res, next) => {
 
   try {
     const data = await service.removeGroup(slug, groupId);
-    setData(res, next)(data);
+    setData(res, next, data);
   }
   catch (error) {
     next(error);

@@ -23,7 +23,7 @@ router.get('/:id/log', async (req, res, next) => {
 
   try {
     const data = await service.loadLog(id);
-    setData(res, next)(data);
+    setData(res, next, data);
   }
   catch (error) {
     handleError(next, error);
@@ -40,7 +40,7 @@ router.get('/:slug?', async (req, res, next) => {
 
   try {
     const data = await service.loadDeploysAndBranches(slug, page);
-    setData(res, next)(data);
+    setData(res, next, data);
   }
   catch (error) {
     handleError(next, error);
@@ -78,7 +78,7 @@ router.post('/', async (req, res, next) => {
       user,
       emitLine(req.app.get('socket'))
     );
-    setData(res, next, 201)(data);
+    setData(res, next, data, 201);
   }
   catch (error) {
     handleError(next, error);
