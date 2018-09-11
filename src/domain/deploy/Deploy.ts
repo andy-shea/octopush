@@ -1,17 +1,15 @@
+import normalizable from 'junction-normalizr-decorator';
 import Stack from '../stack/Stack';
 import User from '../user/User';
-import normalizable from 'junction-normalizr-decorator';
 
 @normalizable()
 class Deploy {
 
+  static schema: object;
+
   hosts = [];
 
-  constructor(branch, user, stack) {
-    this.branch = branch;
-    this.user = user;
-    this.stack = stack;
-  }
+  constructor(public branch: string, public user: User, public stack: Stack) {}
 
 }
 

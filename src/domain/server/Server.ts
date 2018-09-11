@@ -1,12 +1,14 @@
-import proptypeable from 'junction-proptype-decorator';
 import normalizable from 'junction-normalizr-decorator';
+import proptypeable from 'junction-proptype-decorator';
 
 @proptypeable
 @normalizable()
 class Server {
-  constructor(hostname) {
-    this.hostname = hostname;
-  }
+
+  static schema: object;
+
+  constructor(public hostname: string) {}
+
 }
 
 Server.schema = {

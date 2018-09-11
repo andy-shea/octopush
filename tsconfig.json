@@ -2,19 +2,19 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "sourceMap": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "strictNullChecks": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "allowJs": true,
     "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
     "strict": true,
-    "isolatedModules": true,
+    "noUnusedLocals": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "target": "esnext",
     "jsx": "react"
   },
-  "include": ["src"]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }

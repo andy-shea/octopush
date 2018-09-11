@@ -2,18 +2,22 @@ function babel(options) {
   return (context, {merge}) =>
     merge({
       resolve: {
-        extensions: ['ts', 'tsx']
+        extensions: ['.ts', '.tsx']
       },
       module: {
         rules: [
           {
             enforce: 'pre',
-            test: /\.ts?$/,
-            exclude: /node_modules/,
-            loader: 'tslint-loader'
+            test: /\.tsx?$/,
+            use: [
+              {
+                loader: 'tslint-loader',
+                options: {emitErrors: true}
+              }
+            ]
           },
           {
-            test: /\.(j|t)sx?$/,
+            test: /\.(?:t|j)sx?$/,
             exclude: /node_modules/,
             loader: 'babel-loader',
             options: Object.assign({cacheDirectory: '/tmp'}, options)

@@ -10,5 +10,10 @@
       "config/webpack/*",
       "**/node_modules/**"
     ]
+  },
+  "rules": {
+    "member-access": false,
+    "no-null-keyword": true,
+    "object-literal-sort-keys": false
   }
 }

@@ -1,12 +1,13 @@
-import Server from '../server/Server';
 import proptypeable from 'junction-proptype-decorator';
+import Server from '../server/Server';
 
 @proptypeable
 class Group {
-  constructor(name, servers) {
-    this.name = name;
-    this.servers = servers;
-  }
+
+  static schema: object;
+
+  constructor(public name: string, public servers: Server[]) {}
+
 }
 
 Group.schema = {

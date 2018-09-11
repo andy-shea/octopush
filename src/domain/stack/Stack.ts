@@ -1,21 +1,22 @@
+import normalizable from 'junction-normalizr-decorator';
+import proptypeable from 'junction-proptype-decorator';
 import s from 'string';
 import Server from '../server/Server';
 import Group from './Group';
-import proptypeable from 'junction-proptype-decorator';
-import normalizable from 'junction-normalizr-decorator';
 
 @proptypeable
 @normalizable({idAttribute: 'slug'})
 class Stack {
 
-  diff;
-  servers = [];
-  groups = [];
+  static schema: object;
 
-  constructor(title, gitPath) {
-    this.title = title;
+  diff: string | undefined;
+  slug: string;
+  servers: Server[] = [];
+  groups: Group[] = [];
+
+  constructor(public title: string, public gitPath: string) {
     this.slug = s(this.title).slugify().s;
-    this.gitPath = gitPath;
   }
 
 }

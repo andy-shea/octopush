@@ -3,15 +3,14 @@ import normalizable from 'junction-normalizr-decorator';
 @normalizable()
 class User {
 
-  id;
-  password;
-  resetPasswordToken;
-  resetPasswordExpires;
+  static schema: object;
 
-  constructor(name, email) {
-    this.name = name;
-    this.email = email;
-  }
+  id: number | undefined;
+  password: string | undefined;
+  resetPasswordToken: string | undefined;
+  resetPasswordExpires: string | undefined;
+
+  constructor(public name: string, public email: string) {}
 }
 
 User.schema = {
