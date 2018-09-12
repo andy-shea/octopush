@@ -1,49 +1,62 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React, {ReactElement, SFC, SyntheticEvent} from 'react';
 import {Transition} from 'react-transition-group';
-import withHandlers from 'recompose/withHandlers';
+// tslint:disable-next-line:no-submodule-imports TODO: can this be combined with the import above?
+import {EnterHandler, ExitHandler} from 'react-transition-group/Transition';
+import {withHandlers} from 'recompose';
+import styled from 'styled-components';
 import ServersContainer from '../../servers/ServersContainer';
 import StacksContainer from '../../stacks/StacksContainer';
+import CloseIcon from '../icon/CloseIcon';
 import Icon from '../icon/Icon';
 import ServerIcon from '../icon/ServerIcon';
-import CloseIcon from '../icon/CloseIcon';
 
-let velocity;
+let velocity: any;
+// tslint:disable-next-line:no-var-requires
 if (typeof window !== 'undefined') velocity = require('velocity-animate');
 
 const openClass = 'open';
 const closedClass = 'closed';
 
-function onEnter(menu) {
+type OpenPaneHandler = (settingsPane: ReactElement<any>) => void;
+
+interface MenuContentsProps {
+  toggleMenu: () => void;
+  openPane: OpenPaneHandler;
+  openStacksPane: (event: SyntheticEvent) => void;
+  openServersPane: (event: SyntheticEvent) => void;
+  settingsPane?: ReactElement<any>;
+  in?: boolean;
+}
+
+const onEnter: EnterHandler = menu => {
   if (typeof window !== 'undefined') {
     menu.classList.add(closedClass);
     Object.assign(menu.style, {left: '50px', bottom: '50px', width: '50px', height: '50px', top: 'auto'});
   }
-}
+};
 
-function onEntering(menu) {
+const onEntering: EnterHandler = menu => {
   if (typeof window !== 'undefined') {
     requestAnimationFrame(() => { // allow closedClass added in onEnter to reflow
       menu.classList.remove(closedClass);
       velocity(menu, {left: 0, top: 0, width: 300, height: '100%'}, {duration: 400, delay: 50, easing: [0.7, 0, 0.3, 1]});
     });
   }
-}
+};
 
-function onExit(menu) {
+const onExit: ExitHandler = menu => {
   if (typeof window !== 'undefined') {
     menu.classList.add(closedClass);
     menu.classList.remove(openClass);
     Object.assign(menu.style, {zIndex: 900, top: 'auto', bottom: 'auto'});
   }
-}
+};
 
-function onExiting(menu) {
+const onExiting: ExitHandler = menu => {
   if (typeof window !== 'undefined') {
     velocity(menu, {left: '50px', bottom: '50px', width: '50px', height: '50px'}, {duration: 400, delay: 50, easing: [0.7, 0, 0.3, 1]});
   }
-}
+};
 
 const StyledMenuContents = styled.div`
   pointer-events: auto;
@@ -169,24 +182,24 @@ const SettingsPane = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
-  display: ${({open}) => open ? 'block' : 'none'};
+  display: ${({open}: {open: boolean}) => open ? 'block' : 'none'};
 `;
 
 const handlers = {
-  openServersPane: ({openPane}) => event => {
+  openServersPane: ({openPane}: {openPane: OpenPaneHandler}) => (event: SyntheticEvent) => {
     event.preventDefault();
     openPane(<ServersContainer/>);
   },
 
-  openStacksPane: ({openPane}) => event => {
+  openStacksPane: ({openPane}: {openPane: OpenPaneHandler}) => (event: SyntheticEvent) => {
     event.preventDefault();
     openPane(<StacksContainer/>);
   }
 };
 
-let enhance = withHandlers(handlers);
+const enhance = withHandlers(handlers);
 
-function MenuContents({toggleMenu, settingsPane, openStacksPane, openServersPane, in: transitionIn}) {
+const MenuContents: SFC<MenuContentsProps> = ({toggleMenu, settingsPane, openStacksPane, openServersPane, in: transitionIn}) => {
   return (
     <Transition
       in={transitionIn}
@@ -223,15 +236,6 @@ function MenuContents({toggleMenu, settingsPane, openStacksPane, openServersPane
       </StyledMenuContents>
     </Transition>
   );
-}
-
-MenuContents.propTypes = {
-  toggleMenu: PropTypes.func.isRequired,
-  openPane: PropTypes.func.isRequired,
-  openStacksPane: PropTypes.func.isRequired,
-  openServersPane: PropTypes.func.isRequired,
-  settingsPane: PropTypes.element,
-  in: PropTypes.bool
 };
 
 export default enhance(MenuContents);

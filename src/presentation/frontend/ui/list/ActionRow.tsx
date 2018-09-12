@@ -1,9 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {SFC} from 'react';
 import styled, {css} from 'styled-components';
 import Icon from '../icon/Icon';
 
-const StyledActionRow = styled.li`
+const StyledActionRow = styled.li<{isMultiline?: boolean}>`
   border-bottom: 1px solid var(--color-red-10);
   padding: 6px 15px;
   display: block;
@@ -11,16 +10,14 @@ const StyledActionRow = styled.li`
   font-size: 1.2em;
   position: relative;
 
-  ${({isMultiline}) =>
-    isMultiline &&
-    css`
-      padding: 16px 100px 16px 15px;
-      line-height: 18px;
-      position: relative;
-    `};
+  ${({isMultiline}) => isMultiline && css`
+    padding: 16px 100px 16px 15px;
+    line-height: 18px;
+    position: relative;
+  `};
 `;
 
-const ActionList = styled.ul`
+const ActionList = styled.ul<{height?: number}>`
   display: none;
   align-items: center;
   position: absolute;
@@ -64,7 +61,15 @@ const Loader = styled(Icon).attrs({type: 'loader'})`
   margin: 0;
 `;
 
-function ActionRow({children, actions, isLoading, height, isMultiline}) {
+interface ActionRowProps {
+  children: React.ReactNode;
+  actions: React.ReactNode[];
+  height: number;
+  isLoading?: boolean;
+  isMultiline?: boolean;
+}
+
+const ActionRow: SFC<ActionRowProps> = ({children, actions, isLoading, height, isMultiline}) => {
   return (
     <StyledActionRow isMultiline={isMultiline}>
       {children}
@@ -79,14 +84,6 @@ function ActionRow({children, actions, isLoading, height, isMultiline}) {
       )}
     </StyledActionRow>
   );
-}
-
-ActionRow.propTypes = {
-  children: PropTypes.node.isRequired,
-  actions: PropTypes.array.isRequired,
-  height: PropTypes.number.isRequired,
-  isLoading: PropTypes.bool,
-  isMultiline: PropTypes.bool
 };
 
 export default ActionRow;

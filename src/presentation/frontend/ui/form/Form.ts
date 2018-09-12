@@ -10,6 +10,7 @@ const Form = styled.form`
     font-size: 0.7em;
     color: var(--color-grey-30);
   }
+
   & label::after {
     content: ':';
   }

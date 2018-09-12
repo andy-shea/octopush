@@ -25,6 +25,7 @@ const RemoveIcon = styled.span`
   &::before {
     transform: rotate(-45deg);
   }
+
   &::after {
     transform: rotate(45deg);
   }

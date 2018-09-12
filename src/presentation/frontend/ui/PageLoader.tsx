@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {SFC} from 'react';
 import styled, {keyframes} from 'styled-components';
 
 const loaderAnimation = keyframes`
@@ -20,8 +19,8 @@ const StyledPageLoader = styled.div`
     border-radius: 50%;
     width: 2em;
     height: 2em;
-    animation-fill-mode: both;
     animation: ${loaderAnimation} 1.8s infinite ease-in-out;
+    animation-fill-mode: both;
   }
 
   margin-bottom: 3em;
@@ -46,15 +45,14 @@ const StyledPageLoader = styled.div`
     position: absolute;
     top: 0;
   }
-
 `;
 
-function PageLoader({className}) {
-  return <StyledPageLoader className={className}>Loading...</StyledPageLoader>;
+interface PageLoaderProps {
+  className?: string;
 }
 
-PageLoader.propTypes = {
-  className: PropTypes.string
+const PageLoader: SFC<PageLoaderProps> = ({className}) => {
+  return <StyledPageLoader className={className}>Loading...</StyledPageLoader>;
 };
 
 export default PageLoader;

@@ -1,8 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
 import {hideVisually} from 'polished';
+import React, {ReactNode, SFC} from 'react';
+import styled from 'styled-components';
 import {middleable} from '.';
 import RemoveIcon from '../icon/RemoveIcon';
+
+interface RemoveButtonProps {
+  children: ReactNode;
+  middle?: boolean;
+}
 
 // prettier-ignore
 const StyledButton = styled.button`
@@ -37,13 +42,13 @@ const Text = styled('span')`
   ${hideVisually()};
 `;
 
-function RemoveButton({children, ...props}) {
+const RemoveButton: SFC<RemoveButtonProps> = ({children, ...props}) => {
   return (
     <StyledButton type="button" {...props}>
       <StyledRemoveIcon />
       <Text>{children}</Text>
     </StyledButton>
   );
-}
+};
 
 export default RemoveButton;

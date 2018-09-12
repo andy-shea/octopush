@@ -40,7 +40,7 @@
   dependencies:
     "@babel/highlight" "^7.0.0"
 
-"@babel/core@7.0.0", "@babel/core@^7.0.0":
+"@babel/core@7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.0.0.tgz#0cb0c0fd2e78a0a2bec97698f549ae9ce0b99515"
   dependencies:
@@ -70,6 +70,25 @@
     "@babel/template" "7.0.0-rc.2"
     "@babel/traverse" "7.0.0-rc.2"
     "@babel/types" "7.0.0-rc.2"
+    convert-source-map "^1.1.0"
+    debug "^3.1.0"
+    json5 "^0.5.0"
+    lodash "^4.17.10"
+    resolve "^1.3.2"
+    semver "^5.4.1"
+    source-map "^0.5.0"
+
+"@babel/core@^7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.0.1.tgz#406658caed0e9686fa4feb5c2f3cefb6161c0f41"
+  dependencies:
+    "@babel/code-frame" "^7.0.0"
+    "@babel/generator" "^7.0.0"
+    "@babel/helpers" "^7.0.0"
+    "@babel/parser" "^7.0.0"
+    "@babel/template" "^7.0.0"
+    "@babel/traverse" "^7.0.0"
+    "@babel/types" "^7.0.0"
     convert-source-map "^1.1.0"
     debug "^3.1.0"
     json5 "^0.5.0"
@@ -998,9 +1017,9 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.1.tgz#53f349bb986ab273d601175aa1b25a655ab90ee3"
 
-"@octokit/rest@^15.11.1":
-  version "15.11.1"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-15.11.1.tgz#ef4e7462ec8f94e535a82220f7b5212111fc2647"
+"@octokit/rest@^15.11.2":
+  version "15.11.2"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-15.11.2.tgz#61bbfb6fa572eff0643cbe62ef695adac194ca8a"
   dependencies:
     before-after-hook "^1.1.0"
     btoa-lite "^1.0.0"
@@ -1044,6 +1063,10 @@
   dependencies:
     commander "*"
 
+"@types/jquery@*":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.3.6.tgz#5932ead926307ca21e5b36808257f7c926b06565"
+
 "@types/node@*":
   version "10.9.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.9.4.tgz#0f4cb2dc7c1de6096055357f70179043c33e9897"
@@ -1054,11 +1077,31 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-dom@^16.0.7":
+"@types/react-custom-scrollbars@^4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@types/react-custom-scrollbars/-/react-custom-scrollbars-4.0.5.tgz#8629b4b3164914d27df7cb0ca0a086c0ad406389"
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-dom@*", "@types/react-dom@^16.0.7":
   version "16.0.7"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.7.tgz#54d0f867a76b90597e8432030d297982f25c20ba"
   dependencies:
     "@types/node" "*"
+    "@types/react" "*"
+
+"@types/react-select@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-2.0.3.tgz#08aede7985cbc8a538cb06a9262b0589f07d280e"
+  dependencies:
+    "@types/react" "*"
+    "@types/react-dom" "*"
+    "@types/react-transition-group" "*"
+
+"@types/react-transition-group@*", "@types/react-transition-group@^2.0.14":
+  version "2.0.14"
+  resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-2.0.14.tgz#afd0cd785a97f070b55765e9f9d76ff568269001"
+  dependencies:
     "@types/react" "*"
 
 "@types/react@*":
@@ -1075,6 +1118,12 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/recompose@^0.26.5":
+  version "0.26.5"
+  resolved "https://registry.yarnpkg.com/@types/recompose/-/recompose-0.26.5.tgz#8496b63c535a60c3584b8b0aca54bfb86679ed70"
+  dependencies:
+    "@types/react" "*"
+
 "@types/semver@^5.4.0":
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-5.5.0.tgz#146c2a29ee7d3bae4bf2fcb274636e264c813c45"
@@ -1082,6 +1131,12 @@
 "@types/string@^0.0.29":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/string/-/string-0.0.29.tgz#9b6de0ec6884bdbe9520a0e4022886b57759f5fa"
+
+"@types/velocity-animate@^1.2.33":
+  version "1.2.33"
+  resolved "https://registry.yarnpkg.com/@types/velocity-animate/-/velocity-animate-1.2.33.tgz#611fb5007fe32f02a9056114bc9254a37510c2d7"
+  dependencies:
+    "@types/jquery" "*"
 
 "@webassemblyjs/ast@1.5.13":
   version "1.5.13"
@@ -2010,10 +2065,11 @@ babel-plugin-root-import@^6.1.0:
   dependencies:
     slash "^1.0.0"
 
-babel-plugin-styled-components@^1.6.4:
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-1.6.4.tgz#24677e5b37a85b04aed855a5f81f1c7bfec77784"
+babel-plugin-styled-components@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-1.7.1.tgz#c291d2a48ec77bb0828275b87696b6594a2f80f9"
   dependencies:
+    "@babel/helper-annotate-as-pure" "^7.0.0"
     lodash "^4.17.10"
 
 babel-plugin-syntax-dynamic-import@^6.18.0:
@@ -7145,9 +7201,9 @@ junction-express-middleware@^0.2.0:
   dependencies:
     junction-orm "^0.2.0"
 
-junction-normalizr-decorator@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/junction-normalizr-decorator/-/junction-normalizr-decorator-0.3.0.tgz#570753c86b2d806924f10e369c0743d9f3c1c281"
+junction-normalizr-decorator@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/junction-normalizr-decorator/-/junction-normalizr-decorator-0.3.2.tgz#12c346eb53a7e5af2bcfd9fb8a6cb6a439e7c500"
   dependencies:
     normalizr "^3.2.3"
     pluralize "^5.0.0"
@@ -7156,9 +7212,9 @@ junction-orm@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/junction-orm/-/junction-orm-0.2.0.tgz#752c6a5da9a4ef87c3bf50aabbe40b7bc37bc635"
 
-junction-proptype-decorator@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/junction-proptype-decorator/-/junction-proptype-decorator-0.2.0.tgz#f07c601ed233f660ce49db74bc1152d576b77851"
+junction-proptype-decorator@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/junction-proptype-decorator/-/junction-proptype-decorator-0.2.2.tgz#7afb2c9725a7bc066bbbf0b65b97e28621251542"
 
 keygrip@~1.0.2:
   version "1.0.2"
@@ -7596,9 +7652,9 @@ logrocket-react@^2.0.0:
     react "16.4.1"
     react-dom "16.4.1"
 
-logrocket@^0.6.16:
-  version "0.6.16"
-  resolved "https://registry.yarnpkg.com/logrocket/-/logrocket-0.6.16.tgz#09ac05426b096016e19395a0c0b0acf97a647418"
+logrocket@^0.6.17:
+  version "0.6.17"
+  resolved "https://registry.yarnpkg.com/logrocket/-/logrocket-0.6.17.tgz#4a9b6deed53a9c798204dd30203ed0dadd89c41c"
 
 long@4.0.0:
   version "4.0.0"
@@ -9517,16 +9573,12 @@ react-copy-write@^0.8.0:
     immer "^1.2.1"
     invariant "^2.2.4"
 
-react-cornerstone@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/react-cornerstone/-/react-cornerstone-0.9.1.tgz#545a9dce14fdb38c912dbb3b50fc1e66abaf2111"
+react-cornerstone@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/react-cornerstone/-/react-cornerstone-0.10.0.tgz#1cdc2a63ae46a4d2f89d868f0dd4363e5f0b9abb"
   dependencies:
     lodash.isplainobject "^4.0.6"
-    react "^16.4.2"
-    react-dom "^16.4.2"
     react-hot-loader "^4.3.5"
-    react-redux "^5.0.7"
-    redux "^4.0.0"
     redux-first-router "^0.0.4-rudy"
     redux-thunk "^2.3.0"
 
@@ -9594,7 +9646,7 @@ react-dom@16.4.1:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-dom@^16.3.1, react-dom@^16.4.2:
+react-dom@^16.3.1:
   version "16.4.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.2.tgz#4afed569689f2c561d2b8da0b819669c38a0bda4"
   dependencies:
@@ -9794,7 +9846,7 @@ react@16.4.1:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react@^16.3.1, react@^16.4.2:
+react@^16.3.1:
   version "16.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-16.4.2.tgz#2cd90154e3a9d9dd8da2991149fdca3c260e129f"
   dependencies:
@@ -12497,6 +12549,14 @@ webpack-manifest-plugin@^2.0.3:
   resolved "https://registry.yarnpkg.com/webpack-manifest-plugin/-/webpack-manifest-plugin-2.0.3.tgz#b42c5b08a0319cedb3ec45d9375a9ecee0acf5eb"
   dependencies:
     fs-extra "^0.30.0"
+    lodash ">=3.5 <5"
+    tapable "^1.0.0"
+
+webpack-manifest-plugin@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/webpack-manifest-plugin/-/webpack-manifest-plugin-2.0.4.tgz#e4ca2999b09557716b8ba4475fb79fab5986f0cd"
+  dependencies:
+    fs-extra "^7.0.0"
     lodash ">=3.5 <5"
     tapable "^1.0.0"
 

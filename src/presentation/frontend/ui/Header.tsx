@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled, {css} from 'styled-components';
 import {clearFix, hideText} from 'polished';
+import React, {SFC} from 'react';
+import styled, {css} from 'styled-components';
+// @ts-ignore
 import logo from './octopus.png';
 
 const StyledHeader = styled.header`
@@ -10,14 +10,12 @@ const StyledHeader = styled.header`
     content: ' ';
     display: table;
   }
-  ${({centred}) =>
-    centred &&
-    css`
-      position: absolute;
-      width: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-    `};
+  ${({centred}: {centred?: boolean}) => centred && css`
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  `};
 `;
 
 const Title = styled.h1`
@@ -33,18 +31,18 @@ const Title = styled.h1`
   ${hideText()};
 `;
 
-function Header({children, centred = false}) {
+interface HeaderProps {
+  children: React.ReactNode;
+  centred?: boolean;
+}
+
+const Header: SFC<HeaderProps> = ({children, centred = false}) => {
   return (
     <StyledHeader centred={centred}>
       <Title>Octopush</Title>
       {children}
     </StyledHeader>
   );
-}
-
-Header.propTypes = {
-  children: PropTypes.node.isRequired,
-  centred: PropTypes.bool
 };
 
 export default Header;

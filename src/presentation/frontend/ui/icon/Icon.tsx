@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledIcon = styled.svg`
@@ -11,7 +10,12 @@ const StyledIcon = styled.svg`
   margin: 5px;
 `;
 
-function Icon({className, type, ...props}) {
+interface IconProps {
+  type: string;
+  className?: string;
+}
+
+const Icon: React.SFC<IconProps> = ({className, type, ...props}) => {
   return (
     <StyledIcon
       className={className}
@@ -19,11 +23,6 @@ function Icon({className, type, ...props}) {
       {...props}
     />
   );
-}
-
-Icon.propTypes = {
-  type: PropTypes.string.isRequired,
-  className: PropTypes.string
 };
 
 export default Icon;

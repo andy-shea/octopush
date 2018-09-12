@@ -1,6 +1,6 @@
-import React from 'react';
-import styledNormalize from 'styled-normalize';
+import React, {ReactNode, SFC} from 'react';
 import {injectGlobal} from 'styled-components';
+import styledNormalize from 'styled-normalize';
 import Icons from './icon/Icons';
 
 // https://0p06jr8rql.codesandbox.io/
@@ -12,20 +12,15 @@ function reset() {
       --color-blue: #476380;
       --color-blue-10: #34495e;
       --color-blue-20: #2c3e50;
-
-      --color-white: #ffffff;
-
+      --color-white: #fff;
       --color-grey: #ecf0f1;
       --color-grey-5: #dfe5e7;
       --color-grey-10: #d0dadc;
       --color-grey-15: #c1ced1;
       --color-grey-20: #b3c3c7;
       --color-grey-30: #95abb1;
-      
       --color-green: #2ecc71;
-      
       --color-light-red: #fce9e9;
-
       --color-red-highlight: #ea6262;
       --color-red: #e85657;
       --color-red-10: #e22828;
@@ -38,8 +33,6 @@ function reset() {
     *,
     *::before,
     *::after {
-      -moz-box-sizing: border-box;
-      -webkit-box-sizing: border-box;
       box-sizing: border-box;
     }
 
@@ -91,7 +84,11 @@ function reset() {
   `;
 }
 
-function Reset({children}) {
+interface ResetProps {
+  children: ReactNode;
+}
+
+const Reset: SFC<ResetProps> = ({children}) => {
   reset();
   return (
     <>
@@ -99,6 +96,6 @@ function Reset({children}) {
       {children}
     </>
   );
-}
+};
 
 export default Reset;

@@ -1,8 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
 import {hideVisually} from 'polished';
+import React, {ReactNode, SFC} from 'react';
+import styled from 'styled-components';
 import {middleable} from '.';
 import Icon from '../icon/Icon';
+
+interface EditButtonProps {
+  children: ReactNode;
+  middle?: boolean;
+}
 
 // prettier-ignore
 const StyledButton = styled.button`
@@ -31,13 +36,13 @@ const EditIcon = styled(Icon).attrs({type: 'edit'})`
   }
 `;
 
-function EditButton({children, ...props}) {
+const EditButton: SFC<EditButtonProps> = ({children, ...props}) => {
   return (
     <StyledButton type="button" {...props}>
       <EditIcon />
       <span>{children}</span>
     </StyledButton>
   );
-}
+};
 
 export default EditButton;

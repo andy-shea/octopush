@@ -3,5 +3,13 @@
   "extends": [
     "stylelint-config-standard",
     "stylelint-config-styled-components"
-  ]
+  ],
+  "rules": {
+    "declaration-empty-line-before": null,
+    "declaration-colon-newline-after": null,
+    "value-list-max-empty-lines": null,
+    "comment-empty-line-before": null,
+    "declaration-block-semicolon-newline-after": null,
+    "rule-empty-line-before": null
+  }
 }

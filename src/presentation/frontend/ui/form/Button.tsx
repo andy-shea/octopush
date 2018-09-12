@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {SFC} from 'react';
 import styled, {css} from 'styled-components';
 import Icon from '../icon/Icon';
 
@@ -7,7 +6,6 @@ const StyledButton = styled.button`
   outline: none;
   text-transform: uppercase;
   transition: all 0.1s;
-  padding: 6px 15px;
   border: none;
   font-size: 0.9em;
   font-family: inherit;
@@ -20,26 +18,24 @@ const StyledButton = styled.button`
   line-height: 34px;
   margin: 1px;
   margin-left: 0;
-  padding: ${({large}) => (large ? '10px 30px' : '0 30px')};
+  padding: ${({large}: {large?: boolean}) => (large ? '10px 30px' : '0 30px')};
   white-space: nowrap;
 
-  ${({cta}) =>
-    cta &&
-    css`
-      background: var(--color-green);
-      color: #fff;
-    `} &:hover,
+  ${({cta}: {cta?: boolean}) => cta && css`
+    background: var(--color-green);
+    color: #fff;
+  `}
+
+  &:hover,
   &:focus {
     background: #fff;
     color: var(--color-blue-10);
 
-    ${({cta}) =>
-    cta &&
-      css`
-        background: #fff;
-        color: var(--color-green);
-        box-shadow: 0 1px 1px var(--color-grey-5);
-      `};
+    ${({cta}: {cta?: boolean}) => cta && css`
+      background: #fff;
+      color: var(--color-green);
+      box-shadow: 0 1px 1px var(--color-grey-5);
+    `};
   }
 `;
 
@@ -50,30 +46,28 @@ const Loader = styled(Icon).attrs({type: 'loader'})`
   transform: translateY(4px);
   width: 0;
   margin: 0;
-  transition: all 0.1s, background: 0s none;
+  transition: all 0.1s, background-color 0s none;
 
-  ${({isLoading}) =>
-    isLoading &&
-    css`
-      margin-left: 6px;
-      width: 20px;
-    `};
+  ${({isLoading}: {isLoading?: boolean}) => isLoading && css`
+    margin-left: 6px;
+    width: 20px;
+  `};
 `;
 
-function Button({children, isLoading, ...props}) {
+interface ButtonProps {
+  children: React.ReactNode;
+  isLoading?: boolean;
+  large?: boolean;
+  cta?: boolean;
+}
+
+const Button: SFC<ButtonProps> = ({children, isLoading, ...props}) => {
   return (
     <StyledButton {...props}>
       {children}
       <Loader isLoading={isLoading} />
     </StyledButton>
   );
-}
-
-Button.propTypes = {
-  children: PropTypes.node.isRequired,
-  isLoading: PropTypes.bool,
-  large: PropTypes.bool,
-  cta: PropTypes.bool
 };
 
 export default Button;

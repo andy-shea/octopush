@@ -1,7 +1,11 @@
 import styled, {css} from 'styled-components';
 
+interface TextFieldProps {
+  first?: boolean;
+}
+
 // prettier-ignore
-const TextField = styled.input.attrs({type: 'text'})`
+const TextField = styled.input.attrs<TextFieldProps>({type: 'text'})`
   padding: 6px 15px;
   display: block;
   line-height: 34px;
@@ -10,7 +14,7 @@ const TextField = styled.input.attrs({type: 'text'})`
   width: 100%;
   background-color: var(--color-light-red);
 
-  ${({first}) => first && css`
+  ${({first}: TextFieldProps) => first && css`
     border-bottom: none;
   `}
 `;
