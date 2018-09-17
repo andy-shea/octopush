@@ -1,12 +1,12 @@
 import normalizable from 'junction-normalizr-decorator';
-import {Entity, SchemaTypes, Timestampable} from 'junction-orm/lib/Entity';
+import {Entity, Schema, SchemaTypes, Timestampable} from 'junction-orm/lib/Entity';
 import Stack from '../stack/Stack';
 import User from '../user/User';
 
 @normalizable()
 class Deploy implements Entity, Timestampable {
 
-  static schema = {
+  static schema: Schema = {
     type: SchemaTypes.ENTITY,
     timestampable: true,
     props: {

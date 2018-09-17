@@ -1,11 +1,11 @@
 import normalizable from 'junction-normalizr-decorator';
-import {Entity, SchemaTypes} from 'junction-orm/lib/Entity';
+import {Entity, Schema, SchemaTypes} from 'junction-orm/lib/Entity';
 import {Authenticatable} from 'node-password-util';
 
 @normalizable()
 class User implements Entity, Authenticatable {
 
-  static schema = {
+  static schema: Schema = {
     type: SchemaTypes.ENTITY,
     props: {
       name: {},

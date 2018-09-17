@@ -1,12 +1,12 @@
 import normalizable from 'junction-normalizr-decorator';
-import {Entity, SchemaTypes} from 'junction-orm/lib/Entity';
+import {Entity, Schema, SchemaTypes} from 'junction-orm/lib/Entity';
 import proptypeable from 'junction-proptype-decorator';
 
 @proptypeable
 @normalizable()
 class Server implements Entity {
 
-  static schema = {
+  static schema: Schema = {
     type: SchemaTypes.ENTITY,
     props: {
       hostname: {

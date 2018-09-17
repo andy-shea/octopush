@@ -1,7 +1,9 @@
+import User from '~/domain/user/User';
 import db from '~/persistence';
+import EntityMapper from './mapper';
 
-const mapper = {
-  async insert(trx, users) {
+const mapper: EntityMapper = {
+  async insert(trx, users: User[]) {
     const values = users.map(({name, email, password}) => ({
       name,
       email,
@@ -12,14 +14,14 @@ const mapper = {
     const ids = await db('users')
       .transacting(trx)
       .insert(values, 'id');
-    ids.map((id, index) => {
+    ids.map((id: number, index: number) => {
       users[index].id = id;
     });
   },
 
-  update() {},
+  update() {}, // tslint:disable-line:no-empty
 
-  delete() {}
+  delete() {} // tslint:disable-line:no-empty
 };
 
 export default mapper;

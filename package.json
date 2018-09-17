@@ -53,7 +53,7 @@
     "immer": "^1.6.0",
     "junction-express-middleware": "^0.2.0",
     "junction-normalizr-decorator": "^0.3.2",
-    "junction-orm": "^0.3.0",
+    "junction-orm": "^0.3.1",
     "junction-proptype-decorator": "^0.2.2",
     "knex": "^0.15.2",
     "logrocket": "^0.6.17",

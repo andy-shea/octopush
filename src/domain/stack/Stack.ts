@@ -1,5 +1,5 @@
 import normalizable from 'junction-normalizr-decorator';
-import {Entity, SchemaTypes} from 'junction-orm/lib/Entity';
+import {Entity, Schema, SchemaTypes} from 'junction-orm/lib/Entity';
 import proptypeable from 'junction-proptype-decorator';
 import s from 'string';
 import Server from '../server/Server';
@@ -9,7 +9,7 @@ import Group from './Group';
 @normalizable({idAttribute: 'slug'})
 class Stack implements Entity {
 
-  static schema = {
+  static schema: Schema = {
     type: SchemaTypes.ENTITY,
     props: {
       title: {

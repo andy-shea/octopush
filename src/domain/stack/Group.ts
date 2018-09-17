@@ -1,4 +1,4 @@
-import {Entity, SchemaTypes} from 'junction-orm/lib/Entity';
+import {Entity, Schema, SchemaTypes} from 'junction-orm/lib/Entity';
 import proptypeable from 'junction-proptype-decorator';
 import Server from '../server/Server';
 
@@ -6,7 +6,7 @@ import Server from '../server/Server';
 @proptypeable
 class Group implements Entity {
 
-  static schema = {
+  static schema: Schema = {
     type: SchemaTypes.EMBEDDED,
     props: {
       name: {

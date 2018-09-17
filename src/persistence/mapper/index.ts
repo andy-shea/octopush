@@ -1,22 +1,34 @@
+import {Mapper as BaseMapper} from 'junction-orm/lib/mapper/Mapper';
+import {DirtyEntities, DirtyObservers} from 'junction-orm/lib/UnitOfWork';
+import {Transaction} from 'knex';
 import db from '~/persistence';
+import deployMapper from './deploys';
+import EntityMapper from './mapper';
 import serverMapper from './servers';
 import stackMapper from './stacks';
-import deployMapper from './deploys';
 import userMapper from './users';
 
-const mappers = {
+interface Mappers {
+  [type: string]: EntityMapper;
+}
+
+const mappers: Mappers = {
   Server: serverMapper,
   Stack: stackMapper,
   Deploy: deployMapper,
   User: userMapper
 };
 
-function getMapper(klass) {
+function getMapper(klass: string) {
   if (!mappers[klass]) throw Error('No mapper found for class');
   return mappers[klass];
 }
 
-const mapper = {
+interface Mapper extends BaseMapper {
+  trx?: Transaction;
+}
+
+const mapper: Mapper = {
   preFlush() {
     return new Promise(fulfill => {
       db.transaction(trx => {
@@ -26,38 +38,42 @@ const mapper = {
     });
   },
 
-  insert(entityMap) {
+  insert(entityMap: DirtyEntities) {
     const promises = Object.keys(entityMap).map(klass => {
-      return getMapper(klass).insert(this.trx, entityMap[klass]);
+      return getMapper(klass).insert(this.trx as Transaction, entityMap[klass]);
     });
     return Promise.all(promises);
   },
 
-  update(observerMap) {
+  update(observerMap: DirtyObservers) {
     const promises = Object.keys(observerMap).map(klass => {
-      return getMapper(klass).update(this.trx, observerMap[klass]);
+      return getMapper(klass).update(this.trx as Transaction, observerMap[klass]);
     });
     return Promise.all(promises);
   },
 
-  delete(entityMap) {
+  delete(entityMap: DirtyEntities) {
     const promises = Object.keys(entityMap).map(klass => {
-      return getMapper(klass).delete(this.trx, entityMap[klass]);
+      return getMapper(klass).delete(this.trx as Transaction, entityMap[klass]);
     });
     return Promise.all(promises);
   },
 
-  async postFlush(err) {
-    if (err) {
+  async postFlush(error?: Error) {
+    if (error) {
       // TODO: issue if rollback throws error?
       // returning this promise and rethrowing the error in the then-block will
       // cause a "promise was rejected with a non-error" warning
-      await this.trx.rollback();
-      delete this.trx;
-      throw err;
+      if (this.trx) {
+        await this.trx.rollback();
+        delete this.trx;
+      }
+      throw error;
     }
-    await this.trx.commit();
-    delete this.trx;
+    if (this.trx) {
+      await this.trx.commit();
+      delete this.trx;
+    }
   }
 };
 

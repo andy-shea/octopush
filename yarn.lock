@@ -7225,9 +7225,9 @@ junction-orm@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/junction-orm/-/junction-orm-0.2.0.tgz#752c6a5da9a4ef87c3bf50aabbe40b7bc37bc635"
 
-junction-orm@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/junction-orm/-/junction-orm-0.3.0.tgz#33365096f37d2846e974b45012f082059032fe08"
+junction-orm@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/junction-orm/-/junction-orm-0.3.1.tgz#7621a0789a7cb6a7414807a74af1984d88b23ddc"
 
 junction-proptype-decorator@^0.2.2:
   version "0.2.2"
