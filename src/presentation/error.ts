@@ -1,8 +1,9 @@
+import {ErrorRequestHandler} from 'express';
 import {HttpError} from 'react-cornerstone';
 import logger from '~/infrastructure/logger';
 import {renderError} from './frontend/template';
 
-function error(err, req, res, next) {
+const error: ErrorRequestHandler = (err, req, res, next) => {
   res.format({
     html: () => {
       if (err instanceof HttpError) {
@@ -22,6 +23,6 @@ function error(err, req, res, next) {
   });
 
   next(err);
-}
+};
 
 export default error;

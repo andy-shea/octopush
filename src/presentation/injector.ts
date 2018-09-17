@@ -1,4 +1,5 @@
 import {Injector} from '@angular/core';
+import {RequestHandler} from 'express';
 import Session from 'junction-orm/lib/Session';
 import DeployService from '../application/DeployService';
 import ServerService from '../application/ServerService';
@@ -9,7 +10,7 @@ import ServerRepository from '../domain/server/ServerRepository';
 import StackRepository from '../domain/stack/StackRepository';
 import UserRepository from '../domain/user/UserRepository';
 
-function provideInjector(req, res, next) {
+const provideInjector: RequestHandler = (req, res, next) => {
   req.injector = Injector.create([
     {provide: Session, useValue: req.junction},
     {provide: DeployService, deps: [DeployRepository, StackRepository, StackService]},
@@ -22,6 +23,6 @@ function provideInjector(req, res, next) {
     {provide: UserRepository, deps: [Session]}
   ]);
   next();
-}
+};
 
 export default provideInjector;

@@ -1,10 +1,12 @@
 import {all} from 'awaity/esm';
+import {Request, Router} from 'express';
 import {configureApp, configurePassport} from 'express-passport-security';
-import StackService from '~/application/StackService';
 import ServerService from '~/application/ServerService';
+import StackService from '~/application/StackService';
+import User from '~/domain/user/User';
 import UserRepository from '~/domain/user/UserRepository';
 
-function configure(app) {
+function configure(app: Router) {
   app.use((req, res, next) => {
     const userRepository = req.injector.get(UserRepository);
     configurePassport(
@@ -15,7 +17,7 @@ function configure(app) {
   });
 
   configureApp(app, {
-    async loadInitialData(user, req) {
+    async loadInitialData(user: User, req: Request) {
       const stackService = req.injector.get(StackService);
       const serverService = req.injector.get(ServerService);
       const [stacks, servers] = await all([stackService.loadStacks(), serverService.loadServers()]);

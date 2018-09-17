@@ -1,39 +1,42 @@
+import {Injector} from '@angular/core';
+import {all} from 'awaity/esm';
+import {extractCritical} from 'emotion-server';
+import {Request, RequestHandler} from 'express';
+import {normalize} from 'normalizr';
 import React from 'react';
 import {renderToString} from 'react-dom/server';
-import {ServerStyleSheet} from 'styled-components';
-import {extractCritical} from 'emotion-server';
 import {Provider} from 'react-redux';
-import {NOT_FOUND} from 'redux-first-router';
-import {normalize} from 'normalizr';
-import {all} from 'awaity/esm';
-import configureStore from './frontend/store';
-import createRoutesConfig from './frontend/router/routes';
-import {render} from './frontend/template';
-import App from './frontend/App';
-import Server from '~/domain/server/Server';
+import {NOT_FOUND} from 'redux-first-router'; // tslint:disable-line:no-implicit-dependencies
+import {ServerStyleSheet} from 'styled-components';
 import ServerService from '~/application/ServerService';
-import Stack from '~/domain/stack/Stack';
 import StackService from '~/application/StackService';
+import Server from '~/domain/server/Server';
+import Stack from '~/domain/stack/Stack';
+import User from '~/domain/user/User';
+import App from './frontend/App';
+import createRoutesConfig from './frontend/router/routes';
+import configureStore from './frontend/store';
+import {render} from './frontend/template';
 
-async function loadStacksAndServers(injector) {
+async function loadStacksAndServers(injector: Injector) {
   const [stacks, servers] = await all([
     injector.get(StackService).loadStacks(),
     injector.get(ServerService).loadServers()
   ]);
   return {
-    stacks: {map: normalize(stacks, [Stack.normalizedSchema]).entities.stacks},
-    servers: {map: normalize(servers, [Server.normalizedSchema]).entities.servers}
+    stacks: {map: normalize(stacks, [(Stack as any).normalizedSchema]).entities.stacks},
+    servers: {map: normalize(servers, [(Server as any).normalizedSchema]).entities.servers}
   };
 }
 
-function userDetailsExtractor({id, email, name}) {
+function userDetailsExtractor({id, email, name}: User) {
   return {id, email, name};
 }
 
-async function getInitialState({user, injector}) {
+async function getInitialState({user, injector}: Request) {
   if (user) {
     const userDetails = userDetailsExtractor(user);
-    const id = user.id.toString();
+    const id = (user.id as number).toString();
     const stacksAndServers = await loadStacksAndServers(injector);
     return {
       users: {map: {[id]: userDetails}, authenticatedUser: id},
@@ -43,11 +46,11 @@ async function getInitialState({user, injector}) {
   return {};
 }
 
-function getHelpers({injector}) {
+function getHelpers({injector}: any) {
   return {injector};
 }
 
-async function middleware(req, res, next) {
+const middleware: RequestHandler = async (req, res, next) => {
   try {
     const initialState = getInitialState ? await getInitialState(req) : {};
     const helpers = getHelpers ? getHelpers(req) : {};
@@ -80,6 +83,6 @@ async function middleware(req, res, next) {
   catch (err) {
     next(err);
   }
-}
+};
 
 export default middleware;

@@ -1,4 +1,4 @@
-import React, {ReactNode, SFC} from 'react';
+import React, {SFC} from 'react';
 import {injectGlobal} from 'styled-components';
 import styledNormalize from 'styled-normalize';
 import Icons from './icon/Icons';
@@ -84,18 +84,9 @@ function reset() {
   `;
 }
 
-interface ResetProps {
-  children: ReactNode;
-}
-
-const Reset: SFC<ResetProps> = ({children}) => {
+const Reset: SFC = () => {
   reset();
-  return (
-    <>
-      <Icons />
-      {children}
-    </>
-  );
+  return <Icons />;
 };
 
 export default Reset;

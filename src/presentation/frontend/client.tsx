@@ -1,12 +1,12 @@
+import {hydrate} from 'emotion'; // tslint:disable-line:no-implicit-dependencies
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 import Raven from 'raven-js';
-import {hydrate} from 'emotion';
 import {render} from 'react-cornerstone';
-import {getIsAuthenticated, getAuthenticatedUser} from './users/selectors';
-import configureStore from './store';
-import createRoutesConfig from './router/routes';
 import App from './App';
+import createRoutesConfig from './router/routes';
+import configureStore from './store';
+import {getAuthenticatedUser, getIsAuthenticated} from './users/selectors';
 
 if (process.env.NODE_ENV === 'production') {
   Raven.config('https://43d5e05d88164841a1cf72c071510ccc@sentry.io/1273065').install();
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-hydrate(window.__EMOTION_IDS__);
+hydrate((window as any).__EMOTION_IDS__);
 const {store, reload} = render(
   configureStore(true),
   createRoutesConfig,
@@ -33,7 +33,7 @@ if (getIsAuthenticated(state)) {
 }
 
 const {protocol, host, port} = window.location;
-const socket = io.connect(protocol + '//' + host + (port && ':' + port));
-socket.on('octopush.action', action => store.dispatch(action));
+const socket = (window as any).io.connect(protocol + '//' + host + (port && ':' + port));
+socket.on('octopush.action', (action: any) => store.dispatch(action));
 
-if (module.hot) module.hot.accept('./App', reload);
+if ((module as any).hot) (module as any).hot.accept('./App', reload);

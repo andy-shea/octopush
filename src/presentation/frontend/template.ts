@@ -1,31 +1,31 @@
 import fs from 'fs';
 import glob from 'glob';
-import serialize from 'serialize-javascript';
 import {HttpError} from 'react-cornerstone';
-import cx from 'classnames';
-import {includeChunkManifest, includeAsset} from './assets';
-import logo from './ui/octopus.png';
-import appleTouchIcon from './ui/favicons/apple-touch-icon.png';
-import favicon16 from './ui/favicons/favicon-16x16.png';
-import favicon32 from './ui/favicons/favicon-32x32.png';
-import manifest from './ui/favicons/manifest.json';
-import safariPinnedTab from './ui/favicons/safari-pinned-tab.svg';
+import serialize from 'serialize-javascript';
+import {ServerStyleSheet} from 'styled-components';
+import {includeAsset, includeChunkManifest} from './assets';
 import './ui/favicons/android-chrome-192x192.png';
 import './ui/favicons/android-chrome-512x512.png';
+import appleTouchIcon from './ui/favicons/apple-touch-icon.png';
 import './ui/favicons/browserconfig.xml';
+import favicon16 from './ui/favicons/favicon-16x16.png';
+import favicon32 from './ui/favicons/favicon-32x32.png';
 import './ui/favicons/favicon.ico';
-import './ui/favicons/mstile-70x70.png';
+import manifest from './ui/favicons/manifest.json';
 import './ui/favicons/mstile-144x144.png';
 import './ui/favicons/mstile-150x150.png';
 import './ui/favicons/mstile-310x150.png';
 import './ui/favicons/mstile-310x310.png';
+import './ui/favicons/mstile-70x70.png';
+import safariPinnedTab from './ui/favicons/safari-pinned-tab.svg';
+import logo from './ui/octopus.png';
 
 let webpackLoader = '';
 if (process.env.NODE_ENV === 'production') {
-  webpackLoader = fs.readFileSync(glob.sync('./dist/web/runtime.*.js').pop(), 'utf8');
+  webpackLoader = fs.readFileSync(glob.sync('./dist/web/runtime.*.js').pop() as string, 'utf8');
 }
 
-function renderLayout(body, sheet, css) {
+function renderLayout(body: string, sheet?: ServerStyleSheet, css?: string) {
   return `
     <!doctype html>
     <html>
@@ -51,7 +51,7 @@ function renderLayout(body, sheet, css) {
   `;
 }
 
-export function render(html, state, sheet, ids, css) {
+export function render(html: string, state: any, sheet: ServerStyleSheet, ids: string[], css: string) {
   return renderLayout(
     `
       <div id="app">${html}</div>
@@ -69,9 +69,7 @@ export function render(html, state, sheet, ids, css) {
   );
 }
 
-const styles = {};
-const loginStyles = {};
-export function renderError(code, err) {
+export function renderError(code: number, error: Error) {
   const title =
     code === HttpError.NOT_FOUND
       ? 'Sorry, that page has gone walkabout'
@@ -81,12 +79,12 @@ export function renderError(code, err) {
       ? "We can't seem to find the page you're looking for"
       : "We're not entirely sure what happened, but rest assured we are looking into it";
   return renderLayout(`
-    <div class="${loginStyles.root}">
-      <header class="${cx(styles.root, 'clearfix', loginStyles.header, styles.centre)}">
+    <div>
+      <header class="clearfix">
         <h1 class="ir" style="background-image:url(${logo});">Octopush</h1>
-        <div class="${styles.content}">
+        <div>
           <h2>${title}</h2>
-          <pre>${process.env.NODE_ENV === 'development' ? err.stack : message}</pre>
+          <pre>${process.env.NODE_ENV === 'development' ? error.stack : message}</pre>
         </div>
       </header>
     </div>

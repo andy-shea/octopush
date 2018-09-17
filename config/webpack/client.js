@@ -62,5 +62,5 @@ module.exports = createConfig([
   image(true),
   env('development', development),
   env('production', production),
-  entryPoint([path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.jsx')])
+  entryPoint([path.resolve(ROOT_PATH, 'src', 'presentation', 'frontend', 'client.tsx')])
 ]);

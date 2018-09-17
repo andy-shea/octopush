@@ -1,19 +1,19 @@
-import 'reflect-metadata';
-import express from 'express';
-import createApiRouter from './api';
 import body from 'body-parser';
+import {Router} from 'express';
 import helmet from 'helmet';
-import {junctionProvider, junctionFlush} from 'junction-express-middleware';
-import configure from './configure';
-import middleware from './middleware';
-import provideInjector from './injector';
-import session from './session';
+import {junctionFlush, junctionProvider} from 'junction-express-middleware';
+import 'reflect-metadata';
 import em from '../domain/entityManager';
-import error from './error';
 import '../infrastructure/plugins';
+import createApiRouter from './api';
+import configure from './configure';
+import error from './error';
+import provideInjector from './injector';
+import middleware from './middleware';
+import session from './session';
 
 function serverMiddleware() {
-  const router = express.Router();
+  const router = Router();
 
   router.use(helmet());
   router.use(body.urlencoded({extended: true}));
