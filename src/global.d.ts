@@ -1,3 +1,11 @@
-declare module 'awaity/esm';
-declare module 'ansi-to-html';
-declare module 'gift';
+import {Injector} from '@angular/core';
+import User from './domain/user/User';
+
+declare global {
+  namespace Express {
+    interface Request {
+      injector: Injector;
+      user?: User;
+    }
+  }
+}

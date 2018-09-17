@@ -18,5 +18,5 @@
     "baseUrl": "./src",
     "paths": {"~/*": ["*"]}
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/global.d.ts"]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/global.d.ts", "./src/modules.d.ts"]
 }

@@ -1,6 +1,6 @@
 import express from 'express';
-import {HttpError} from 'react-cornerstone';
 import {setData, setStatus} from 'junction-express-middleware';
+import {HttpError} from 'react-cornerstone';
 import StackService from '~/application/StackService';
 
 const router = express.Router();
@@ -25,7 +25,7 @@ router.post('/', async (req, res, next) => {
   if (!serverIds) return next(HttpError.badRequest('Missing stack server whitelist'));
 
   try {
-    const data = await service.addStack(title, gitPath, serverIds, diff || null);
+    const data = await service.addStack(title, gitPath, serverIds, diff || undefined);
     setData(res, next, data, 201);
   } catch (error) {
     next(error);
@@ -43,7 +43,7 @@ router.post('/:slug', async (req, res, next) => {
   if (!serverIds) return next(HttpError.badRequest('Missing stack server whitelist'));
 
   try {
-    const data = await service.updateStack(slug, title, gitPath, serverIds, diff || null);
+    const data = await service.updateStack(slug, title, gitPath, serverIds, diff || undefined);
     setData(res, next, data);
   } catch (error) {
     next(error);

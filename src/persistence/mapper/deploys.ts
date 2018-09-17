@@ -7,21 +7,11 @@ import EntityMapper from './mapper';
 
 const {schema: {timestampable, props: schemaProps}} = Deploy;
 
-function updateDeploy(trx: Transaction, deploy: Deploy, props: string[]): any {
-  const values = props.reduce((map: any, prop) => {
-    map[schemaProps[prop].column || s(prop).underscore().s] = schemaProps[prop].type === 'json'
-      ? JSON.stringify((deploy as any)[prop])
-      : (deploy as any)[prop];
-    return map;
-  }, {});
-  if (timestampable) values.updated_at = db.fn.now();
-  return db('deploys')
-    .transacting(trx)
-    .where({id: deploy.id})
-    .update(values);
+interface DeployMapper extends EntityMapper {
+  updateDeploy(trx: Transaction, deploy: Deploy, props: string[]): any;
 }
 
-const mapper: EntityMapper = {
+const mapper: DeployMapper = {
   async insert(trx, deploys: Deploy[]) {
     const allValues = deploys.map(({branch, logFile, hosts, user, stack}) => {
       const values: any = {
@@ -45,10 +35,24 @@ const mapper: EntityMapper = {
     });
   },
 
+  updateDeploy(trx: Transaction, deploy: Deploy, props: string[]): any {
+    const values = props.reduce((map: any, prop) => {
+      map[schemaProps[prop].column || s(prop).underscore().s] = schemaProps[prop].type === 'json'
+        ? JSON.stringify((deploy as any)[prop])
+        : (deploy as any)[prop];
+      return map;
+    }, {});
+    if (timestampable) values.updated_at = db.fn.now();
+    return db('deploys')
+      .transacting(trx)
+      .where({id: deploy.id})
+      .update(values);
+  },
+
   update(trx, observers) {
     return Promise.all(
       observers.reduce((mods: Array<Promise<any>>, observer) => {
-        mods.push(updateDeploy(trx, observer.entity as Deploy, observer.changed().props));
+        mods.push(this.updateDeploy(trx, observer.entity as Deploy, observer.changed().props));
         return mods;
       }, [])
     );

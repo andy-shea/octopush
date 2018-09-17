@@ -1,16 +1,18 @@
-import express from 'express';
-import {HttpError} from 'react-cornerstone';
 import Ansi from 'ansi-to-html';
-import s from 'string';
+import express, {NextFunction} from 'express';
 import {setData} from 'junction-express-middleware';
-import NotFoundError from '~/domain/NotFoundError';
+import {HttpError} from 'react-cornerstone';
+import {Server} from 'socket.io';
+import s from 'string';
 import DeployService from '~/application/DeployService';
+import Deploy from '~/domain/deploy/Deploy';
+import NotFoundError from '~/domain/NotFoundError';
 import {types} from '../frontend/deploys/actions';
 
 const convert = new Ansi({newline: true});
 const router = express.Router();
 
-const handleError = (next, error) => {
+const handleError = (next: NextFunction, error: Error) => {
   next(new HttpError(error instanceof NotFoundError ? 404 : 500, error.message));
 };
 
@@ -47,8 +49,8 @@ router.get('/:slug?', async (req, res, next) => {
   }
 });
 
-function emitLine(socket) {
-  return (deploy, line) => {
+function emitLine(socket: Server) {
+  return (deploy: Deploy, line: string) => {
     socket.sockets.emit('octopush.action', {
       type: types.ADD_LOG_LINE,
       payload: {

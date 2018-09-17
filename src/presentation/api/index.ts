@@ -1,8 +1,8 @@
 import express from 'express';
 import {middleware} from 'express-passport-security';
 import deploysRouter from './deploys';
-import stacksRouter from './stacks';
 import serversRouter from './servers';
+import stacksRouter from './stacks';
 
 function createRouter() {
   const router = express.Router();
