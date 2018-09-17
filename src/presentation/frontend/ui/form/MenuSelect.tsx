@@ -1,4 +1,4 @@
-import React, {CSSProperties} from 'react';
+import React, {CSSProperties, SFC} from 'react';
 import Select, {StylesProps} from './Select';
 
 function styles(baseStyles: StylesProps) {
@@ -29,8 +29,12 @@ function styles(baseStyles: StylesProps) {
   };
 }
 
-function MenuSelect({...props}) {
-  return <Select styles={styles} {...props}/>;
+interface MenuSelectProps {
+  name: string;
 }
+
+const MenuSelect: SFC<MenuSelectProps> = ({name, ...props}) => {
+  return <Select name={name} styles={styles} {...props}/>;
+};
 
 export default MenuSelect;

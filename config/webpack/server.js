@@ -2,7 +2,6 @@ const path = require('path');
 const {
   setMode,
   createConfig,
-  customConfig,
   entryPoint,
   env,
   setOutput,

@@ -7,8 +7,8 @@ import Icon from '../icon/Icon';
 const transitionName = 'button';
 
 interface MenuButtonProps {
-  toggleMenu: () => void;
   in?: boolean;
+  toggleMenu(): void;
 }
 
 const StyledMenuButton = styled.button`

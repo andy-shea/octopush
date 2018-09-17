@@ -12,7 +12,11 @@ function babel(options) {
             use: [
               {
                 loader: 'tslint-loader',
-                options: {emitErrors: true}
+                options: {
+                  emitErrors: true,
+                  configFile:
+                    process.env.NODE_ENV === 'production' ? 'tslint.json' : 'tslint-dev.json'
+                }
               }
             ]
           },

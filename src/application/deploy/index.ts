@@ -1,20 +1,24 @@
-import fs from 'fs';
-import path from 'path';
 import cp from 'child_process';
 import config from 'config';
-import s from 'string';
+import fs from 'fs';
 import mkdirp from 'mkdirp';
+import path from 'path';
+import s from 'string';
+import Deploy from '~/domain/deploy/Deploy';
 import eventEmitter from '~/infrastructure/events';
 import db from '~/persistence';
 import mapper from '~/persistence/mapper/deploys';
 
-export function startDeploy(deploy, expandedTargets, emitLine) {
+export type EmitLineHandler = (deploy: Deploy, line: string) => void;
+
+export function startDeploy(deploy: Deploy, expandedTargets: string[], emitLine: EmitLineHandler) {
   const {stack, branch, user} = deploy;
+  if (!stack) throw new Error('No stack found');
   const slugPath = s(stack.slug).underscore().s;
   const branchPath = s(branch)
     .slugify()
     .underscore().s;
-  const logPath = path.join(__dirname, '../../..', config.log.deploy_path, slugPath);
+  const logPath = path.join(__dirname, '../../..', config.get('log.deploy_path'), slugPath);
   const logFilename = [
     new Date().toISOString(),
     branchPath,
@@ -36,7 +40,7 @@ export function startDeploy(deploy, expandedTargets, emitLine) {
           eventEmitter.emit('octopush:deploy', {stack, deploy, hosts: expandedTargets});
         }
         catch (error) {
-          emitLine(stack, deploy, `\u001b[97;41m${err}\u001b[0m`);
+          emitLine(deploy, `\u001b[97;41m${error}\u001b[0m`);
         }
       }
       else {

@@ -1,13 +1,11 @@
-import {Injectable} from 'angular2-di';
 import {all} from 'awaity/esm';
 import Server from '~/domain/server/Server';
 import ServerRepository from '~/domain/server/ServerRepository';
 import db from '~/persistence';
 
-@Injectable()
 class ServerService {
 
-  constructor(serverRepo: ServerRepository) {
+  constructor(private serverRepo: ServerRepository) {
     this.serverRepo = serverRepo;
   }
 
@@ -15,19 +13,19 @@ class ServerService {
     return this.serverRepo.findByCriteria();
   }
 
-  async addServer(hostname) {
+  async addServer(hostname: string) {
     const server = new Server(hostname);
     this.serverRepo.add(server);
     return Promise.resolve(server);
   }
 
-  async updateServer(id, newHostname) {
+  async updateServer(id: number, newHostname: string) {
     const server = await this.serverRepo.findById(id);
     server.hostname = newHostname;
     return server;
   }
 
-  async removeServer(id) {
+  async removeServer(id: number) {
     const serverRepo = this.serverRepo;
 
     const getAffectedStackIds = db

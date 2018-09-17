@@ -10,8 +10,7 @@ router.get('/', async (req, res, next) => {
   try {
     const data = await service.loadStacks();
     setData(res, next, data);
-  }
-  catch (error) {
+  } catch (error) {
     next(error);
   }
 });
@@ -28,8 +27,7 @@ router.post('/', async (req, res, next) => {
   try {
     const data = await service.addStack(title, gitPath, serverIds, diff || null);
     setData(res, next, data, 201);
-  }
-  catch (error) {
+  } catch (error) {
     next(error);
   }
 });
@@ -47,8 +45,7 @@ router.post('/:slug', async (req, res, next) => {
   try {
     const data = await service.updateStack(slug, title, gitPath, serverIds, diff || null);
     setData(res, next, data);
-  }
-  catch (error) {
+  } catch (error) {
     next(error);
   }
 });
@@ -58,8 +55,7 @@ router.delete('/:slug', async (req, res, next) => {
   try {
     await service.removeStack(req.params.slug);
     setStatus(res, next);
-  }
-  catch (error) {
+  } catch (error) {
     next(error);
   }
 });
@@ -76,8 +72,7 @@ router.post('/:slug/groups', async (req, res, next) => {
   try {
     const data = await service.addGroup(slug, name, serverIds);
     setData(res, next, data);
-  }
-  catch (error) {
+  } catch (error) {
     next(error);
   }
 });
@@ -92,10 +87,9 @@ router.post('/:slug/groups/:groupId', async (req, res, next) => {
   if (!serverIds) return next(HttpError.badRequest('Missing group server whitelist'));
 
   try {
-    const data = await service.updateGroup(slug, groupId, name, serverIds);
+    const data = await service.updateGroup(slug, parseInt(groupId, 10), name, serverIds);
     setData(res, next, data);
-  }
-  catch (error) {
+  } catch (error) {
     next(error);
   }
 });
@@ -107,10 +101,9 @@ router.delete('/:slug/groups/:groupId', async (req, res, next) => {
   } = req;
 
   try {
-    const data = await service.removeGroup(slug, groupId);
+    const data = await service.removeGroup(slug, parseInt(groupId, 10));
     setData(res, next, data);
-  }
-  catch (error) {
+  } catch (error) {
     next(error);
   }
 });

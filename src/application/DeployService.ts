@@ -1,23 +1,24 @@
+import Ansi from 'ansi-to-html';
+import {all} from 'awaity/esm';
+import config from 'config';
 import fs from 'fs';
 import path from 'path';
-import config from 'config';
-import Ansi from 'ansi-to-html';
 import s from 'string';
-import {all} from 'awaity/esm';
-import {Injectable} from 'angular2-di';
-import DeployRepository from '~/domain/deploy/DeployRepository';
-import StackRepository from '~/domain/stack/StackRepository';
-import StackService from './StackService';
 import Deploy from '~/domain/deploy/Deploy';
+import DeployRepository from '~/domain/deploy/DeployRepository';
+import Stack from '~/domain/stack/Stack';
+import StackRepository from '~/domain/stack/StackRepository';
+import User from '~/domain/user/User';
+import {EmitLineHandler, startDeploy} from './deploy';
 import {getBranches} from './deploy/branch';
-import {startDeploy} from './deploy';
+import StackService from './StackService';
 
 const convert = new Ansi({newline: true});
 
-function expandTargets(stack, targets) {
+function expandTargets(stack: Stack, targets: string[]) {
   const groupTargets = stack.groups
     .filter(group => targets.indexOf(group.name) !== -1)
-    .reduce((expandedTargets, group) => {
+    .reduce((expandedTargets: string[], group) => {
       return expandedTargets.concat(group.servers.map(server => server.hostname));
     }, []);
   return Array.from(
@@ -25,20 +26,19 @@ function expandTargets(stack, targets) {
   );
 }
 
-@Injectable()
 class DeployService {
 
   constructor(
-      deployRepo: DeployRepository,
-      stackRepo: StackRepository,
-      stackService: StackService
+      private deployRepo: DeployRepository,
+      private stackRepo: StackRepository,
+      private stackService: StackService
   ) {
     this.deployRepo = deployRepo;
     this.stackRepo = stackRepo;
     this.stackService = stackService;
   }
 
-  async loadDeploysAndBranches(slug, page) {
+  async loadDeploysAndBranches(slug: string, page: number) {
     const stack = await this.stackService.retrieveStack(slug || '');
     const [pagination, branches] = await all([
       this.deployRepo.paginateByStack(stack, page),
@@ -47,7 +47,7 @@ class DeployService {
     return {slug: stack.slug, pagination, branches};
   }
 
-  async createAndStartDeploy(slug, branch, targets, user, emitLine) {
+  async createAndStartDeploy(slug: string, branch: string, targets: string[], user: User, emitLine: EmitLineHandler) {
     const stack = await this.stackRepo.findBySlug(slug);
     const expandedTargets = expandTargets(stack, targets);
     const deploy = new Deploy(branch, user, stack);
@@ -58,10 +58,11 @@ class DeployService {
     return deploy;
   }
 
-  async loadLog(id) {
+  async loadLog(id: number) {
     const deploy = await this.deployRepo.findById(id);
+    if (!deploy.logFile) throw new Error('No log file found');
     const rawLog = fs
-      .readFileSync(path.join(__dirname, '../..', config.log.deploy_path, deploy.logFile), {
+      .readFileSync(path.join(__dirname, '../..', config.get('log.deploy_path'), deploy.logFile), {
         encoding: 'utf-8'
       })
       .toString();

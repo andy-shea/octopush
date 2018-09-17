@@ -1,16 +1,14 @@
-import {Injectable} from 'angular2-di';
 import {hash} from 'node-password-util';
 import User from '~/domain/user/User';
 import UserRepository from '~/domain/user/UserRepository';
 
-@Injectable()
 class UserService {
 
-  constructor(userRepo: UserRepository) {
+  constructor(private userRepo: UserRepository) {
     this.userRepo = userRepo;
   }
 
-  async addUser(name, email, password) {
+  async addUser(name: string, email: string, password: string) {
     const user = new User(name, email);
     user.password = password;
     await hash(user);

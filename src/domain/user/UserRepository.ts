@@ -1,31 +1,30 @@
-import Repository from '../Repository';
 import autobind from 'autobind-decorator';
-import {Injectable} from 'angular2-di';
-import {Session} from 'junction-orm/lib/startSession';
-import User from './User';
 import db from '~/persistence';
+import NotFoundError from '../NotFoundError';
+import Repository from '../Repository';
+import User from './User';
 
 const baseFindQuery = db('users').select('id', 'name', 'email');
 
-@Injectable()
+interface UserMap {
+  [id: number]: User;
+}
+
 class UserRepository extends Repository {
 
-  constructor(session: Session) {
-    super();
-    this.session = session;
-  }
-
   @autobind
-  __restore(userData) {
-    if (!userData) return false;
-    if (this.session.has('User', userData.id)) return this.session.retrieve('User', userData.id);
+  __restore(userData: any) {
+    if (!userData) throw new NotFoundError('No user found');
+    if (this.session.has('User', userData.id)) {
+      return this.session.retrieve('User', userData.id) as User;
+    }
     const user = new User(userData.name, userData.email);
     user.id = userData.id;
     if (userData.password) user.password = userData.password;
-    return this.session ? this.session.track(user) : user;
+    return this.session ? this.session.track(user) as User : user as User;
   }
 
-  async findById(id) {
+  async findById(id: number) {
     const userData = await baseFindQuery
       .clone()
       .where({id})
@@ -33,17 +32,17 @@ class UserRepository extends Repository {
     return this.__restore(userData);
   }
 
-  findByIds(ids) {
+  findByIds(ids: number[]) {
     return baseFindQuery
       .clone()
       .where('id', 'in', ids)
-      .reduce((map, userData) => {
+      .reduce((map: UserMap, userData: any) => {
         map[userData.id] = this.__restore(userData);
         return map;
       }, {});
   }
 
-  async findByEmail(email) {
+  async findByEmail(email: string) {
     const userData = await baseFindQuery
       .clone()
       .select('password')
@@ -51,7 +50,6 @@ class UserRepository extends Repository {
       .first();
     return this.__restore(userData);
   }
-
 }
 
 export default UserRepository;

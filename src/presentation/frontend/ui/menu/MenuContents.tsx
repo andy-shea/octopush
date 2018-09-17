@@ -20,12 +20,12 @@ const closedClass = 'closed';
 type OpenPaneHandler = (settingsPane: ReactElement<any>) => void;
 
 interface MenuContentsProps {
-  toggleMenu: () => void;
   openPane: OpenPaneHandler;
-  openStacksPane: (event: SyntheticEvent) => void;
-  openServersPane: (event: SyntheticEvent) => void;
   settingsPane?: ReactElement<any>;
   in?: boolean;
+  toggleMenu(): void;
+  openStacksPane(event: SyntheticEvent): void;
+  openServersPane(event: SyntheticEvent): void;
 }
 
 const onEnter: EnterHandler = menu => {

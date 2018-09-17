@@ -14,9 +14,9 @@ interface HandlerProps {
 
 interface MainProps {
   children: ReactNode;
-  toggleMenu: () => void;
   menu: MenuState;
-  openPane: (settingsPane: ReactElement<any>) => void;
+  toggleMenu(): void;
+  openPane(settingsPane: ReactElement<any>): void;
 }
 
 const handlers = {

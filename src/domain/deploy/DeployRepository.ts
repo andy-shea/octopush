@@ -1,24 +1,28 @@
 import autobind from 'autobind-decorator';
-import {Injectable} from 'angular2-di';
 import {all} from 'awaity/esm';
-import {Session} from 'junction-orm/lib/startSession';
-import Repository from '../Repository';
-import NotFoundError from '../NotFoundError';
-import Deploy from './Deploy';
-import UserRepository from '../user/UserRepository';
-import StackRepository from '../stack/StackRepository';
+import Session from 'junction-orm/lib/Session';
 import db from '~/persistence';
+import NotFoundError from '../NotFoundError';
+import Repository from '../Repository';
+import Stack from '../stack/Stack';
+import StackRepository from '../stack/StackRepository';
+import UserRepository from '../user/UserRepository';
+import Deploy from './Deploy';
 
 const DEPLOYS_PER_PAGE = 10;
-const {
-  schema: {timestampable}
-} = Deploy;
+const {schema: {timestampable}} = Deploy;
 
-function extractUserData({user_id: id, name, email}) {
+interface UserData {
+  user_id: number;
+  name: string;
+  email: string;
+}
+
+function extractUserData({user_id: id, name, email}: UserData) {
   return {id, name, email};
 }
 
-function restore(deployData) {
+function restore(deployData: any) {
   const deploy = new Deploy(deployData.branch, deployData.user_id);
   deploy.id = deployData.id;
   if (deployData.log_file) deploy.logFile = deployData.log_file;
@@ -45,32 +49,34 @@ const baseFindQuery = db('deploys')
   )
   .innerJoin('users', 'user_id', 'users.id');
 
-@Injectable()
 class DeployRepository extends Repository {
 
-  constructor(session: Session, userRepository: UserRepository, stackRepository: StackRepository) {
-    super();
-    this.session = session;
+  constructor(
+    session: Session,
+    private userRepository: UserRepository,
+    private stackRepository: StackRepository
+  ) {
+    super(session);
     this.userRepository = userRepository;
     this.stackRepository = stackRepository;
   }
 
   @autobind
-  async __restore(deployData) {
+  async __restore(deployData: any) {
     if (!deployData) throw new NotFoundError('No deploy found');
     if (this.session.has('Deploy', deployData.id)) {
-      return this.session.retrieve('Deploy', deployData.id);
+      return this.session.retrieve('Deploy', deployData.id) as Deploy;
     }
     const deploy = restore(deployData);
     deploy.user = this.userRepository.__restore(extractUserData(deployData));
     const stack = await this.stackRepository.findById(deployData.stack_id);
     deploy.stack = stack;
-    return this.session ? this.session.track(deploy) : deploy;
+    return this.session ? this.session.track(deploy) as Deploy : deploy as Deploy;
   }
 
   @autobind
-  __restoreAll(stack, deploysData) {
-    return deploysData.map(deployData => {
+  __restoreAll(stack: Stack, deploysData: any[]) {
+    return deploysData.map((deployData: any) => {
       if (this.session.has('Deploy', deployData.id)) {
         return this.session.retrieve('Deploy', deployData.id);
       }
@@ -81,7 +87,7 @@ class DeployRepository extends Repository {
     });
   }
 
-  async paginateByStack(stack, page) {
+  async paginateByStack(stack: Stack, page: number) {
     const getDeploys = baseFindQuery
       .clone()
       .where({stack_id: stack.id})
@@ -104,7 +110,7 @@ class DeployRepository extends Repository {
     };
   }
 
-  async findById(id) {
+  async findById(id: number) {
     const deployData = await baseFindQuery
       .clone()
       .where({['deploys.id']: id})

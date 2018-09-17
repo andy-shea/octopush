@@ -17,6 +17,8 @@
     "object-literal-sort-keys": false,
     "interface-name": false,
     "curly": [true, "ignore-same-line"],
-    "semicolon": [true, "always"]
+    "semicolon": [true, "always"],
+    "no-submodule-imports": false,
+    "no-implicit-dependencies": [true, ["~", "isomorphic-fetch", "mkdirp"]]
   }
 }

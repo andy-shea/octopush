@@ -6,10 +6,10 @@ type styleFn = (base: CSSProperties, state?: any) => CSSProperties;
 
 interface SelectProps {
   name: string;
-  styles?: (styles: object) => object;
-  onSelect?: (value: any) => void;
-  onChange?: (value: any) => void; // TODO: should be one of property
-  updateValue?: (name: string, value: any) => void; // TODO: should be one of property
+  styles?(styles: StylesProps): object;
+  onSelect?(value: any): void;
+  onChange?(value: any): void; // TODO: should be one of property
+  updateValue?(name: string, value: any): void; // TODO: should be one of property
 }
 
 export interface StylesProps {

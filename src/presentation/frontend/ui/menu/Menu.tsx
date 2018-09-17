@@ -5,10 +5,10 @@ import MenuButton from './MenuButton';
 import MenuContents from './MenuContents';
 
 interface MenuProps {
-  toggleMenu: () => void;
-  openPane: (settingsPane: ReactElement<any>) => void;
   expanded: boolean;
   settingsPane?: ReactElement<any>;
+  toggleMenu(): void;
+  openPane(settingsPane: ReactElement<any>): void;
 }
 
 const StyledMenu = styled.div`
