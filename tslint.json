@@ -1,0 +1,24 @@
+{
+  "extends": [
+    "tslint:latest",
+    "tslint-react",
+    "tslint-eslint-rules",
+    "tslint-config-prettier"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "config/webpack/*",
+      "**/node_modules/**"
+    ]
+  },
+  "rules": {
+    "member-access": false,
+    "no-null-keyword": true,
+    "object-literal-sort-keys": false,
+    "interface-name": false,
+    "curly": [true, "ignore-same-line"],
+    "semicolon": [true, "always"],
+    "no-submodule-imports": false,
+    "no-implicit-dependencies": [true, ["~", "isomorphic-fetch", "mkdirp"]]
+  }
+}

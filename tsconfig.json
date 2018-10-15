@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "target": "esnext",
+    "jsx": "react",
+    "baseUrl": "./src",
+    "paths": {"~/*": ["*"]}
+  },
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/global.d.ts", "./src/modules.d.ts"]
+}

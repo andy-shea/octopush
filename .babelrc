@@ -1,5 +1,6 @@
 {
   "presets": [
+    ["@babel/typescript"],
     ["@babel/preset-env", {"modules": false}]
   ],
   "ignore": ["src/presentation/cli"],
@@ -11,18 +12,16 @@
       ]
     },
     "test": {
-      "presets": ["@babel/preset-env"]
+      "presets": ["@babel/typescript", "@babel/preset-env"]
     }
   },
   "plugins": [
     "react-hot-loader/babel",
     ["babel-plugin-styled-components", {"ssr": true}],
-    "angular2-annotations",
     ["@babel/plugin-proposal-decorators", {"legacy": true}],
     "add-react-displayname",
     "@babel/plugin-transform-react-jsx",
     "@babel/plugin-proposal-class-properties",
-    ["babel-plugin-root-import", {"rootPathSuffix": "src"}],
-    "@babel/plugin-transform-flow-strip-types"
+    ["babel-plugin-root-import", {"rootPathSuffix": "src"}]
   ]
 }
