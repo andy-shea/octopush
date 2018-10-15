@@ -1,6 +1,6 @@
 {
   "name": "octopush",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "license": "MIT",
   "description": "A GUI for Capistrano",
   "author": "Andy Shea",
