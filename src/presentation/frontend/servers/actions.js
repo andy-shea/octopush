@@ -1,5 +1,5 @@
-import {get, post, del} from '../utils/fetch';
-import action from '../utils/action';
+import {get, post, del} from '~/infrastructure/fetch';
+import action from '../action';
 import Server from '~/domain/server/Server';
 import Stack from '~/domain/stack/Stack';
 import {asyncActionCreator, async, createTypes} from 'redux-action-creator';

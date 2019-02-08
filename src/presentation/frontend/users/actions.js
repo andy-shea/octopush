@@ -1,5 +1,5 @@
-import {post} from '../utils/fetch';
-import action from '../utils/action';
+import {post} from '~/infrastructure/fetch';
+import action from '../action';
 import Stack from '~/domain/stack/Stack';
 import Server from '~/domain/server/Server';
 import User from '~/domain/user/User';

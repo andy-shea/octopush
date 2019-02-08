@@ -1,6 +1,6 @@
 import {actionCreator, asyncActionCreator, async, createTypes} from 'redux-action-creator';
-import {get, post, del} from '../utils/fetch';
-import action from '../utils/action';
+import {get, post, del} from '~/infrastructure/fetch';
+import action from '../action';
 import Stack from '~/domain/stack/Stack';
 
 export const types = createTypes(

@@ -1,6 +1,6 @@
 import {redirect} from 'redux-first-router';
 import querySerializer from 'query-string';
-import {get} from '../utils/fetch';
+import {get} from '~/infrastructure/fetch';
 import Deploy from '~/domain/deploy/Deploy';
 import {getIsAuthenticated} from '../users/selectors';
 import {async, createRouteTypes, asyncRoute} from 'redux-action-creator';

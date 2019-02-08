@@ -1,5 +1,5 @@
-import {get, post} from '../utils/fetch';
-import action from '../utils/action';
+import {get, post} from '~/infrastructure/fetch';
+import action from '../action';
 import Deploy from '~/domain/deploy/Deploy';
 import {asyncActionCreator, async, createTypes} from 'redux-action-creator';
 import {getDeploys} from './selectors';
