@@ -43,8 +43,10 @@ const FieldGroup = styled.div`
 `;
 
 const enhance = withHandlers({
-  selectStack({loadDeploys}) {
-    return ({value}) => loadDeploys(value);
+  selectStack({loadDeploys, stack}) {
+    return ({value}) => {
+      if (stack.slug !== value) loadDeploys(value);
+    };
   }
 });
 
@@ -53,8 +55,7 @@ function submitForm({stack, startDeploy, setSubmitting, resetForm, setErrors, va
   const targets = values.targets && values.targets.map(({value}) => value);
   if (branch && targets.length) {
     startDeploy({slug: stack.slug, branch, targets}, {onSuccess: resetForm, setErrors});
-  }
-  else setSubmitting(false);
+  } else setSubmitting(false);
 }
 
 export function DeploySettings({startDeploy, stack, stacks, servers, branches, selectStack}) {
