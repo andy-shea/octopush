@@ -66,8 +66,8 @@ function styles({name}) {
   };
 }
 
-function MenuSelect({...props}) {
+function DeploySelect({...props}) {
   return <Select styles={styles(props)} {...props} />;
 }
 
-export default MenuSelect;
+export default DeploySelect;

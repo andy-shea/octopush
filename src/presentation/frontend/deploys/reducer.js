@@ -29,7 +29,7 @@ const reducer = produce((draft, action) => {
         result: {pagination, branches, slug},
         entities: {deploys}
       } = action.response;
-      draft.map = deploys;
+      draft.map = deploys || {};
       draft.pagination = pagination;
       draft.branches = branches;
       draft.currentStackSlug = slug;
