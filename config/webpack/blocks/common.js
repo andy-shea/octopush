@@ -39,9 +39,10 @@ exports.common = group([
         new UglifyJsPlugin({
           sourceMap: true,
           uglifyOptions: {
-            compress: {screw_ie8: true},
-            mangle: {screw_ie8: true, except: ['Deploy', 'Server', 'Group', 'Stack', 'User']},
-            output: {screw_ie8: true, comments: false}
+            compress: {},
+            keep_classnames: true,
+            mangle: {reserved: ['Deploy', 'Server', 'Group', 'Stack', 'User']},
+            output: {comments: false}
           }
         })
       ]

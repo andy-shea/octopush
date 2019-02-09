@@ -12,7 +12,7 @@ function isSecure(type, routesMap) {
   return routesMap[type].isSecure;
 }
 
-function createRoutesConfig(helpers) {
+export default function createRoutesConfig(helpers) {
   return {
     map: {
       [types.LOGIN]: '/login',
@@ -57,4 +57,5 @@ function createRoutesConfig(helpers) {
   };
 }
 
-export default createRoutesConfig;
+// TODO: doing this here breaks webpack client build ("undefinedundefined" is left in bundled output for some reason)
+// export default createRoutesConfig;

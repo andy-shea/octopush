@@ -1,9 +1,7 @@
-import fs from 'fs';
-import glob from 'glob';
 import {HttpError} from 'react-cornerstone';
 import serialize from 'serialize-javascript';
 import {ServerStyleSheet} from 'styled-components';
-import {includeAsset, includeChunkManifest} from './assets';
+import {includeAsset} from './assets';
 import './ui/favicons/android-chrome-192x192.png';
 import './ui/favicons/android-chrome-512x512.png';
 import appleTouchIcon from './ui/favicons/apple-touch-icon.png';
@@ -20,11 +18,6 @@ import './ui/favicons/mstile-70x70.png';
 import safariPinnedTab from './ui/favicons/safari-pinned-tab.svg';
 import logo from './ui/octopus.png';
 
-let webpackLoader = '';
-if (process.env.NODE_ENV === 'production') {
-  webpackLoader = fs.readFileSync(glob.sync('./dist/web/runtime.*.js').pop() as string, 'utf8');
-}
-
 function renderLayout(body: string, sheet?: ServerStyleSheet, css?: string) {
   return `
     <!doctype html>
@@ -40,7 +33,6 @@ function renderLayout(body: string, sheet?: ServerStyleSheet, css?: string) {
       <link rel="manifest" href="${manifest}">
       <link rel="mask-icon" href="${safariPinnedTab}" color="#5bbad5">
       <meta name="theme-color" content="#ffffff">
-      ${includeChunkManifest()}
       ${sheet && sheet.getStyleTags()}
       <style>${css}</style>
     </head>
@@ -56,13 +48,12 @@ export function render(html: string, state: any, sheet: ServerStyleSheet, ids: s
     `
       <div id="app">${html}</div>
       <script>
-        ${webpackLoader}
         window.__INITIAL_STATE__ = ${serialize(state, {isJSON: true})};
         window.__EMOTION_IDS__ = ${JSON.stringify(ids)};
       </script>
-      <script src="/${includeAsset('vendor.js')}"></script>
+      <script src="${includeAsset('vendor.js')}"></script>
       <script src="/socket.io/socket.io.js"></script>
-      <script src="/${includeAsset('main.js')}"></script>
+      <script src="${includeAsset('main.js')}"></script>
     `,
     sheet,
     css

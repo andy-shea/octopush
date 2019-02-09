@@ -1,4 +1,4 @@
-function favicon(pathPrefix) {
+function favicon() {
   return (context, {addLoader}) =>
     addLoader(
       Object.assign(
@@ -6,7 +6,11 @@ function favicon(pathPrefix) {
           type: 'javascript/auto',
           test: /ui\/favicons/,
           loader: 'file-loader',
-          options: {name: (pathPrefix || '') + '[name].[ext]'}
+          options: {
+            publicPath: '/',
+            outputPath: 'web',
+            name: '[name].[ext]'
+          }
         },
         context.match
       )
