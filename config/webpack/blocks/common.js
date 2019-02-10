@@ -7,7 +7,7 @@ const {
   resolve,
   optimization
 } = require('@webpack-blocks/webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const noParse = require('./no-parse');
 const ROOT_PATH = path.resolve(__dirname, '..', '..', '..');
 
@@ -36,13 +36,13 @@ exports.common = group([
   env('production', [
     optimization({
       minimizer: [
-        new UglifyJsPlugin({
-          sourceMap: true,
-          uglifyOptions: {
+        new TerserPlugin({
+          parallel: true,
+          terserOptions: {
+            ecma: 6,
             compress: {},
             keep_classnames: true,
-            mangle: {reserved: ['Deploy', 'Server', 'Group', 'Stack', 'User']},
-            output: {comments: false}
+            mangle: {reserved: ['Deploy', 'Server', 'Group', 'Stack', 'User']}
           }
         })
       ]

@@ -8,7 +8,9 @@ import {async, createRouteTypes, asyncRoute} from 'redux-action-creator';
 export const types = createRouteTypes(['LOGIN', ...async('STACK')]);
 
 function isSecure(type, routesMap) {
-  if (type === types.LOGIN || !routesMap[type]) return false;
+  if (type === types.LOGIN || !routesMap[type]) {
+    return false;
+  }
   return routesMap[type].isSecure;
 }
 
@@ -16,7 +18,6 @@ export default function createRoutesConfig(helpers) {
   return {
     map: {
       [types.LOGIN]: '/login',
-
       ...asyncRoute(
         types.STACK,
         '/:stack([a-z0-9-]+)?',
@@ -56,6 +57,3 @@ export default function createRoutesConfig(helpers) {
     }
   };
 }
-
-// TODO: doing this here breaks webpack client build ("undefinedundefined" is left in bundled output for some reason)
-// export default createRoutesConfig;

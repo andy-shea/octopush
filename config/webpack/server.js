@@ -18,6 +18,7 @@ const development = [
   setMode('development'),
   entryPoint(['@babel/polyfill', path.resolve(ROOT_PATH, 'src', 'presentation', 'server')]),
   setOutput({path: path.resolve(ROOT_PATH, 'build'), libraryTarget: 'commonjs2'}),
+  favicon(),
   sourceMaps()
 ];
 
@@ -25,6 +26,7 @@ const production = [
   setMode('production'),
   entryPoint(['@babel/polyfill', path.resolve(ROOT_PATH, 'src')]),
   setOutput({path: path.resolve(ROOT_PATH, 'dist')}),
+  favicon('web'),
   sourceMaps('source-map')
 ];
 
@@ -33,7 +35,6 @@ module.exports = createConfig([
   common,
   setOutput({filename: 'server.js'}),
   node(),
-  favicon(),
   babel(),
   image(false),
   env('development', development),

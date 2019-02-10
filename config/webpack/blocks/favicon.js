@@ -1,4 +1,4 @@
-function favicon() {
+function favicon(outputPath) {
   return (context, {addLoader}) =>
     addLoader(
       Object.assign(
@@ -8,7 +8,7 @@ function favicon() {
           loader: 'file-loader',
           options: {
             publicPath: '/',
-            outputPath: 'web',
+            outputPath,
             name: '[name].[ext]'
           }
         },
