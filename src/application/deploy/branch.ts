@@ -8,14 +8,18 @@ import logger from '~/infrastructure/logger';
 const GITHUB_PREFIX = 'https://github.com/';
 const BITBUCKET_PREFIX = 'https://bitbucket.org/';
 
-const {get: bitbucketGet} = withDefaults({
-  credentials: 'same-origin',
-  headers: {
-    Authorization: `Basic ${Buffer.from(`${config.get('bitbucket.username')}:${config.get('bitbucket.password')}`).toString('base64')}`,
-    Accept: 'application/json',
-    'Content-Type': 'application/json'
-  }
-}, response => response.contents);
+let bitbucketGet: any;
+if (config.has('bitbucket.username')) {
+  const bitbucket = withDefaults({
+    credentials: 'same-origin',
+    headers: {
+      Authorization: `Basic ${Buffer.from(`${config.get('bitbucket.username')}:${config.get('bitbucket.password')}`).toString('base64')}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }, response => response.contents);
+  bitbucketGet = bitbucket.get;
+}
 
 interface Branch {
   name: string;
@@ -48,8 +52,8 @@ function getBitbucketBranches(gitPath: string): Promise<Branch[]> {
     .replace('.git', '')
     .split('/');
   return bitbucketGet(`https://api.bitbucket.org/2.0/repositories/${owner}/${repo}/refs/branches`)
-    .then(({values}) => values)
-    .catch(error => {
+    .then(({values}: any) => values)
+    .catch((error: any) => {
       logger.error(`Problem retrieving Bitbucket branches: ${error.statusText}`);
       return [];
     });
@@ -65,7 +69,10 @@ function isBitbucketRepo(gitPath: string): boolean {
 
 async function loadBranches(gitPath: string): Promise<Branch[]> {
   if (isGithubRepo(gitPath)) return getGithubBranches(gitPath);
-  else if (isBitbucketRepo(gitPath)) return getBitbucketBranches(gitPath);
+  else if (isBitbucketRepo(gitPath)) {
+    if (!bitbucketGet) throw new Error('Bitbucket credentials not set');
+    return getBitbucketBranches(gitPath);
+  }
   return getLocalBranches(gitPath);
 }
 
