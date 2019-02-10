@@ -1,15 +1,14 @@
-import Octokit from '@octokit/rest';
 import config from 'config';
 import withDefaults from 'ftchr';
 import git from 'gift';
 import Stack from '~/domain/stack/Stack';
+import {get} from '~/infrastructure/fetch';
 import logger from '~/infrastructure/logger';
 
 const GITHUB_PREFIX = 'https://github.com/';
 const BITBUCKET_PREFIX = 'https://bitbucket.org/';
 
-const github = new Octokit({timeout: 5000});
-const {get} = withDefaults({
+const {get: bitbucketGet} = withDefaults({
   credentials: 'same-origin',
   headers: {
     Authorization: `Basic ${Buffer.from(`${config.get('bitbucket.username')}:${config.get('bitbucket.password')}`).toString('base64')}`,
@@ -36,12 +35,11 @@ function getGithubBranches(gitPath: string): Promise<Branch[]> {
     .replace(GITHUB_PREFIX, '')
     .replace('.git', '')
     .split('/');
-  return new Promise((resolve, reject) => {
-    github.repos.getBranches({owner, repo}, (error: Error | null, response) => {
-      if (error) reject(error);
-      else resolve(response.data);
+  return get(`https://api.github.com/repos/${owner}/${repo}/branches`)
+    .catch((error: any) => {
+      logger.error(`Problem retrieving Bitbucket branches: ${error.statusText}`);
+      return [];
     });
-  });
 }
 
 function getBitbucketBranches(gitPath: string): Promise<Branch[]> {
@@ -49,7 +47,7 @@ function getBitbucketBranches(gitPath: string): Promise<Branch[]> {
     .replace(BITBUCKET_PREFIX, '')
     .replace('.git', '')
     .split('/');
-  return get(`https://api.bitbucket.org/2.0/repositories/${owner}/${repo}/refs/branches`)
+  return bitbucketGet(`https://api.bitbucket.org/2.0/repositories/${owner}/${repo}/refs/branches`)
     .then(({values}) => values)
     .catch(error => {
       logger.error(`Problem retrieving Bitbucket branches: ${error.statusText}`);
