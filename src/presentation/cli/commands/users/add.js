@@ -11,7 +11,6 @@ module.exports = (() => {
   const service = new UserService(new UserRepository(session));
 
   class AddUserCommand extends Command {
-
     constructor() {
       super('users', 'add');
     }
@@ -24,10 +23,10 @@ module.exports = (() => {
     }
 
     run(
-        {
-          args: [name, email]
-        },
-        callback
+      {
+        args: [name, email]
+      },
+      callback
     ) {
       if (!name || !email) {
         return callback(Error('Name and email are required\noctopush users:add <name> <email>'));
@@ -48,7 +47,6 @@ module.exports = (() => {
         }
       );
     }
-
   }
 
   return AddUserCommand;

@@ -2,8 +2,6 @@
 
 'use strict'; // eslint-disable-line strict
 
-require('babel-register');
-
 const CommandLineInterface = require('cmnd').CommandLineInterface;
 const CLI = new CommandLineInterface();
 
