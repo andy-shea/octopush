@@ -43,8 +43,8 @@ function updateCollections(observer: EntityObserver, trx: Transaction): Array<Pr
       servers: {added, removed}
     }
   } = observer;
-  if (added.length) mods.push(insertServers(trx, entity as Group, added));
-  if (removed.length) mods.push(deleteServers(trx, entity as Group, removed));
+  if (added.length) mods.push(insertServers(trx, entity as Group, added as Server[]));
+  if (removed.length) mods.push(deleteServers(trx, entity as Group, removed as Server[]));
   return mods;
 }
 

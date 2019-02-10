@@ -2,6 +2,13 @@ import React, {SFC} from 'react';
 import styled, {css} from 'styled-components';
 import Icon from '../icon/Icon';
 
+interface ButtonProps {
+  children: React.ReactNode;
+  isLoading?: boolean;
+  large?: boolean;
+  cta?: boolean;
+}
+
 const StyledButton = styled.button`
   outline: none;
   text-transform: uppercase;
@@ -21,7 +28,7 @@ const StyledButton = styled.button`
   padding: ${({large}: {large?: boolean}) => (large ? '10px 30px' : '0 30px')};
   white-space: nowrap;
 
-  ${({cta}: {cta?: boolean}) => cta && css`
+  ${({cta}: ButtonProps) => cta && css`
     background: var(--color-green);
     color: #fff;
   `}
@@ -31,7 +38,7 @@ const StyledButton = styled.button`
     background: #fff;
     color: var(--color-blue-10);
 
-    ${({cta}: {cta?: boolean}) => cta && css`
+    ${({cta}: ButtonProps) => cta && css`
       background: #fff;
       color: var(--color-green);
       box-shadow: 0 1px 1px var(--color-grey-5);
@@ -53,13 +60,6 @@ const Loader = styled(Icon).attrs({type: 'loader'})`
     width: 20px;
   `};
 `;
-
-interface ButtonProps {
-  children: React.ReactNode;
-  isLoading?: boolean;
-  large?: boolean;
-  cta?: boolean;
-}
 
 const Button: SFC<ButtonProps> = ({children, isLoading, ...props}) => {
   return (

@@ -34,11 +34,12 @@ const Title = styled.h1`
 interface HeaderProps {
   children: React.ReactNode;
   centred?: boolean;
+  className?: string;
 }
 
-const Header: SFC<HeaderProps> = ({children, centred = false}) => {
+const Header: SFC<HeaderProps> = ({centred = false, children, className}) => {
   return (
-    <StyledHeader centred={centred}>
+    <StyledHeader centred={centred} className={className}>
       <Title>Octopush</Title>
       {children}
     </StyledHeader>
