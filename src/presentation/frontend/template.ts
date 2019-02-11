@@ -1,3 +1,4 @@
+import config from 'config';
 import {HttpError} from 'react-cornerstone';
 import serialize from 'serialize-javascript';
 import {ServerStyleSheet} from 'styled-components';
@@ -17,6 +18,12 @@ import './ui/favicons/mstile-310x310.png';
 import './ui/favicons/mstile-70x70.png';
 import safariPinnedTab from './ui/favicons/safari-pinned-tab.svg';
 import logo from './ui/octopus.png';
+
+const clientConfig: string[] = [];
+if (process.env.NODE_ENV === 'production') {
+  if (config.has('raven')) clientConfig.push(`window.__RAVEN__ ='${config.get('raven')}'`);
+  if (config.has('logrocket')) clientConfig.push(`window.__LOGROCKET__ = '${config.get('logrocket')}'`);
+}
 
 function renderLayout(body: string, sheet?: ServerStyleSheet, css?: string) {
   return `
@@ -50,6 +57,7 @@ export function render(html: string, state: any, sheet: ServerStyleSheet, ids: s
       <script>
         window.__INITIAL_STATE__ = ${serialize(state, {isJSON: true})};
         window.__EMOTION_IDS__ = ${JSON.stringify(ids)};
+        ${clientConfig.length > 0 && clientConfig.join(';')}
       </script>
       <script src="${includeAsset('vendor.js')}"></script>
       <script src="/socket.io/socket.io.js"></script>

@@ -1,4 +1,3 @@
-import LogRocket from 'logrocket';
 import {configureStoreCreator} from 'react-cornerstone';
 import thunkMiddleware from 'redux-thunk'; // tslint:disable-line:no-implicit-dependencies
 import deploysReducer from './deploys/reducer';
@@ -15,9 +14,9 @@ const reducers = {
   users: usersReducer
 };
 
-function configureStore(forClient: boolean) {
+function configureStore(forClient: boolean, middleware: any[] = []) {
   return forClient
-    ? configureStoreCreator(reducers, () => [thunkMiddleware, LogRocket.reduxMiddleware()])
+    ? configureStoreCreator(reducers, () => [thunkMiddleware, ...middleware])
     : configureStoreCreator(reducers);
 }
 

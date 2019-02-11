@@ -19,7 +19,7 @@
     "react-hot-loader/babel",
     ["babel-plugin-styled-components", {"ssr": true}],
     ["@babel/plugin-proposal-decorators", {"legacy": true}],
-    "add-react-displayname",
+    "add-react-displayname", // required for logrocket
     "@babel/plugin-transform-react-jsx",
     "@babel/plugin-proposal-class-properties",
     ["babel-plugin-root-import", {"rootPathSuffix": "src"}]
