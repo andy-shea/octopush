@@ -51,7 +51,7 @@ function getBitbucketBranches(gitPath: string): Promise<Branch[]> {
     .replace(BITBUCKET_PREFIX, '')
     .replace('.git', '')
     .split('/');
-  return bitbucketGet(`https://api.bitbucket.org/2.0/repositories/${owner}/${repo}/refs/branches`)
+  return bitbucketGet(`https://api.bitbucket.org/2.0/repositories/${owner}/${repo}/refs/branches?pagelen=100`)
     .then(({values}: any) => values)
     .catch((error: any) => {
       logger.error(`Problem retrieving Bitbucket branches: ${error.statusText}`);
