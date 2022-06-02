@@ -15,7 +15,7 @@
     "last 1 Safari version"
   ],
   "dependencies": {
-    "@angular/core": "^7.2.4",
+    "@angular/core": "^11.0.5",
     "@babel/runtime": "^7.0.0",
     "ansi-to-html": "^0.6.6",
     "autobind-decorator": "^2.1.0",
