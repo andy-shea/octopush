@@ -1,6 +1,6 @@
 {
   "name": "octopush",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "license": "MIT",
   "description": "A GUI for Capistrano",
   "author": "Andy Shea",
@@ -146,7 +146,7 @@
     "tslint-loader": "^3.6.0",
     "tslint-react": "^3.6.0",
     "typescript": "^3.0.3",
-    "universal-action-creator-loader": "^0.5.1",
+    "universal-action-creator-loader": "^6.1.1",
     "webpack": "^4.19.0",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.0",
