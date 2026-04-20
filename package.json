@@ -48,7 +48,7 @@
     "node-password-util": "^1.0.1",
     "normalize.css": "^8.0.0",
     "normalizr": "^3.2.4",
-    "pg": "^7.4.3",
+    "pg": "^8.11.0",
     "polished": "^2.0.3",
     "prompt": "^1.0.0",
     "prop-types": "^15.6.2",
